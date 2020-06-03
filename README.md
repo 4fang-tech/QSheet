@@ -1,51 +1,50 @@
 ## QSheet
 
-* 用于展示数据、可编辑输入、基于canvas与javascript开发的表格控件
-* 支持excel文件、xml、json、打印、单元格格式、多表等等功能，更多请参考api
-* IE9+
+- Used to display data, editable input, form controls based on canvas and javascript
+- Support excel file, xml, json, print, cell format, multi-table, etc., please refer to api for more
+- IE9+
 
 
 
-## 目录
+## Directory
 
-* apidoc  api文档index.html
+- apidoc: *api document index.html*
 
-* src
+- src
 
-  * css 
-    * table.css 控件样式文件
-  * js
-    * apidoc.json api文档json文件
-    * defaultOption.js 表格数据格式默认属性参考
-    * popup.js 下拉框插件
-    * table.js 表格控件核心文件
-    * table.min.js min版本
-    * tableApi.js api文档js文件
-    * tableInfo.js demo数据
-  * demo
-    * example1.html  示例1
-    * example2.html  示例2
+  - css
+    - table.css: *control style file*
 
-  * vendor
+  - js
+    - apidoc.json: *api document json file*
+    - defaultOption.js: *table data format default attribute reference*
+    - popup.js: *drop-down box plugin*
+    - table.js: *core file of table control*
+    - table.min.js: *min version*
+    - tableApi.js: *api document js file*
+    - tableInfo.js: *demo data*
 
-    * FileSaver.js 文件导出需要的第三方文件
+  - demo
+    - example1.html: *example 1* 
+    - example2.html: *example 2*
 
-    * jszip.min.js 压缩文件导入需要的第三方文件
+  - vendor
+    - FileSaver.js: *third-party files required for file export*
+    - jszip.min.js: *compressed file import third-party files required*
 
+## How to use apidoc
 
-## 如何使用apidoc
-
-* ```
+- ```
   npm install apidoc -g
   ```
 
-* 打开apidoc下的index.html
+- Open index.html under apidoc
 
 
 
-## 如何使用该控件
+## How to use the control
 
-* 更详细 参考example1.html  example2.html  api文档
+- For more details, refer to example1.html example2.html api documentation
 
 
 
@@ -53,23 +52,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>example1</title>
-    <link rel="stylesheet" href="../css/table.css"> <!--引入css-->
+    <meta charset="UTF-8">
+    <title>example1</title>
+    <link rel="stylesheet" href="../css/table.css"> <!--Introduce css-->
 </head>
 <body>
-    <div id="container"></div>  <!--容器-->
+    <div id="container"></div> <!--container-->
 
 
-    <script src="../js/table.js" ></script>    <!--引入核心的接口文件-->
-    <script type="text/javascript">
-    var WB = new Workbook('container');     //容器 data(可选)
-        
-    // do something...
-        
-    WB.startPaint(true)	//绘制表格
+    <script src="../js/table.js" ></script> <!--Introduce the core interface file-->
+    <script type="text/javascript">
+    var WB = new Workbook('container'); //container data (optional)
+        
+    // do something...
+        
+    WB.startPaint(true) //Draw a table
 
-    </script>
+    </script>
 </body>
 </html>
 ```

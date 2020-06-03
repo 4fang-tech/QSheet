@@ -8,29 +8,29 @@
 
 ## Directory
 
-- apidoc:	   *api document index.html*
+- apidoc:&nbsp;*api document index.html*
 
 - src
 
   - css
-    - table.css: 	*control style file*
+    - table.css:&nbsp;*control style file*
 
   - js
-    - apidoc.json:		 *api document json file*
-    - defaultOption.js:         *table data format default attribute reference*
-    - popup.js:         *drop-down box plugin*
-    - table.js:        *core file of table control*
-    - table.min.js:      *min version*
-    - tableApi.js:       *api document js file*
-    - tableInfo.js:      *demo data*
+    - apidoc.json:&nbsp;*api document json file*
+    - defaultOption.js:&nbsp;*table data format default attribute reference*
+    - popup.js:&nbsp;*drop-down box plugin*
+    - table.js:&nbsp;*core file of table control*
+    - table.min.js:&nbsp;*min version*
+    - tableApi.js:&nbsp;*api document js file*
+    - tableInfo.js:&nbsp;*demo data*
 
   - demo
-    - example1.html:       *example 1* 
-    - example2.html:       *example 2*
+    - example1.html:&nbsp;*example 1* 
+    - example2.html:&nbsp;*example 2*
 
   - vendor
-    - FileSaver.js:      *third-party files required for file export*
-    - jszip.min.js:      *compressed file import third-party files required*
+    - FileSaver.js:&nbsp;*third-party files required for file export*
+    - jszip.min.js:&nbsp;*compressed file import third-party files required*
 
 ## How to use apidoc
 

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>example2</title>
+    <link rel="stylesheet" href="../css/table.css">
+</head>
+<body>
+    <div id="container"></div>
+
+    <!--示例可导入data数据(tableInfo.js 中的workbook,按需设置) 格式参考defaultOption.js-->
+
+
+    <input type="button" value="导出json" id="exportFileAsJson">
+    <input type="button" value="导出xml文件" id="exportFileAsXml">
+    <input type="button" value="导出excel压缩文件" id="exportFileAsZip">
+    <input type="file" id="file" multiple='multiple'>   <!-- multiple="multiple" -->
+    <input type="button" value="清空" id="clear">
+    <br>
+    <script src="../js/popup.js"></script>   <!--下拉插件-->
+    <script src="../js/tableInfo.js"></script>   <!--自己定义的配置-->
+    <script src="../vendor/jszip.min.js"></script>  <!--导入导出文件需要的插件-->
+    <script src="../vendor/FileSaver.js"></script>  <!--文件保存-->
+    <script src="../js/table.js" ></script>    <!--引入核心的接口文件-->
+    <script type="text/javascript">
+
+    var WB = new Workbook('container',workbook);   //new
+    
+    document.getElementById('exportFileAsJson').onclick = function(){
+        WB.exportFileAsJson()
+    }
+
+    document.getElementById('exportFileAsXml').onclick = function(){
+        WB.exportFileAsXml()
+    }
+
+    document.getElementById('exportFileAsZip').onclick = function(){
+        WB.exportFileAsZip()
+    }
+
+    document.getElementById('file').onchange = function(e){
+        var files = e.target.files,f;
+        try{
+            if(files){   //multiple="multiple" 支持多个文件则要遍历 
+                // f = files[0]    //files对象
+                for(var i =0;i<files.length;i++){
+                    WB.importFile(files[i])
+                }
+            }else{
+                file.select();
+                f = document.selection.createRange().text  //文件路径
+                WB.importFile(f)
+
+            }
+        }catch(e){}
+    }
+
+    document.getElementById('clear').onclick = function(){
+        document.getElementById('file').value = null
+    }
+
+    WB.onopenpopup = function(w,h,x,y,list,r,c,child,fontSize,noSetIndex){
+        var data =[];
+        if(list){
+            for(var i =0;i<list.length;i++){
+                data.push({name:list[i]})
+            }
+        };
+        WB.popup._init({
+            shade: false,
+            area:[w+'px',list.length*h+"px"],
+            offset:[x+'px', y+'px'],
+            backgroundColor: '#dccccc',
+            rowHeight:34+"px",
+            data:data,
+            fontSize:fontSize,
+            success: function(index,value,listIndex) {
+                if(listIndex==noSetIndex){
+                    WB.onopenmorelist = function(){
+                        // alert("打开更多弹窗")
+                    };
+                    if(typeof(WB.onopenmorelist)=='function'){
+                        WB.onopenmorelist()
+                    }
+                }else{
+                    WB.setValue(r,c,value)
+                    child.innerHTML = value
+                    WB.startPaint(true)
+                }
+                this.close(index); 
+            },
+        })
+    }
+
+    WB.startPaint(true)
+
+    </script>
+</body>
+</html>

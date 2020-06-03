@@ -1,0 +1,69 @@
+
+*{
+    margin: 0;
+    padding:0;
+}
+
+.clearfix::before,
+.clearfix::after{
+	content: "";
+	display: block;
+	height:0;
+	line-height: 0;
+	visibility: hidden;
+	clear: both;
+}
+
+[menu=contextmenu] li{
+    list-style: none
+}
+
+/*右击菜单*/
+
+[menu=contextmenu]{
+    width:200px;
+    height: 180px;
+    border:1px solid #ccc;
+    background-color:#f2f2f2;
+    position:absolute;
+}
+
+.show{
+    display:block;
+}
+
+.hidden{
+    display:none
+}
+
+[menu=contextmenu] ul li {
+    height: 25px;
+    width: 190px;
+    line-height: 25px;
+    padding:0px 5px;
+    font-size: 12px;
+    cursor:default;
+    overflow: hidden;
+}
+
+[menu=contextmenu] ul li:hover{
+    background-color:#ccc
+}
+
+[menu=contextmenu] ul li p{
+    float: left;
+}
+
+[menu=contextmenu] ul li span{
+    float: left;
+    margin-left: 3px;
+    padding-left: 3px;
+}
+
+[menu=contextmenu] ul li span:hover{
+    background-color:#ddd
+}
+
+[contenteditable]:focus{
+    outline: none;
+}

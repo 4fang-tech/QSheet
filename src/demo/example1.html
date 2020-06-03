@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>example1</title>
+    <link rel="stylesheet" href="../css/table.css"> <!--引入css-->
+</head>
+<body>
+
+     <!--示例使用api-->
+
+    <div id="container"></div>  <!--容器-->
+
+
+    <script src="../js/table.js" ></script>    <!--引入核心的接口文件-->
+    <script type="text/javascript">
+    var WB = new Workbook('container');     //容器 data(可选)
+
+    var data = {
+        '3':{'0':{'v':'项目1'},'1':{'v':92778.88},'2':{'v':16233.49},'3':{'v':262154.76},'4':{'v':572926.67}},
+        '4':{'0':{'v':'项目2'},'1':{'v':10965.38},'2':{'v':145285.45},'3':{'v':278395.16},'4':{'v':556745.85}},
+        '5':{'0':{'v':'项目3'},'1':{'v':156511.32},'2':{'v':1119117.19},'3':{'v':2189378.53},'4':{'v':514660.85},'5':{'v':'优于其他项目'}},
+        '6':{'0':{'v':'项目4'},'1':{'v':12844.71},'2':{'v':113163.53},'3':{'v':228515.03},'4':{'v':547514.19}},
+        '7':{'0':{'v':'项目5'},'1':{'v':58910.09},'2':{'v':121690.73},'3':{'v':299774.33},'4':{'v':593831.10}},
+        '8':{'0':{'v':'合计'},'1':{'v':332010.38},'2':{'v':1515490.39},'3':{'v':3258217.81},'4':{'v':2785678.66}}
+    }
+
+    //do something...
+    var activeSheet = WB.getActiveSheet(0); //获取当前表
+    WB.setTableSize(600,300);   //设置表的宽高
+    WB.maxRow(9);   //设置表行数
+    WB.maxCol(6);   //设置表列数
+    WB.setColWidth (108,1,5)
+    WB.setLock(0,0,8,5,true,0)
+    WB.mergeCells(0,0,0,5)  //合并
+    WB.mergeCells(1,0,1,5)  //合并
+    WB.setRightBorder(2,0,2,5,1,'#999')
+    WB.setRightBorder(8,0,8,5,1,'#999')
+
+    WB.setValue(0,0,'运营数据对比分析')
+    WB.setValue(1,0,'项目3的运营数据明显优于其他项目')
+    WB.setValue(2,0,'项目名称')
+    WB.setValue(2,1,'本月实际')
+    WB.setValue(2,2,'本年累计')
+    WB.setValue(2,3,'去年累计')
+    WB.setValue(2,4,'本年预算')
+    WB.setValue(2,5,'备注')
+
+    WB.setFillColor('#000',0,0,1,0) 
+    WB.setFillColor('#D9D9D9',2,0,2,5) 
+    WB.setFillColor('#487EA2',2,2,2,2)
+    WB.setFillColor('#E4EDF6',8,0,8,5)
+    WB.setFillColor('#487EA2',8,2,8,2)
+
+    WB.fontColor(0,0,0,0,'#3DC4C0') 
+    WB.fontColor(1,0,1,0,'#fff')
+    WB.fontColor(2,0,2,5,'#595F79')
+    WB.fontColor(2,2,2,2,'#fff')
+    WB.fontColor(8,2,8,2,'#fff')
+
+    WB.setFontSize(0,0,0,0,20)
+    WB.setFontSize(1,0,1,0,12)
+  
+    WB.setHAlignment(2,0,2,5,3) 
+
+    for(var r in data){
+        var R = parseInt(r)
+        for(var c in data[r]){
+            var v = data[r][c]['v'],C = parseInt(c)
+            if(v)   WB.setValue(R,C,v)
+            if(R==5||R==8){
+                WB.setFontBold(R,C,R,C,true)
+            };
+            WB.setFontSize(R,C,R,C,12);
+            if(C>=1&&C<=4){
+                WB.setCellFormat(R,C,R,C,'00N+thousands')
+            }
+        }
+    };
+
+
+    WB.startPaint(true)
+
+    </script>
+</body>
+</html>

@@ -30,7 +30,7 @@
 
   - vendor
     - FileSaver.js:&nbsp;*third-party files required for file export*
-    - jszip.min.js:&nbsp;*compressed file import third-party files required*
+    - jszip.min.js:&nbsp;*Import third-party files needed for compressed files (excel)*
 
 ## How to use apidoc
 

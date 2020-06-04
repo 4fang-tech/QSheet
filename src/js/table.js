@@ -408,9 +408,13 @@ Workbook.prototype.bindEvent = function(){
          * @api {null} /null oncellbuttonclick
          * @apiName oncellbuttonclick
          * @apiGroup Event
-         * @apiDescription 点击cell button 触发事件，具体函数看需求实现 函数返回(表索引 r c)
-         * - WB.oncellbuttonclick=function(idx,r,c){alert("oncellbuttonclick"+idx+","+r+","+c)};
-         * @apiParam {Function} callback 点击cellBtn触发相应事件.
+         * @apiDescription Click the cell button to trigger the event 
+         * - The function returns the table index and the current row and current column
+         * @apiParam {Function} callback 
+         * @apiExample {javascript} demo:
+            WB.oncellbuttonclick=function(idx,r,c){
+                alert("oncellbuttonclick"+idx+","+r+","+c)
+            }
          */
         var f = this.oncellbuttonclick,isClickBtn = false,cellType = this.getCellType(r,c,r,c,index);
         if(cellType){
@@ -427,9 +431,11 @@ Workbook.prototype.bindEvent = function(){
          * @api {null} /null onopenpopup
          * @apiName onopenpopup
          * @apiGroup Event
-         * @apiDescription 引入popup.js,cellType.name==4的单元格会弹出弹窗,该操作会new出来一个popup实例,具体函数看需求实现,返回10个值w（宽）,h(高),x（x坐标）,y（y坐标）,list（列表数据）
-         * r(行) c(列) child(对应的输入框),fontSize(字体大小),noSetIndex(特殊的项，可判断点击在该项上发生对应事件)
-         * @apiParam {Function} callback 点击触发cellType.name==4相应事件.
+         * @apiDescription Clicking on the cell with celltype==4 will open the drop-down window
+         * - Need to import popup.js file
+         * - Returns 10 values(w,h,x,y,list,r,c,child,fontSize,noSetIndex)
+         * - noSetIndex(Special item, you can judge that the corresponding event occurs on the item)
+         * @apiParam {Function} callback 
          * @apiExample {javascript} demo:
             WB.onopenpopup = function(w,h,x,y,list,r,c,child,fontSize,noSetIndex){
                 var data =[];
@@ -449,7 +455,7 @@ Workbook.prototype.bindEvent = function(){
                     success: function(index,value,listIndex) {
                         if(listIndex==noSetIndex){
                             WB.onopenmorelist = function(){
-                                // alert("打开更多弹窗")
+                                // alert("something")
                             };
                             if(typeof(WB.onopenmorelist)=='function'){
                                 WB.onopenmorelist()
@@ -469,7 +475,7 @@ Workbook.prototype.bindEvent = function(){
          * @api {null} /null onopenmorelist
          * @apiName onopenmorelist
          * @apiGroup Event
-         * @apiDescription 参考onopenpopup 点击哪一项触发该事件,函数需要自己放在onopenpopup success里调用
+         * @apiDescription Refer to which item is triggered by onopenpopup, the function needs to be placed in onopenpopup success and called
          * @apiParam {Function} callback 
          */
         if(isClickInCell&&e.button==0&&r!=-1&&c!=-1&&cellTypeName==4){
@@ -480,9 +486,13 @@ Workbook.prototype.bindEvent = function(){
          * @api {null} /null onclickcellopenlayer
          * @apiName onclickcellopenlayer
          * @apiGroup Event
-         * @apiDescription 点击单元格是否触发事件，具体函数看需求实现  函数返回(表索引 r c)
-         * - WB.onclickcellopenlayer=function(idx,r,c){alert("onclickcellopenlayer"+idx+","+r+","+c)};
-         * @apiParam {Function} callback 点击单元格触发相应事件.
+         * @apiDescription Click on the cell to trigger the event
+         * - The function returns the table index and the current row and current column
+         * @apiExample {javascript} demo:
+            WB.onclickcellopenlayer=function(idx,r,c){
+                alert("onclickcellopenlayer"+idx+","+r+","+c)
+            }
+         * @apiParam {Function} callback 
          */
         var OpenLayer = this.onclickcellopenlayer;
         if(typeof(OpenLayer)=='function'&&this.workbook.stopEventCount==0&&canOpenLayer&&isClickInCell&&e.button==0&&cellTypeName!=3&&cellTypeName!=4&&!isClickBtn){
@@ -523,9 +533,13 @@ Workbook.prototype.bindEvent = function(){
          * @api {null} /null onrowmodedblclick
          * @apiName onrowmodedblclick
          * @apiGroup Event
-         * @apiDescription 行选模式双击下触发事件，具体函数看需求实现  函数返回(表索引 r c)
-         * - WB.onrowmodedblclick=function(idx,r,c){};
-         * @apiParam {Function} callback 行选模式双击下触发事件.
+         * @apiDescription Trigger event in double-click mode selection  
+         * - The function returns the table index and the current row and current column
+         * @apiParam {Function} callback 
+         * @apiExample {javascript} demo:
+            WB.onrowmodedblclick=function(idx,r,c){
+                //do something...
+            }
          */
         if(cellTypeName==1||cellTypeName==2){
             isClickBtn = this.isClickBtn(r,c,clickX,clickY);
@@ -793,9 +807,13 @@ Workbook.prototype.bindEvent = function(){
              * @api {null} /null onequalsign
              * @apiName onequalsign
              * @apiGroup Event
-             * @apiDescription 输入框输入 =（等号） 事件 函数返回(r c)
-             * - WB.onequalsign=function(r,c){//)};
+             * @apiDescription Input box input = number trigger event
+             * - The function returns the current row and current column
              * @apiParam {Function} callback 
+             * @apiExample {javascript} demo:
+                WB.onequalsign=function(r,c){
+                    // do something...
+                }
              */
             if(typeof(_this.onequalsign)=='function'&&child.innerText=='='){
                 _this.onequalsign(_this.activeSheet.activeRow,_this.activeSheet.activeCol)
@@ -1249,9 +1267,8 @@ Workbook.prototype.getBtnAndCutX = function(r,c,Index){
  * @api {null} /null getStartSheet
  * @apiName getStartSheet
  * @apiGroup Function
- * @apiDescription 返回开始表表索引及名称 ： WB.getStartSheet()
- * - tabs栏的表格有限的width下显示多少个表 start->end
- * - WB.getStartSheet ()  开始表索引及名称 
+ * @apiDescription Get the starting table and index in the tab bar of the current workbook
+ * - WB.getStartSheet ()  
  */
 Workbook.prototype.getStartSheet = function(){         
     var startW = 0,startSumW = 0;
@@ -1273,8 +1290,8 @@ Workbook.prototype.getStartSheet = function(){
  * @api {null} /null getEndSheet
  * @apiName getEndSheet
  * @apiGroup Function
- * @apiDescription 返回结束表索引及名称 ： WB.getEndSheet()
- * - WB.getEndSheet ()  结束表索引及名称 
+ * @apiDescription Get end table and index in tab bar of current workbook
+ * - WB.getEndSheet ()
  */
 Workbook.prototype.getEndSheet = function(){                       
     var endW = 0,endSumW = 0;
@@ -1948,16 +1965,17 @@ Workbook.prototype.recalculatePercentage = function(Index){
 }
 
  /**
- * @api {null} /null getSelectInfo
+ * @api {null} WB.getSelectInfo(R1,C1,R2,C2,Index) getSelectInfo
  * @apiName getSelectInfo
  * @apiGroup Function
- * @apiDescription 获取选中单元格信息(没参数默认获取当前选中范围信息): WB.getSelectInfo(R1,C1,R2,C2,Index) 调用后返回单元格坐标宽高
- * - WB.getSelectInfo () 获取选中单元格信息(返回的w h是所看到的宽高)
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the coordinate width and height information of the selected cell
+ * - Without parameters, the coordinate width and height of the currently selected range are obtained by default
+ * - The width and height returned is the width and height seen
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.getSelectInfo = function(R1,C1,R2,C2,Index){             
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -2429,8 +2447,11 @@ Workbook.prototype.initValue = function(value,r,c,allRow,allCol,style,isRed,ind)
     * @api {null} /null ownerdraw
     * @apiName ownerdraw
     * @apiGroup Event
-    * @apiDescription 给用户自己画单元格的内容 ownerdraw函数返回当前对象的this r c index 若要自绘的单元格不存在请先调用WB.createData(r,c,index) 创建该单元格并且单元格text,value无值或者无这俩属性。注意：请不要在函数内调用startPaint函数
-    * @apiParam {Function} callback 用户自己画单元格的内容回调函数.
+    * @apiDescription Draw the contents of the cell yourself 
+    * - The function returns this r c index
+    * - If the self-drawn cell does not exist, please call WB.createData(r,c,index).Cell text, value has no value or no attributes
+    * - Please don't call startPaint function inside the function
+    * @apiParam {Function} callback 
     * @apiExample {javascript} demo:
         WB.createData(0,2,0)
         WB.ownerdraw=function(content,i,j,ind){
@@ -2720,18 +2741,25 @@ Workbook.prototype.pasteHtmlAtCaret = function(html){
  * @api {null} /null onenteraddrow
  * @apiName onenteraddrow
  * @apiGroup Event
- * @apiDescription 在最后一行根据函数的返回值(true)判断是否增加一行可以指定在最后一行的那个单元格返回true f(r,c,v)
- * - WB.onenteraddrow=function(r,c,v){return true};
+ * @apiDescription Press Enter on the last line to add a line
+ * - When the onenteraddrow function returns true, add a row
  * @apiParam {Function} callback 
+ * @apiExample {javascript} demo:
+    WB.onenteraddrow=function(r,c,v){
+        return true
+    }
  */
 
  /**
  * @api {null} /null onafteraddrow
  * @apiName onafteraddrow
  * @apiGroup Event
- * @apiDescription 回车新增一行后的事件 f(r,c)
- * - WB.onafteraddrow=function(r,c){//};
+ * @apiDescription Enter the event after adding a new line
  * @apiParam {Function} callback 
+ * @apiExample {javascript} demo:
+    WB.onafteraddrow=function(r,c){
+        //do something...
+    }
  */
 
 //键盘上下左右改变选中的单元格(37左  38上  39右  40下，回车13（下）)
@@ -3240,9 +3268,9 @@ Workbook.prototype.getContextPos = function(e){
  * @api {null} /null getActiveSheet
  * @apiName getActiveSheet
  * @apiGroup Function
- * @apiDescription 设定或者获取当前表: WB.getActiveSheet(Index)
- * - WB.getActiveSheet () 获取当前表
- * @apiParam {Int} [Index=当前表索引] 索引（0开始）.
+ * @apiDescription Set or get the current table
+ * - WB.getActiveSheet () 
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.getActiveSheet = function(Index){         
     var tag,activeSheet,index = (Index>=0)?Index:this.workbook.activeSheet;
@@ -3262,13 +3290,14 @@ Workbook.prototype.getActiveSheet = function(Index){
 }
 
  /**
- * @api {null} /null sheetIndex
+ * @api {null} WB.sheetIndex(Index) sheetIndex
  * @apiName sheetIndex
  * @apiGroup Function
- * @apiDescription 设定或获取当前表索引: WB.sheetIndex(Index)
- * - WB.sheetIndex(1)   切换到tab栏的第二个表
- * - WB.sheetIndex()    获取当前表索引
- * @apiParam {Int} [Index=当前索引] 表索引>=0&&<全部表的length.
+ * @apiDescription Set or get the current table index
+ * @apiParam {Int} [Index=Current_table_index]  table index>=0&&<Total number of tables
+ * @apiExample {javascript} demo:
+    WB.sheetIndex(1)   //Switch to the second table in the tab bar
+    WB.sheetIndex()    //Get the current table index
  */
 Workbook.prototype.sheetIndex = function(Index){  
     if(Index>=0&&Index<this.workbook.sheetList.length){
@@ -3285,14 +3314,15 @@ Workbook.prototype.sheetIndex = function(Index){
 }
 
 /**
- * @api {null} /null sheetName
+ * @api {null} WB.sheetName() sheetName
  * @apiName sheetName
  * @apiGroup Function
- * @apiDescription 设定或者获取当前工作表名: sheetName（Index，Name）
- * - WB.sheetName(1,"表二")   把第二个表的名字改成‘表二’
- * - WB.sheetName()   获取当前表名称
- * @apiParam {Int} [Index=当前索引] 表索引>=0&&<全部表的length.
- * @apiParam {String} [Name=当前表名] 表名.
+ * @apiDescription Set or get the current worksheet name
+ * @apiParam {Int} [Index=Current_table_index] table index>=0&&<Total number of tables
+ * @apiParam {String} [Name=Current table name] Table Name
+ * @apiExample {javascript} demo:
+    WB.sheetName(1,"table two")   //Change the name of the second table to'table two'
+    WB.sheetName()   //Get the current table name
  */
 //设定或者获取当前工作表名
 Workbook.prototype.sheetName = function(Index,Name){        
@@ -3321,9 +3351,9 @@ Workbook.prototype.sheetName = function(Index,Name){
  * @api {null} /null addSheet
  * @apiName addSheet
  * @apiGroup Function
- * @apiDescription 新增一个表: WB.addSheet(data)
- * - WB.addSheet(data)   新建一个表并且传入数据
- * @apiParam {Object} [data] 表的数据可选传入
+ * @apiDescription Add a new table
+ * - WB.addSheet(data)   Create a new table and pass in the data
+ * @apiParam {Object} [data] The data of the table is optional
  */
 Workbook.prototype.addSheet = function(data){
     var objLen = this.workbook.sheetList.length;
@@ -3345,9 +3375,9 @@ Workbook.prototype.addSheet = function(data){
  * @api {null} /null newWorkbook
  * @apiName newWorkbook
  * @apiGroup Function
- * @apiDescription 新建一个workbook 当前workbook数据清空
+ * @apiDescription Create a new workbook and clear the current workbook data
  * - WB.newWorkbook()   
- * @apiParam {Object} [template] 可传入模板
+ * @apiParam {Object} [template] Can be passed into the template
  */
 Workbook.prototype.newWorkbook = function(template){
     if(this.typeObj(template)=='Object'){ 
@@ -3364,12 +3394,13 @@ Workbook.prototype.newWorkbook = function(template){
  * @api {null} /null numSheets
  * @apiName numSheets
  * @apiGroup Function
- * @apiDescription 设置工作簿中工作表数: WB.numSheets(num)
- * - WB.numSheets(3)   表的总数设置为3个
+ * @apiDescription Set the number of sheets in the workbook
  * @apiParam {Int} num 
- * - num>全部表.length(在最后表之后插入表，如length=2  num=5  则添加三个表)；
- * - num<全部表.length&&num>=1(从后面删除表，如length=5  num=2  则删除最后三个表)
- * - num<=0(不会删除   至少留有一张表)
+ * - num>Total number of tables(Insert table after last table)
+ * - num<Total number of tables&&num>=1(Delete table from behind)
+ * - num<=0(Will not delete at least one table)
+ * @apiExample {javascript} demo:
+    WB.numSheets(3)   //The total number of tables is set to 3
  */
 Workbook.prototype.numSheets = function(num){          
     var objLen = this.workbook.sheetList.length;
@@ -3402,10 +3433,11 @@ Workbook.prototype.numSheets = function(num){
  * @api {null} /null deleteSheets
  * @apiName deleteSheets
  * @apiGroup Function
- * @apiDescription 删除工作表: WB.deleteSheets（nSheet,nSheets）
- * - WB.deleteSheets(1,2)  删除第二第三个表（至少留有一个表）  
- * @apiParam {Int} [nSheet=当前索引] 开始的索引.
- * @apiParam {Int} [nSheets=1] 数目,删除多少个表.
+ * @apiDescription Delete worksheet
+ * @apiParam {Int} [nSheet=Current index] Starting index
+ * @apiParam {Int} [nSheets=1] Number, how many tables are deleted
+ * @apiExample {javascript} demo:
+    WB.deleteSheets(1,2)  //Delete the second and third tables (at least one table remains) 
  */
 Workbook.prototype.deleteSheets = function(nSheet,nSheets){  
     var objLen =this.workbook.sheetList.length
@@ -3439,11 +3471,12 @@ Workbook.prototype.deleteSheets = function(nSheet,nSheets){
  * @api {null} /null insertSheets
  * @apiName insertSheets
  * @apiGroup Function
- * @apiDescription 当前索引的表的前面插入n个表: WB.insertSheets（nSheet,nSheets）
- * - WB.insertSheets(1,1)    在第二个表前面插入一个表
- * - WB.insertSheets()    当前表前面插入一个表
- * @apiParam {Int} [nSheet=当前索引] 开始的索引.
- * @apiParam {Int} [nSheets=1] 数目,插入多少个表 nSheets>=1.
+ * @apiDescription Insert n tables in front of the currently indexed table
+ * @apiParam {Int} [nSheet=Current index] Starting index
+ * @apiParam {Int} [nSheets=1] Number, how many tables to insert  nSheets>=1.
+ * @apiExample {javascript} demo:
+    WB.insertSheets(1,1)   //Insert a table before the second table
+    WB.insertSheets()   //Insert a table before the current table
  */
 Workbook.prototype.insertSheets = function(nSheet,nSheets){  
     var objLen =this.workbook.sheetList.length
@@ -3480,13 +3513,14 @@ Workbook.prototype.newSheetFormat = function(name){
  * @api {null} /null maxCol
  * @apiName maxCol
  * @apiGroup Function
- * @apiDescription 获取或设定当前工作表的列数:  WB.maxCol(num,Index)
- * - WB.maxCol(10)         总列数为10列
- * - WB.maxCol()        获取总列数
- * @apiParam {Int} [num=当前表列数]  
- * - num>len（当前表的总列数），传入num大于当前列数  则增加列数.
- * - 0<=num&&num< len，传入num小于当前并且大于等于0  则删除列数（对应合并，单元格数据清除）对应合并减少(num<0,num=0)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get or set the number of columns in the current worksheet
+ * @apiParam {Int} [num=Current number of columns]  
+ * - num>Current number of columns.If the incoming num is greater than the current number of columns, increase the number of columns
+ * - 0<=num&&num<Current number of columns.Pass in num less than the current and greater than or equal to 0, then delete the number of columns (corresponding to merge, cell data clearing) corresponding to merge reduction (num<0,num=0)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.maxCol(10)        //The total number of columns is 10
+    WB.maxCol()        //Get the total number of columns
  */
 Workbook.prototype.maxCol = function(num,Index){   
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -3564,13 +3598,14 @@ Workbook.prototype.maxCol = function(num,Index){
  * @api {null} /null maxRow
  * @apiName maxRow
  * @apiGroup Function
- * @apiDescription 获取或设定当前工作表的列数:  WB.maxRow(num,Index)
- * - WB.maxRow(9)         总行数为9行
- * - WB.maxRow()        获取总行数
- * @apiParam {Int} [num=当前表行数]
- * - num>len（当前表的总行数），传入num大于当前行数  则增加行数.
- * - 0<=num&&num< len，传入num小于当前并且大于等于0  则删除行数（对应合并，单元格数据清除）对应合并减少(num<0,num=0)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get or set the number of rows in the current worksheet
+ * @apiParam {Int} [num=Current table rows]
+ * - num>Current table rows.If the incoming num is greater than the current number of rows, the number of rows is increased
+ * - 0<=num&&num<Current table rows.The incoming num is less than the current and greater than or equal to 0, then delete the number of rows (corresponding to the merge, the cell data is cleared) corresponding to the merge reduction (num<0,num=0)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.maxRow(9)       //The total number of rows is 9
+    WB.maxRow()        //Get the total number of rows
  */
 Workbook.prototype.maxRow = function(num,Index){   
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -3627,17 +3662,18 @@ Workbook.prototype.maxRow = function(num,Index){
 }
 
 /**
- * @api {null} /null wordWrap
+ * @api {null} WB.wordWrap(R1,C1,R2,C2,bool,Index) wordWrap
  * @apiName wordWrap
  * @apiGroup Function
- * @apiDescription 设置为范围内单元格是否自动换行(没参数默认设置当前选中范围的自动换行) : WB.wordWrap(R1,C1,R2,C2,bool,Index)
- * - WB.wordWrap (0,0,1,1,true)    单元格（0,0）(0,1)(1,0)(1,1)  四个变成自动换行
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Boolean} [boolean=true]  是否自动换行
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set whether the cells in the range are automatically wrapped (no parameters default to automatically wrap in the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Boolean} [boolean=true]  Whether to wrap
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.wordWrap (0,0,1,1,true)
  */
 Workbook.prototype.wordWrap = function(R1,C1,R2,C2,bool,Index){   
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -3680,16 +3716,17 @@ Workbook.prototype.incrementRowheight = function(r,c,Index){
 }
 
 /**
- * @api {null} /null getWordWrap
+ * @api {null} WB.getWordWrap(R1,C1,R2,C2,Index) getWordWrap
  * @apiName getWordWrap
  * @apiGroup Function
- * @apiDescription 获取单元格的是否自动换行(没参数默认获取当前选中范围的自动换行状态) WB.getWordWrap(R1,C1,R2,C2,Index)
- * - WB.getWordWrap(0,0)   获取（0，0）单元格的自动换行状态
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the status of whether the cells in the range are automatically wrapped (the default is to get the status of the word wrapping in the currently selected range without parameters)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getWordWrap(0,0) 
  */
 Workbook.prototype.getWordWrap = function(R1,C1,R2,C2,Index){     
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -3714,13 +3751,13 @@ Workbook.prototype.getWordWrap = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null createData
+ * @api {null} WB.createData(r,c,Index) createData
  * @apiName createData
  * @apiGroup Function
- * @apiDescription 初始化一个空的单元格（一个单元格没值没有样式等是不会记录的，要在现有的行列范围内初始化）: WB.createData(r,c,Index)
- * @apiParam {Int} r 行(r>=0)
- * @apiParam {Int} c 列(c>=0)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Initialize an empty cell (a cell with no value, no style, etc. will not be recorded, to be initialized within the range of existing rows and columns)
+ * @apiParam {Int} r row(r>=0)
+ * @apiParam {Int} c col(c>=0)
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.createData = function(i,j,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -3870,12 +3907,7 @@ Workbook.prototype.getSelection = function(moveX,moveY,moveCell){
     c = activeSheet.activeCol,spans = activeSheet.spans,sumY = 0,sumX = 0,sumHeight = this.numRowH,sumWidth = this.numColW,
     startHeight = 0,startWidth = 0,startRCList = this.getStartRC(moveX,moveY),startR = startRCList.startR,startC = startRCList.startC,
     fy = startRCList.fy,fx = startRCList.fx,oy = startRCList.oy,ox = startRCList.ox,rows = activeSheet.rows,cols = activeSheet.columns,
-    mode = this.workbook.behaviorMode,selectMode = activeSheet.selectMode,cellTypeName,allowMoveRange = activeSheet.allowMoveRange,
-    fixedH = activeSheet.fixed.fixedH,fixedW = activeSheet.fixed.fixedW,startRow = activeSheet.startRow,startCol = activeSheet.startCol,
-    coordY = activeSheet.scrollOption.coordY,coordX = activeSheet.scrollOption.coordX,fixedCol = activeSheet.fixed.fixedCol,
-    fixedCols = activeSheet.fixed.fixedCols,fixedRow = activeSheet.fixed.fixedRow,fixedRows = activeSheet.fixed.fixedRows,
-    offsetY = activeSheet.scrollOption.offsetY,offsetX = activeSheet.scrollOption.offsetX,sC = (fixedCols>0)?fixedCols:fixedCol,
-    sR = (fixedRows>0)?fixedRows:fixedRow;
+    mode = this.workbook.behaviorMode,selectMode = activeSheet.selectMode,cellTypeName,allowMoveRange = activeSheet.allowMoveRange;
 
     for(var i = 0;i<startR;i++){
         if(rows[i])  startHeight+=rows[i].size;
@@ -3974,19 +4006,20 @@ Workbook.prototype.getSelection = function(moveX,moveY,moveCell){
 }
 
  /**
- * @api {null} /null editInsert
+ * @api {null} WB.editInsert(InsertType,R,C,N,Index) editInsert
  * @apiName editInsert
  * @apiGroup Function
- * @apiDescription 在当前行列或者指定行列插入新的一行或者一列: WB.editInsert(InsertType,R,C,N,Index)
- * - WB.editInsert ("F1ShiftRows",0,-1)  在第一行前面插入一行
- * - WB.editInsert ("F1ShiftCols",-1,2)   在第三列前面插入一列
+ * @apiDescription Insert a new row or column in the current row or specified row
  * @apiParam {String} InsertType  
- * - F1ShiftRows:(插入一行、所属行下移)
- * - F1ShiftCols(插入一列：所属列右移)
- * @apiParam {Int} R  在那一行前面插入,R>=0,插入列的时候R传 -1
- * @apiParam {Int} C  在那一列前面插入,C>=0,插入行的时候C传 -1
- * @apiParam {Int} [N=1]  N>=1行数或者列数
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * - F1ShiftRows:(Insert a line, move down the line)
+ * - F1ShiftCols(Insert a column, Move the column to the right)
+ * @apiParam {Int} R  Insert in front of which row, R>=0, R passes -1 when inserting column
+ * @apiParam {Int} C  Insert in front of which column, C>=0, C insert -1 when inserting rows
+ * @apiParam {Int} [N=1]  N>=1Number of rows or columns
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.editInsert ("F1ShiftRows",0,-1)  //Insert a line before the first line
+    WB.editInsert ("F1ShiftCols",-1,2)  //Insert a column before the third column
  */
 Workbook.prototype.editInsert = function(InsertType,R,C,N,Index){   
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4067,19 +4100,20 @@ Workbook.prototype.editInsert = function(InsertType,R,C,N,Index){
 }
 
  /**
- * @api {null} /null editDelete
+ * @api {null} WB.editDelete(nShiftType,R,C,N,Index) editDelete
  * @apiName editDelete
  * @apiGroup Function
- * @apiDescription 删除当前或者指定的行列: WB.editDelete(nShiftType,R,C,N,Index)
- * - WB.editDelete  ("F1ShiftRows",0,-1)   删除第一行
- * - WB.editDelete  ("F1ShiftCols",-1,1)   删除第二列
+ * @apiDescription Delete the current or specified row or column
  * @apiParam {String} nShiftType  
- * - F1ShiftRows:(删除行)R
- * - F1ShiftCols(删除列)
- * @apiParam {Int} R  删除哪一行,R>=0,删除列的时候R传 -1
- * @apiParam {Int} C  删除哪一列,C>=0,删除行的时候C传 -1
- * @apiParam {Int} [N=1]  N>=1行数或者列数
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * - F1ShiftRows:(Delete row)
+ * - F1ShiftCols(Delete column)
+ * @apiParam {Int} R  Which row to delete, R>=0, when the column is deleted, R passes -1
+ * @apiParam {Int} C  Which column to delete, C>=0, when deleting rows, C passes -1
+ * @apiParam {Int} [N=1]  N>=1Number of rows or columns
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.editDelete  ("F1ShiftRows",0,-1)   //Delete the first line
+    WB.editDelete  ("F1ShiftCols",-1,1)   //Delete the second column
  */
 Workbook.prototype.editDelete = function(nShiftType,R,C,N,Index){ 
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4360,16 +4394,18 @@ Workbook.prototype.editPaste = function(R,C,Index){
 }
 
  /**
- * @api {null} /null clearText
+ * @api {null} WB.deleteText(R1,C1,R2,C2,Index) clearText
  * @apiName clearText
  * @apiGroup Function
- * @apiDescription 清空范围单元格文本(若有text跟value;text value设置为空)WB.deleteText(R1,C1,R2,C2,Index) 锁定/不可编辑/checkbox的单元格不能删除;(没参数默认清空当前范围)
- * -  WB.clearText (1,0)  删除（1，0）单元格的文本
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Clear the text of a range of cells(if there is text and value; text and value is set to empty)
+ * - Cells that are locked/uneditable/checkbox cannot be deleted (no parameter defaults to clear the current range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.clearText (1,0)
  */
 Workbook.prototype.clearText = function(R1,C1,R2,C2,Index){                     
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4393,16 +4429,18 @@ Workbook.prototype.clearText = function(R1,C1,R2,C2,Index){
 };
 
  /**
- * @api {null} /null deleteText
+ * @api {null} WB.deleteText(R1,C1,R2,C2,Index) deleteText
  * @apiName deleteText
  * @apiGroup Function
- * @apiDescription 删除范围单元格内容(若有text跟value属性;会删除该两个属性与clearText有点点不同) WB.deleteText(R1,C1,R2,C2,Index) 锁定/不可编辑/checkbox的单元格不能删除;(没参数默认删除当前范围)
- * -  WB.deleteText (1,0)  删除（1,0）单元格的文本
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Delete the contents of a range of cells (if there are text and value attributes; these two attributes will be deleted, which is different from clearText)
+ * - Cells that are locked/uneditable/checkbox cannot be deleted; (the default range is deleted without parameters)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.deleteText (1,0) 
  */
 Workbook.prototype.deleteText = function(R1,C1,R2,C2,Index){                     
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4426,16 +4464,17 @@ Workbook.prototype.deleteText = function(R1,C1,R2,C2,Index){
 };
 
  /**
- * @api {null} /null deleteCell
+ * @api {null}  WB.deleteCell(R1,C1,R2,C2,Index) deleteCell
  * @apiName deleteCell
  * @apiGroup Function
- * @apiDescription 删除单元格记录的数据(包括文本 样式 没参数默认删除当前范围) : WB.deleteCell(R1,C1,R2,C2,Index)
- * -  WB.deleteCell (1,0)  删除（1，0）单元格
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Delete cell (including text and style, no parameter, delete current range by default)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.deleteCell (1,0)
  */
 Workbook.prototype.deleteCell = function(R1,C1,R2,C2,Index){           
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -4458,15 +4497,16 @@ Workbook.prototype.deleteCell = function(R1,C1,R2,C2,Index){
 };
 
 /**
- * @api {null} /null setRowHeight
+ * @api {null} WB.setRowHeight(height,R1,R2,Index) setRowHeight
  * @apiName setRowHeight
  * @apiGroup Function
- * @apiDescription 输入设置范围行高度(隐藏的行不能设置) : WB.setRowHeight(height,R1,R2,Index)
- * - WB.setRowHeight   (80,0,1)  第一二行设置行的高度为80
- * @apiParam {Numer} height  输入一个数值(height<=0,隐藏)
- * @apiParam {Int} R1  开始行(R1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=r1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the height of the lines within the range (hidden lines cannot be set)
+ * @apiParam {Numer} height  Value (height<=0, hidden)
+ * @apiParam {Int} R1  Start row(R1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=r1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+     WB.setRowHeight(80,0,1)  //The first and second lines set the height of the line to 80
  */
 Workbook.prototype.setRowHeight = function(height,R1,R2,Index){ 
     var index = (Index>=0)?Index:this.workbook.activeSheet;
@@ -4493,15 +4533,16 @@ Workbook.prototype.setRowHeight = function(height,R1,R2,Index){
 }
 
 /**
- * @api {null} /null setColWidth
+ * @api {null} WB.setColWidth(width,c1,c2,index) setColWidth
  * @apiName setColWidth
  * @apiGroup Function
- * @apiDescription 输入设置范围行高度(隐藏的列) : WB.setColWidth(width,c1,c2,index)
- * - WB.setColWidth   (80,0,0)  第一列设置列的宽度为80
- * @apiParam {Numer} width  输入一个数值(width<=0,隐藏)
- * @apiParam {Int} c1  开始列(c1>=0)
- * @apiParam {Int} [c2]  结束列(c1>=0,c2>=c1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the width of the columns in the range (hidden columns cannot be set)
+ * @apiParam {Numer} width  Value (width<=0, hidden)
+ * @apiParam {Int} c1  Start column(c1>=0)
+ * @apiParam {Int} [c2]  End column(c1>=0,c2>=c1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setColWidth(80,0,0)  //Set the width of the first column to 80
  */
 Workbook.prototype.setColWidth = function(width,C1,C2,Index){    //输入设置列宽度
     var index = (Index>=0)?Index:this.workbook.activeSheet;
@@ -4528,21 +4569,22 @@ Workbook.prototype.setColWidth = function(width,C1,C2,Index){    //输入设置�
 }
 
 /**
- * @api {null} /null setHAlignment
+ * @api {null} WB.setHAlignment(R1,C1,R2,C2,HAlign,Index) setHAlignment
  * @apiName setHAlignment
  * @apiGroup Function
- * @apiDescription 设置范围内单元格文本的水平对齐方式 WB.setHAlignment(R1,C1,R2,C2,HAlign,Index)
- * - WB.setHAlignment(0,0,0,0,2) 设置范围内单元格为左对齐
- * @apiParam {Int} r1  开始行(r1>=0)
- * @apiParam {Int} c1  开始列(c1>=0)
- * @apiParam {Int} r2  结束行(r2>=0 r2>=r1)
- * @apiParam {Int} c2  结束列(c2>=0,c2>=c1)
+ * @apiDescription Set the horizontal alignment of cell text in the range
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
  * @apiParam {Int} [hAlign=1]  
- * - 1: 常规（根据单元格数据类型对齐）
- * - 2：左对齐
- * - 3：水平对齐
- * - 4：右对齐
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * - 1: Regular (aligned according to cell data type)
+ * - 2：left
+ * - 3：center
+ * - 4：Right
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setHAlignment(0,0,0,0,2) //Set the cell text in the range to be left aligned
  */
 Workbook.prototype.setHAlignment = function(R1,C1,R2,C2,HAlign,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4558,20 +4600,21 @@ Workbook.prototype.setHAlignment = function(R1,C1,R2,C2,HAlign,Index){
 }
 
 /**
- * @api {null} /null setVAlignment
+ * @api {null} WB.setVAlignment(R1,C1,R2,C2,VAlign,Index) setVAlignment
  * @apiName setVAlignment
  * @apiGroup Function
- * @apiDescription 设置范围内单元格文本的垂直对齐方式 WB.setVAlignment(R1,C1,R2,C2,VAlign,Index)
- * - WB.setVAlignment(0,0,0,0,1) 设置范围内单元格为顶部对齐
- * @apiParam {Int} r1  开始行(r1>=0)
- * @apiParam {Int} c1  开始列(c1>=0)
- * @apiParam {Int} r2  结束行(r2>=0,r2>=r1)
- * @apiParam {Int} c2  结束列(c2>=0,c2>=c1)
+ * @apiDescription Set the vertical alignment of cell text in a range
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
  * @apiParam {Int} [vAlign=2]
- * - 1：顶部对齐
- * - 2：垂直居中对齐
- * - 3：底部对齐
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * - 1：top
+ * - 2：middle
+ * - 3：bottom
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setVAlignment(0,0,0,0,1)
  */
 Workbook.prototype.setVAlignment = function(R1,C1,R2,C2,VAlign,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4587,16 +4630,17 @@ Workbook.prototype.setVAlignment = function(R1,C1,R2,C2,VAlign,Index){
 }
 
 /**
- * @api {null} /null getAlignment
+ * @api {null} WB.getAlignment(R1,C1,R2,C2,Index) getAlignment
  * @apiName getAlignment
  * @apiGroup Function
- * @apiDescription 获取选中单元格的对齐方式(没参数默认获取当前选中范围的对齐方式) WB.getAlignment(R1,C1,R2,C2,Index)
- * - WB.getAlignment(0,0)   获取（0，0）单元格的对齐方式
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the alignment of the cells in the range (no parameter defaults to get the alignment of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getAlignment(0,0) 
  */
 Workbook.prototype.getAlignment = function(R1,C1,R2,C2,Index){    
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4626,17 +4670,18 @@ Workbook.prototype.getAlignment = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null fontColor
+ * @api {null} WB.fontColor(R1,C1,R2,C2,Color,Index) fontColor
  * @apiName fontColor
  * @apiGroup Function
- * @apiDescription 设置范围内单元格文本字体颜色 WB.fontColor(R1,C1,R2,C2,Color,Index)
- * - WB.fontColor(0,0,2,2,'pink')   设置范围内字体为粉色
- * @apiParam {Int} R1  开始行(r1>=0)
- * @apiParam {Int} C1  开始列(c1>=0)
- * @apiParam {Int} R2  结束行(r2>=0,r2>=r1)
- * @apiParam {Int} C2  结束列(c2>=0,c2>=c1)
+ * @apiDescription Set the font color of the cell text in the range
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
  * @apiParam {String} [color=#000] 
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.fontColor(0,0,2,2,'pink')   //Set the font to pink
  */
 Workbook.prototype.fontColor = function(R1,C1,R2,C2,Color,Index){     
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4652,16 +4697,17 @@ Workbook.prototype.fontColor = function(R1,C1,R2,C2,Color,Index){
 };
 
 /**
- * @api {null} /null getFontColor
+ * @api {null} WB.getFontColor(R1,C1,R2,C2,Index) getFontColor
  * @apiName getFontColor
  * @apiGroup Function
- * @apiDescription 获取单元格的字体颜色(没参数默认获取当前选中范围的字体颜色) WB.getFontColor(R1,C1,R2,C2,Index)
- * - WB.getFontColor(0,0)   获取（0，0）单元格的字体颜色
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the font color of the cells in the range (no parameter defaults to get the font color of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getFontColor(0,0) 
  */
 Workbook.prototype.getFontColor = function(R1,C1,R2,C2,Index){      
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4684,17 +4730,18 @@ Workbook.prototype.getFontColor = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null setFontItalic
+ * @api {null} WB.setFontItalic(R1,C1,R2,C2,BItalic,Index) setFontItalic
  * @apiName setFontItalic
  * @apiGroup Function
- * @apiDescription 设置范围内字体是否斜体(没参数默认设置当前选中范围的斜体)  WB.setFontItalic(R1,C1,R2,C2,BItalic,Index)
- * - WB.setFontItalic(1,1,1,1,true)  设置范围内字体为斜体
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Boolean}  [BItalic=true]  字是否斜体
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Whether the font of the cells in the set range is italic (no parameter defaults to set the italic of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Boolean}  [BItalic=true] 
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setFontItalic(1,1,1,1,true)
  */
 Workbook.prototype.setFontItalic = function(R1,C1,R2,C2,BItalic,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4724,17 +4771,18 @@ Workbook.prototype.setFontItalic = function(R1,C1,R2,C2,BItalic,Index){
 }
 
 /**
- * @api {null} /null setFontBold
+ * @api {null} WB.setFontBold(R1,C1,R2,C2,BBold,Index) setFontBold
  * @apiName setFontBold
  * @apiGroup Function
- * @apiDescription 设置范围内字体是否粗体(没参数默认设置当前选中范围的粗体)  WB.setFontBold(R1,C1,R2,C2,BBold,Index)
- * - WB.setFontBold(1,1,1,1,true)  设置范围内字体为粗体
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Boolean}  [BBold=true]  字是否粗体
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Whether the font of the cells in the setting range is bold (no parameter defaults to setting the bold of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Boolean}  [BBold=true]  
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setFontBold(1,1,1,1,true)  
  */
 Workbook.prototype.setFontBold = function(R1,C1,R2,C2,BBold,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4764,17 +4812,18 @@ Workbook.prototype.setFontBold = function(R1,C1,R2,C2,BBold,Index){
 }
 
 /**
- * @api {null} /null setFontLineH
+ * @api {null} WB.setFontLineH(R1,C1,R2,C2,NLineHeight,Index) setFontLineH
  * @apiName setFontLineH
  * @apiGroup Function
- * @apiDescription 设置范围内字体行高 WB.setFontLineH(R1,C1,R2,C2,NLineHeight,Index)
- * - WB.setFontLineH(1,1,1,1,20)  设置范围内字体行高为20px
- * @apiParam {Int} r1  开始行(r1>=0)
- * @apiParam {Int} c1  开始列(c1>=0)
- * @apiParam {Int} r2  结束行(r2>=0,r2>=r1)
- * @apiParam {Int} c2  结束列(c2>=0,c2>=c1)
- * @apiParam {Int}  NLineHeight  字体行高
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the font line height of the cells in the range
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int}  NLineHeight  
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setFontLineH(1,1,1,1,20)  //Set the font line height of the cells in the range to 20px
  */
 Workbook.prototype.setFontLineH = function(R1,C1,R2,C2,NLineHeight,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4813,17 +4862,18 @@ Workbook.prototype.setFontLineH = function(R1,C1,R2,C2,NLineHeight,Index){
 }
 
 /**
- * @api {null} /null setFontSize
+ * @api {null} WB.setFontSize(R1,C1,R2,C2,NSize,Index)   setFontSize
  * @apiName setFontSize
  * @apiGroup Function
- * @apiDescription 设置范围内字体大小 WB.setFontSize(R1,C1,R2,C2,NSize,Index)  
- * - WB.setFontSize(1,1,1,1,20)  设置范围内字体大小为20px
- * @apiParam {Int} R1  开始行(R1>=0)
- * @apiParam {Int} C1  开始列(C1>=0)
- * @apiParam {Int} R2  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} C2  结束列(C2>=0,C2>=C1)
- * @apiParam {Int}  NSize  字体大小
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the font size of the cells in the range
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int}  NSize  font size
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setFontSize(1,1,1,1,20)  //Set the cell font size in the range to 20px
  */
 Workbook.prototype.setFontSize = function(R1,C1,R2,C2,NSize,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4869,17 +4919,18 @@ Workbook.prototype.setFontSize = function(R1,C1,R2,C2,NSize,Index){
 }
 
 /**
- * @api {null} /null setFontName
+ * @api {null} WB.setFontName(R1,C1,R2,C2,PName,Index) setFontName
  * @apiName setFontName
  * @apiGroup Function
- * @apiDescription 设置范围内字体font-family WB.setFontName(R1,C1,R2,C2,PName,Index)
- * - WB.setFontName(0,0,2,2,'宋体')  设置范围内font-family
- * @apiParam {Int} r1  开始行(r1>=0)
- * @apiParam {Int} c1  开始列(c1>=0)
- * @apiParam {Int} r2  结束行(r2>=0,r2>=r1)
- * @apiParam {Int} c2  结束列(c2>=0,c2>=c1)
- * @apiParam {String}  PName  字体
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the font type of the cells in the range
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {String}  PName  
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setFontName(0,0,2,2,'宋体')  
  */
 Workbook.prototype.setFontName = function(R1,C1,R2,C2,PName,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4908,13 +4959,13 @@ Workbook.prototype.setFontName = function(R1,C1,R2,C2,PName,Index){
 }
 
 /**
- * @api {null} /null getFontList
+ * @api {null} WB.getFontList(r,c,Index) getFontList
  * @apiName getFontList
  * @apiGroup Function
- * @apiDescription 获取字体的每一项 WB.getFontList(r,c,Index)
- * @apiParam {Int} r  行(r>=0)
- * @apiParam {Int} c  列(c>=0)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get every item of the font
+ * @apiParam {Int} r  row(r>=0)
+ * @apiParam {Int} c  column(c>=0)
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.getFontList = function(i,j,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4940,16 +4991,17 @@ Workbook.prototype.getFontList = function(i,j,Index){
 }
 
 /**
- * @api {null} /null getFont
+ * @api {null} WB.getFont(R1,C1,R2,C2,Index) getFont
  * @apiName getFont
  * @apiGroup Function
- * @apiDescription 获取选中单元格的字体样式(没参数默认获取当前选中范围的字体) WB.getFont(R1,C1,R2,C2,Index)
- * - WB.getFont(0,0)  获取（0，0）单元格的字体样式
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the font of the selected cell (no parameter defaults to get the font of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getFont(0,0) 
  */
 Workbook.prototype.getFont = function(R1,C1,R2,C2,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -4972,16 +5024,17 @@ Workbook.prototype.getFont = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null clearAllBorder
+ * @api {null} WB.clearAllBorder(R1,C1,R2,C2,Index) clearAllBorder
  * @apiName clearAllBorder
  * @apiGroup Function
- * @apiDescription 清除范围边框(没参数默认清除当前范围) WB.clearAllBorder(R1,C1,R2,C2,Index)
- * - WB.clearAllBorder(2,2,5,3)  清除范围边框
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Clear all the borders of the cells in the range (without parameters, the current range is cleared by default)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.clearAllBorder(2,2,5,3) 
  */
 Workbook.prototype.clearAllBorder = function(R1,C1,R2,C2,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5008,21 +5061,22 @@ Workbook.prototype.clearAllBorder = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null setOutBorder
+ * @api {null} WB.setOutBorder(R1,C1,R2,C2,NOut,CrOut,Index) setOutBorder
  * @apiName setOutBorder
  * @apiGroup Function
- * @apiDescription 设置范围内外边框(没参数默认设置当前选中范围的外边框) WB.setOutBorder(R1,C1,R2,C2,NOut,CrOut,Index)
- * - WB.setOutBorder(1,1,5,5)  设置范围内外边框
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
+ * @apiDescription Set the outer border of the cells in the range (no parameter defaults to the outer border of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
  * @apiParam {Int} [NOut=1]  
  * - 1:	Thin Line
  * - 2: Medium Line
  * - 5: Thick Line
- * @apiParam {String} [CrOut='#000']   边框颜色，参数有效颜色值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiParam {String} [CrOut='#000']   Border color
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setOutBorder(1,1,5,5)  
  */
 Workbook.prototype.setOutBorder = function(R1,C1,R2,C2,NOut,CrOut,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5052,21 +5106,22 @@ Workbook.prototype.setOutBorder = function(R1,C1,R2,C2,NOut,CrOut,Index){
 
 
 /**
- * @api {null} /null setINnerBorder
+ * @api {null} WB.setINnerBorder(R1,C1,R2,C2,NInner,CrInner,Index) setINnerBorder
  * @apiName setINnerBorder
  * @apiGroup Function
- * @apiDescription 设置范围内内边框(没参数默认设置当前选中范围的内边框) WB.setINnerBorder(R1,C1,R2,C2,NInner,CrInner,Index)
- * - WB.setINnerBorder(1,1,5,5)  设置范围内内边框
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
+ * @apiDescription Set the inner border of the cell in the range (no parameter defaults to the inner border of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
  * @apiParam {Int} [NInner=1]  
  * - 1:	Thin Line
  * - 2: Medium Line
  * - 5: Thick Line
- * @apiParam {String} [CrInner='#000']   边框颜色，参数有效颜色值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiParam {String} [CrInner='#000']   Border color
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setINnerBorder(1,1,5,5)
  */
 Workbook.prototype.setINnerBorder = function(R1,C1,R2,C2,NInner,CrInner,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5096,21 +5151,22 @@ Workbook.prototype.setINnerBorder = function(R1,C1,R2,C2,NInner,CrInner,Index){
 
 
 /**
- * @api {null} /null setAllBorder
+ * @api {null} WB.setAllBorder(R1,C1,R2,C2,NAll,CrALL,Index) setAllBorder
  * @apiName setAllBorder
  * @apiGroup Function
- * @apiDescription 设置范围内全边框(没参数默认设置当前选中范围的全边框)  WB.setAllBorder(R1,C1,R2,C2,NAll,CrALL,Index)
- * - WB.setAllBorder(2,2,5,3)  设置范围内全边框
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
+ * @apiDescription Set the full border of the cells in the range (no parameter defaults to the full border of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
  * @apiParam {Int} [NAll=1]  
  * - 1:	Thin Line
  * - 2: Medium Line
  * - 5: Thick Line
- * @apiParam {String} [CrALL='#000']   边框颜色，参数有效颜色值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiParam {String} [CrALL='#000']   Border color
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setAllBorder(2,2,5,3) 
  */
 Workbook.prototype.setAllBorder = function(R1,C1,R2,C2,NAll,CrALL,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5130,21 +5186,22 @@ Workbook.prototype.setAllBorder = function(R1,C1,R2,C2,NAll,CrALL,Index){
 }
 
 /**
- * @api {null} /null setBottomBorder
+ * @api {null} WB.setBottomBorder(R1,C1,R2,C2,NBottom,CrBottom,Index) setBottomBorder
  * @apiName setBottomBorder
  * @apiGroup Function
- * @apiDescription 设置范围内下边框(没参数默认设置当前选中范围的下边框)  WB.setBottomBorder(R1,C1,R2,C2,NBottom,CrBottom,Index)
- * - WB.setBottomBorder(1,1,3,3)  设置范围内下边框
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
+ * @apiDescription Set the bottom border of the cells in the range (no parameters default to the bottom border of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
  * @apiParam {Int} [NBottom=1]  
  * - 1:	Thin Line
  * - 2: Medium Line
  * - 5: Thick Line
- * @apiParam {String} [CrBottom='#000']   下边框颜色，参数有效颜色值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiParam {String} [CrBottom='#000']    Border color
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setBottomBorder(1,1,3,3)  
  */
 Workbook.prototype.setBottomBorder = function(R1,C1,R2,C2,NBottom,CrBottom,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5161,21 +5218,22 @@ Workbook.prototype.setBottomBorder = function(R1,C1,R2,C2,NBottom,CrBottom,Index
 }
 
 /**
- * @api {null} /null setTopBorder
+ * @api {null}  WB.setTopBorder(R1,C1,R2,C2,NTop,CrTop,Index) setTopBorder
  * @apiName setTopBorder
  * @apiGroup Function
- * @apiDescription 设置范围内上边框(没参数默认设置当前选中范围的上边框) WB.setTopBorder(R1,C1,R2,C2,NTop,CrTop,Index)
- * - WB.setTopBorder(1,1,3,3)  设置范围内上边框
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
+ * @apiDescription Set the top border of the cells in the range (no parameter defaults to the top border of the currently selected range) 
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
  * @apiParam {Int} [NTop=1]  
  * - 1:	Thin Line
  * - 2: Medium Line
  * - 5: Thick Line
- * @apiParam {String} [CrTop='#000']   上边框颜色，参数有效颜色值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiParam {String} [CrTop='#000']   Border color
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setTopBorder(1,1,3,3)
  */
 Workbook.prototype.setTopBorder = function(R1,C1,R2,C2,NTop,CrTop,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5192,21 +5250,22 @@ Workbook.prototype.setTopBorder = function(R1,C1,R2,C2,NTop,CrTop,Index){
 }
 
 /**
- * @api {null} /null setRightBorder
+ * @api {null} WB.setRightBorder(R1,C1,R2,C2,NRight,CrRight,Index) setRightBorder
  * @apiName setRightBorder
  * @apiGroup Function
- * @apiDescription 设置范围内右边框(没参数默认设置当前选中范围的右边框) WB.setRightBorder(R1,C1,R2,C2,NRight,CrRight,Index)
- * - WB.setRightBorder(1,1,3,3)  设置范围内右边框
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
+ * @apiDescription Set the right border of the cells in the range (no parameter defaults to the right border of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
  * @apiParam {Int} [NRight=1]  
  * - 1:	Thin Line
  * - 2: Medium Line
  * - 5: Thick Line
- * @apiParam {String} [CrRight='#000']   右边框颜色，参数有效颜色值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiParam {String} [CrRight='#000']   Border color
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setRightBorder(1,1,3,3)
  */
 Workbook.prototype.setRightBorder = function(R1,C1,R2,C2,NRight,CrRight,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5223,21 +5282,22 @@ Workbook.prototype.setRightBorder = function(R1,C1,R2,C2,NRight,CrRight,Index){
 }
 
 /**
- * @api {null} /null setLeftBorder
+ * @api {null} WB.setLeftBorder(R1,C1,R2,C2,NLeft,CrLeft,Index) setLeftBorder
  * @apiName setLeftBorder
  * @apiGroup Function
- * @apiDescription 设置范围内左边框(没参数默认设置当前选中范围的左边框) WB.setLeftBorder(R1,C1,R2,C2,NLeft,CrLeft,Index)
- * -  WB.setLeftBorder(1,1,3,3)  设置范围内左边框
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
+ * @apiDescription Set the left border of the cells in the range (no parameter defaults to the left border of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
  * @apiParam {Int} [nLeft=1]  
- * - 1:	Thin Line（细）
- * - 2: Medium Line（中）
- * - 5: Thick Line(粗)
- * @apiParam {String} [crLeft='#000']   左边框颜色，参数有效颜色值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * - 1:	Thin Line
+ * - 2: Medium Line
+ * - 5: Thick Line
+ * @apiParam {String} [crLeft='#000']   Border color
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setLeftBorder(1,1,3,3) 
  */
 Workbook.prototype.setLeftBorder = function(R1,C1,R2,C2,NLeft,CrLeft,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5254,16 +5314,17 @@ Workbook.prototype.setLeftBorder = function(R1,C1,R2,C2,NLeft,CrLeft,Index){
 }
 
 /**
- * @api {null} /null getBorder
+ * @api {null} WB.getBorder(R1,C1,R2,C2,Index) getBorder
  * @apiName getBorder
  * @apiGroup Function
- * @apiDescription 获取选中单元格边框样式(没参数默认获取当前选中范围的边框) WB.getBorder(R1,C1,R2,C2,Index)
- * - WB.getBorder(0,0)  获取（0，0）单元格的边框样式
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the border of the cell in the range (without parameters, the border of the currently selected range is obtained by default)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getBorder(0,0)
  */
 Workbook.prototype.getBorder = function(R1,C1,R2,C2,Index){   //获取单元格边框
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5301,14 +5362,15 @@ Workbook.prototype.getBorder = function(R1,C1,R2,C2,Index){   //获取单元格�
 }
 
 /**
- * @api {null} /null col
+ * @api {null} WB.col(column,index) col
  * @apiName col
  * @apiGroup Function
- * @apiDescription 设置或者返回当前工作表的活动列 WB.col(column,index)
- * - WB.col()   获取当前活动列
- * - WB.col(2) 	设置当前活动列为第三列
- * @apiParam {Int} [column]  列(column>=0)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set or return the active column of the current worksheet
+ * @apiParam {Int} [column]  column(column>=0)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.col()   //Get current active column
+    WB.col(2)  //Set the current active column to the third column
  */
 Workbook.prototype.col = function(column,Index){  
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),c = parseInt(column);
@@ -5334,14 +5396,15 @@ Workbook.prototype.col = function(column,Index){
 }
 
 /**
- * @api {null} /null row
+ * @api {null} WB.row(row,index) row
  * @apiName row
  * @apiGroup Function
- * @apiDescription 设置或者返回当前工作表的活动行 WB.row(row,index)
- * - WB.row()   获取当前活动行
- * - WB.row(2) 	设置当前活动列为第三行
- * @apiParam {Int} [row]  行(row>=0)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set or return the active row of the current worksheet
+ * @apiParam {Int} [row]  row(row>=0)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.row()   //Get current active line
+    WB.row(2)  //Set the current active column to the third row
  */
 Workbook.prototype.row = function(row,Index){   
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),r = parseInt(row);
@@ -5367,13 +5430,14 @@ Workbook.prototype.row = function(row,Index){
 }
 
 /**
- * @api {null} /null setActiveEditCell
+ * @api {null} WB.setActiveEditCell(R,C) setActiveEditCell
  * @apiName setActiveEditCell
  * @apiGroup Function
- * @apiDescription 打开指定编辑单元格 WB.setActiveEditCell(R,C)
- * - WB.setActiveEditCell(1,1)     激活(1 1)单元格
- * @apiParam {Int} R  行(R>=0)
- * @apiParam {Int} C  列(C>=0)
+ * @apiDescription Open the specified edit cell
+ * @apiParam {Int} R  row(R>=0)
+ * @apiParam {Int} C  column(C>=0)
+ * @apiExample {javascript} demo:
+    WB.setActiveEditCell(1,1)     
  */
 Workbook.prototype.setActiveEditCell = function(R,C){
     var r = parseInt(R),c = parseInt(C);
@@ -5387,17 +5451,18 @@ Workbook.prototype.setActiveEditCell = function(R,C){
 }
 
 /**
- * @api {null} /null fontStrikeout
+ * @api {null} WB.fontStrikeout(R1,C1,R2,C2,bool,Index) fontStrikeout
  * @apiName fontStrikeout
  * @apiGroup Function
- * @apiDescription 区域是否设置删除线(没参数默认设置当前选中范围的删除线) WB.fontStrikeout(R1,C1,R2,C2,bool,Index)
- * - WB.fontStrikeout(0,0,2,2,true)     设置区域内文本有删划线
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Boolean} [boolean=true]   是否设置删除线
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Strikethrough of the cells in the set range (no parameter defaults to the strikethrough of the currently selected cell)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Boolean} [boolean=true]  
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.fontStrikeout(0,0,2,2,true)
  */
 Workbook.prototype.fontStrikeout = function(R1,C1,R2,C2,bool,Index){   
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5414,16 +5479,17 @@ Workbook.prototype.fontStrikeout = function(R1,C1,R2,C2,bool,Index){
 }
 
 /**
- * @api {null} /null getFontStrikeout
+ * @api {null} WB.getFontStrikeout(R1,C1,R2,C2,Index) getFontStrikeout
  * @apiName getFontStrikeout
  * @apiGroup Function
- * @apiDescription 获取单元格的是否有删除线(没参数默认获取当前选中范围的删除线状态) WB.getFontStrikeout(R1,C1,R2,C2,Index)
- * - WB.getFontStrikeout(0,0)   获取（0，0）单元格的删除线状态
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Whether to get the strikethrough of the cells in the range (no parameter defaults to get the strikethrough status of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getFontStrikeout(0,0)
  */
 Workbook.prototype.getFontStrikeout = function(R1,C1,R2,C2,Index){    
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5448,17 +5514,18 @@ Workbook.prototype.getFontStrikeout = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null fontUnderline
+ * @api {null} WB.fontUnderline(R1,C1,R2,C2,bool,Index) fontUnderline
  * @apiName fontUnderline
  * @apiGroup Function
- * @apiDescription 区域是否设置下划线(没参数默认设置当前选中范围的下划线) WB.fontUnderline(R1,C1,R2,C2,bool,Index)
- * - WB.fontUnderline(0,0,2,2)     设置区域内文本有下划线
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Boolean} [boolean=true]   是否设置下划线
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Underline of cells in the setting range (no parameter defaults to underlining of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Boolean} [boolean=true]   
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.fontUnderline(0,0,2,2) 
  */
 Workbook.prototype.fontUnderline = function(R1,C1,R2,C2,bool,Index){   
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5475,16 +5542,17 @@ Workbook.prototype.fontUnderline = function(R1,C1,R2,C2,bool,Index){
 }
 
 /**
- * @api {null} /null getFontUnderline
+ * @api {null} WB.getFontUnderline(R1,C1,R2,C2,Index) getFontUnderline
  * @apiName getFontUnderline
  * @apiGroup Function
- * @apiDescription 获取单元格的是否有下划线(没参数默认获取当前选中范围的下划线状态) WB.getFontUnderline(R1,C1,R2,C2,Index)
- * - WB.getFontUnderline(0,0)   获取（0，0）单元格的下划线状态
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get whether the cells in the range are underlined (no parameter defaults to the underline state of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getFontUnderline(0,0)
  */
 Workbook.prototype.getFontUnderline = function(R1,C1,R2,C2,Index){    
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5509,16 +5577,17 @@ Workbook.prototype.getFontUnderline = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null getValue
+ * @api {null} WB.getValue(R1,C1,R2,C2,Index) getValue
  * @apiName getValue
  * @apiGroup Function
- * @apiDescription 获取单元格value值(没参数默认获取当前选中范围单元格的value) WB.getValue(R1,C1,R2,C2,Index)
- * - WB.getValue(0,0)   获取（0，0）单元格的value
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the value of the cell (no parameter defaults to get the value of the currently selected cell)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getValue(0,0)
  */
 Workbook.prototype.getValue = function(R1,C1,R2,C2,Index){   
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5541,16 +5610,17 @@ Workbook.prototype.getValue = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null getText
+ * @api {null} WB.getText(R1,C1,R2,C2,Index) getText
  * @apiName getText
  * @apiGroup Function
- * @apiDescription 获取激活单元格文本,没有text则获取value(没参数默认获取当前选中范围的值) WB.getText(R1,C1,R2,C2,Index)
- * - WB.getText(0,0)   获取（0，0）单元格的文本
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the value of the text attribute of the active cell, if there is no text attribute, get the value of the value attribute(no parameter defaults to the value of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getText(0,0) 
  */
 Workbook.prototype.getText = function(R1,C1,R2,C2,Index){   //获取激活单元格文本
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5585,13 +5655,14 @@ Workbook.prototype.getText = function(R1,C1,R2,C2,Index){   //获取激活单元
 }
 
 /**
- * @api {null} /null hdrHeight
+ * @api {null} WB.hdrHeight(height,index) hdrHeight
  * @apiName hdrHeight
  * @apiGroup Function
- * @apiDescription 设置列标题栏高度 WB.hdrHeight(height,index)
- * - WB.hdrHeight(40)  设置列头高度为40px
- * @apiParam {Number} height  如果height<=0  会隐藏列头并且高度为0
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the height of the column header
+ * @apiParam {Number} height  height<=0  Will hide the column header and the height is 0
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.hdrHeight(40)  //Set the height of the column header to 40px
  */
 Workbook.prototype.hdrHeight = function(height,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet;
@@ -5606,13 +5677,14 @@ Workbook.prototype.hdrHeight = function(height,Index){
 }
 
 /**
- * @api {null} /null hdrWidth
+ * @api {null} WB.hdrWidth(width,index) hdrWidth
  * @apiName hdrWidth
  * @apiGroup Function
- * @apiDescription 设置行标题栏宽度 WB.hdrWidth(width,index)
- * - WB.hdrWidth(40)  设置行头宽度为40px
- * @apiParam {Number} width  width<=0  会隐藏行头并且宽度为0
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the width of the row header
+ * @apiParam {Number} width  width<=0  Will hide the row header and the width is 0
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.hdrWidth(40)  //Set the width of the row header to 40px
  */
 Workbook.prototype.hdrWidth = function(width,Index){   
     var index = (Index>=0)?Index:this.workbook.activeSheet;
@@ -5627,13 +5699,14 @@ Workbook.prototype.hdrWidth = function(width,Index){
 }
 
 /**
- * @api {null} /null showColHeading
+ * @api {null} WB.showColHeading(boolean,index) showColHeading
  * @apiName showColHeading
  * @apiGroup Function
- * @apiDescription 是否显示列标题 WB.showColHeading(boolean,index)
- * - WB.showColHeading(false) 不显示列标题
- * @apiParam {Boolean} [boolean=true] 是否显示列标题
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Whether to display column headers
+ * @apiParam {Boolean} boolean
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.showColHeading(false) 
  */
 Workbook.prototype.showColHeading = function(bool,Index){    
     var index = (Index>=0)?Index:this.workbook.activeSheet;
@@ -5643,13 +5716,14 @@ Workbook.prototype.showColHeading = function(bool,Index){
 }
 
 /**
- * @api {null} /null showRowHeading
+ * @api {null} WB.showRowHeading(boolean,index) showRowHeading
  * @apiName showRowHeading
  * @apiGroup Function
- * @apiDescription 是否显示行标题 WB.showRowHeading(boolean,index)
- * - WB.showRowHeading(false) 不显示行标题
- * @apiParam {Boolean} [boolean=true] 是否显示行标题
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Whether to display row headers
+ * @apiParam {Boolean} boolean
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.showRowHeading(false)
  */
 Workbook.prototype.showRowHeading  = function(bool,Index){   
     var index = (Index>=0)?Index:this.workbook.activeSheet;
@@ -5662,10 +5736,10 @@ Workbook.prototype.showRowHeading  = function(bool,Index){
  * @api {null} /null setDefaultFontName
  * @apiName setDefaultFontName
  * @apiGroup Function
- * @apiDescription 设置工作簿的默认字体  
- * - WB.setDefaultFontName('楷体') 
- * @apiParam {string}  fontname 字体名称 
-
+ * @apiDescription Set the default font of the workbook  
+ * @apiParam {string}  fontname Font name 
+ * @apiExample {javascript} demo:
+    WB.setDefaultFontName('楷体') 
  */
 Workbook.prototype.setDefaultFontName = function(fontname){
     this.workbook.defaultFontName = fontname;
@@ -5676,9 +5750,10 @@ Workbook.prototype.setDefaultFontName = function(fontname){
  * @api {null} /null setDefaultFontSize
  * @apiName setDefaultFontSize
  * @apiGroup Function
- * @apiDescription 设置工作簿的默认字体大小 
- * - WB.setDefaultFontSize(16) 
- * @apiParam {int}  fontsize 字体大小
+ * @apiDescription Set the default font size of the workbook 
+ * @apiParam {int}  fontsize font size
+ * @apiExample {javascript} demo:
+    WB.setDefaultFontSize(16)
  */
 Workbook.prototype.setDefaultFontSize = function(fontsize){
     this.workbook.defaultFontSize = fontsize;
@@ -5689,10 +5764,10 @@ Workbook.prototype.setDefaultFontSize = function(fontsize){
  * @api {null} /null setDefaultLineHeight
  * @apiName setDefaultLineHeight
  * @apiGroup Function
- * @apiDescription 设置工作簿的默认字体行高  
- * - WB.setDefaultLineHeight(20) 
- * @apiParam {int}  lineheight 字体行高
-
+ * @apiDescription Set the default font line height of the workbook  
+ * @apiParam {int}  lineheight Font line height
+ * @apiExample {javascript} demo:
+    WB.setDefaultLineHeight(20) 
  */
 Workbook.prototype.setDefaultLineHeight = function(lineheight){
     this.workbook.defaultLineHeight = lineheight;
@@ -5700,15 +5775,16 @@ Workbook.prototype.setDefaultLineHeight = function(lineheight){
 }
 
 /**
- * @api {null} /null setRowHidden
+ * @api {null} WB.setRowHidden(R1,R2,BHidden,Index) setRowHidden
  * @apiName setRowHidden
  * @apiGroup Function
- * @apiDescription 设置行隐藏，如果鼠标拖拽行高为<=0也会隐藏 WB.setRowHidden(R1,R2,BHidden,Index)
- * - WB.setRowHidden(1,2,true)  隐藏第二第三行
- * @apiParam {Int} R1  开始行(r1>=0)
- * @apiParam {Int} R2  结束行(r2>=0,r2>=r1)
- * @apiParam {Boolean} BHidden 是否隐藏
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the line to hide, if the mouse drags the line height is less than 0 will also hide
+ * @apiParam {Int} R1  Start row(R1>=0)
+ * @apiParam {Int} R2  End row(R2>=0,R2>=R1)
+ * @apiParam {Boolean} BHidden 
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setRowHidden(1,2,true)  //Hide the second and third lines
  */
 Workbook.prototype.setRowHidden = function(R1,R2,BHidden,Index){    
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5736,15 +5812,16 @@ Workbook.prototype.setRowHidden = function(R1,R2,BHidden,Index){
 }
 
 /**
- * @api {null} /null setColHidden
+ * @api {null} WB.setColHidden(C1,C2,BHidden,Index) setColHidden
  * @apiName setColHidden
  * @apiGroup Function
- * @apiDescription 设置列隐藏，如果鼠标拖拽列宽为<=0也会隐藏 WB.setColHidden(C1,C2,BHidden,Index)
- * - WB.setColHidden(1,2,true)  隐藏第二第三列
- * @apiParam {Int} C1  开始列(C1>=0)
- * @apiParam {Int} C2  结束列(C2>=0,C2>=C1)
- * @apiParam {Boolean} BHidden 是否隐藏
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the column to hide, if the mouse drags the column width is less than 0 will also hide
+ * @apiParam {Int} C1  Start column(C1>=0)
+ * @apiParam {Int} C2  End column(C2>=0,C2>=C1)
+ * @apiParam {Boolean} BHidden 
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setColHidden(1,2,true)  //Hide the second and third columns
  */
 Workbook.prototype.setColHidden = function(C1,C2,BHidden,Index){    //设置列隐藏
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5773,17 +5850,18 @@ Workbook.prototype.setColHidden = function(C1,C2,BHidden,Index){    //设置列�
 }
 
 /**
- * @api {null} /null mergeCells
+ * @api {null} WB.mergeCells(R1,C1,R2,C2,Index) mergeCells
  * @apiName mergeCells
  * @apiGroup Function
- * @apiDescription 合并单元格(没参数默认设置当前选中范围的合并) WB.mergeCells(R1,C1,R2,C2,Index)
- * - WB.mergeCells(2,1,3,2)            单元格(2,1)(2,2)(3,1)(3,2)被合并
- * - 合并会改变现有的合并数据，合并之后也只会保留头一个单元格的内容
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Merge cells (no parameter defaults to the merge of the currently selected range)
+ * - The merge will change the existing merged data, and only the content of the first cell will be retained after the merge
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.mergeCells(2,1,3,2)   
  */
 Workbook.prototype.mergeCells = function(R1,C1,R2,C2,Index){     
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -5814,16 +5892,17 @@ Workbook.prototype.mergeCells = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null removeMergeCells
+ * @api {null} WB.removeMergeCells(R1,C1,R2,C2,Index) removeMergeCells
  * @apiName removeMergeCells
  * @apiGroup Function
- * @apiDescription 取消合并单元格(没参数默认取消当前范围的合并) WB.removeMergeCells(R1,C1,R2,C2,Index)
- * - WB.removeMergeCells(2,1,3,2)           取消合并
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Cancel merged cells (no parameters default to cancel the merge of the current range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.removeMergeCells(2,1,3,2)
  */
 Workbook.prototype.removeMergeCells = function(R1,C1,R2,C2,Index){    //取消合并单元格
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -5840,18 +5919,21 @@ Workbook.prototype.removeMergeCells = function(R1,C1,R2,C2,Index){    //取消�
 }
 
 /**
- * @api {null} /null fixedRowAndCol
+ * @api {null}  WB.fixedRowAndCol(R,C,startR,startC,Index） fixedRowAndCol
  * @apiName fixedRowAndCol
  * @apiGroup Function
- * @apiDescription 冻结拆分窗格 WB.fixedRowAndCol（R,C,startR,startC,Index）
- * - WB.fixedRowAndCol(1,1)   在单元格（1,1）处冻结拆分单元格 呈十字
- * - 注：可视区域第一行为startRow   第一列为startCol
- * - fixedRows(冻结了多少行,哪一行开始冻结);fixedRow(起始行;fixedCols(冻结了多少列,哪一列开始冻结);fixedRow(起始列）;
- * @apiParam {Int} R  在哪一行开始冻结（冻结线在该行下面）(R>=0)
- * @apiParam {Int} C  在哪一列开始冻结(C>=0)
- * @apiParam {Int} [startR=0]  开始行(startR>=0,注意当R>0时startR<R)
- * @apiParam {Int} [startC=0]  开始列(startC>=0,注意当C>0时startC<C)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Freeze split pane
+ * - fixedRows (How many rows are frozen and which rows start to freeze)
+ * - fixedRow (What is the top row of the view after freezing)
+ * - fixedCols (How many columns are frozen and which one starts to freeze)
+ * - fixedRow (What is the leftmost column of the view after freezing;
+ * @apiParam {Int} R In which line to start freezing (the freezing line is below this line) (R>=0)
+ * @apiParam {Int} C In which column to start freezing (C>=0)
+ * @apiParam {Int} [startR=0]  Start row(startR>=0,startR<R)
+ * @apiParam {Int} [startC=0]  Start column(startC>=0,startC<C)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.fixedRowAndCol(1,1)   //Freeze the split cell at the position of cell (1,1)
  */
 Workbook.prototype.fixedRowAndCol = function(R,C,startR,startC,Index){   //冻结拆分窗格
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -5886,14 +5968,15 @@ Workbook.prototype.fixedRowAndCol = function(R,C,startR,startC,Index){   //冻�
 }
 
 /**
- * @api {null} /null fixedFirstRow
+ * @api {null} WB.fixedFirstRow(startR,Index) fixedFirstRow
  * @apiName fixedFirstRow
  * @apiGroup Function
- * @apiDescription 冻结活动表的可视区域的首行 WB.fixedFirstRow(startR,Index)
- * - WB.fixedFirstRow()  冻结活动表的可视区域的首行
- * - 注：调用该函数，现有的列冻结会移除
- * @apiParam {Int} [startR=0]  设定可视视图的开始行是哪一行
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Freeze the first row of the visible area of the active table
+ * - Call this function and the existing frozen column will be removed
+ * @apiParam {Int} [startR=0]  Set which line is the start row of the visual view
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.fixedFirstRow()  
  */
 Workbook.prototype.fixedFirstRow = function(startR,Index){    
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -5911,14 +5994,15 @@ Workbook.prototype.fixedFirstRow = function(startR,Index){
 }
 
 /**
- * @api {null} /null fixedFirstCol
+ * @api {null} WB.fixedFirstCol(startC,Index) fixedFirstCol
  * @apiName fixedFirstCol
  * @apiGroup Function
- * @apiDescription 冻结活动表的可视区域的首列 WB.fixedFirstCol(startC,Index)
- * - WB.fixedFirstCol()  冻结活动表的可视区域的首列
- * - 注：调用该函数，现有的行冻结会移除
- * @apiParam {Int} [startC=0]  设定可视视图的开始列是哪一列
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Freeze the first column of the visible area of the active table
+ * - Call this function and the existing frozen rows will be removed
+ * @apiParam {Int} [startC=0]  Set which column is the starting column of the visual view
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.fixedFirstCol() 
  */
 Workbook.prototype.fixedFirstCol = function(startC,Index){  
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -5936,12 +6020,13 @@ Workbook.prototype.fixedFirstCol = function(startC,Index){
 }
 
 /**
- * @api {null} /null removeFixed
+ * @api {null} WB.removeFixed(Index) removeFixed
  * @apiName removeFixed
  * @apiGroup Function
- * @apiDescription 取消冻结窗格 WB.removeFixed(Index)
- * - WB.removeFixed ()   移除所有冻结
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Unfreeze pane 
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.removeFixed ()  // Remove all freezes
  */
 Workbook.prototype.removeFixed = function(Index){       
     var index = (Index>=0)?Index:this.workbook.activeSheet;
@@ -6007,13 +6092,14 @@ Workbook.prototype.getFixedWH = function(Index){
 }
 
 /**
- * @api {null} /null showFixedLine
+ * @api {null} WB.showFixedLine(boolean,index) showFixedLine
  * @apiName showFixedLine
  * @apiGroup Function
- * @apiDescription 是否显示当前表的冻结线 WB.showFixedLine(boolean,index)
- * - WB.showFixedLine(true)   显示冻结线
- * @apiParam {Boolean}  [boolean=false]  是否显示
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Whether to display the frozen line of the current table
+ * @apiParam {Boolean}  boolean
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.showFixedLine(true)   //show
  */
 Workbook.prototype.showFixedLine = function(bool,Index){        
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index)
@@ -6021,16 +6107,17 @@ Workbook.prototype.showFixedLine = function(bool,Index){
 }
 
 /**
- * @api {null} /null setHeaderName
+ * @api {null}  WB.setHeaderName(R,C,headerName,Index) setHeaderName
  * @apiName setHeaderName
  * @apiGroup Function
- * @apiDescription 改变列头行头的名称 WB.setHeaderName(R,C,headerName,Index)
- * - WB.setHeaderName(1,-1,'行头名')     第二行行头为 ‘行头名’
- * - WB.setHeaderName(-1,1,'列头名')     第二列列头为 ‘列头名’
- * @apiParam {Int} R   改变行头,改变列头时R传-1 r>=0
- * @apiParam {Int} C   改变列头,改变行头时C传-1 c>=0
- * @apiParam {String} setHeaderName  名称
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Change the names of column headers and row headers
+ * @apiParam {Int} R   Change the row header, change the column header when R passes -1(r>=0)
+ * @apiParam {Int} C   Change the column header, change the row header when C passes -1 (c>=0)
+ * @apiParam {String} setHeaderName  
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setHeaderName(1,-1,'name')
+    WB.setHeaderName(-1,1,'name')  
  */
 Workbook.prototype.setHeaderName = function(R,C,headerName,Index){    
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -6044,15 +6131,16 @@ Workbook.prototype.setHeaderName = function(R,C,headerName,Index){
 }
 
 /**
- * @api {null} /null deleteHeaderNames
+ * @api {null} WB.deleteHeaderNames(R,C,Index) deleteHeaderNames
  * @apiName deleteHeaderNames
  * @apiGroup Function
- * @apiDescription 删除列行头name   WB.deleteHeaderNames(R,C,Index)
- * - WB.deleteHeaderNames(1,-1)  删除第二行行头name
- * - WB.deleteHeaderNames(-1,1)  删除第二列列头name
- * @apiParam {Int} R   删除行头C传-1(同时删除列头行头name R>=0 C>=0)，R>=0
- * @apiParam {Int} C   删除列头R传-1，C>=0
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Delete the name of the column header and row header
+ * @apiParam {Int} R   When deleting the row header, C passes -1 (remove both the column header and the row header name R>=0 C>=0) R>=0
+ * @apiParam {Int} C   R pass -1 (C>=0) when deleting column header
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.deleteHeaderNames(1,-1)
+    WB.deleteHeaderNames(-1,1) 
  */
 Workbook.prototype.deleteHeaderNames = function(R,C,Index){         //删除列行头name  
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -6070,12 +6158,13 @@ Workbook.prototype.deleteHeaderNames = function(R,C,Index){         //删除列�
 }
 
 /**
- * @api {null} /null getStartAndEnd
+ * @api {null} WB.getStartAndEnd(index) getStartAndEnd
  * @apiName getStartAndEnd
  * @apiGroup Function
- * @apiDescription 获取视图的开始行、开始列、结束行、结束列: WB.getStartAndEnd(index)
- * - WB.getStartAndEnd() 开始结束的行列信息
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the start row、start column、end row and end column of the view
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getStartAndEnd()
  */
 Workbook.prototype.getStartAndEnd = function(Index){       
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -6151,13 +6240,14 @@ Workbook.prototype.getStartAndEnd = function(Index){
 }
 
 /**
- * @api {null} /null setScrollPosition
+ * @api {null} WB.setScrollPosition(x,y,Index) setScrollPosition
  * @apiName setScrollPosition
  * @apiGroup Function
- * @apiDescription  设置滚动条的位置注意：有冻结的情况 这个函数要放在冻结函数之后 WB.setScrollPosition(x,y,Index)
- * @apiParam {Number} x  水平数值
- * @apiParam {Number} y  垂直数值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription  Set the position of the scroll bar
+ * - In case of freezing, this function should be placed after the freezing function
+ * @apiParam {Number} x  
+ * @apiParam {Number} y  
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.setScrollPosition = function(x,y,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -6191,17 +6281,18 @@ Workbook.prototype.setScrollPosition = function(x,y,Index){
 
 
 /**
- * @api {null} /null setFillColor
+ * @api {null}  WB.setFillColor(color,R1,C1,R2,C2,Index) setFillColor
  * @apiName setFillColor
  * @apiGroup Function
- * @apiDescription 设置范围内单元格填充颜色(没rc参数默认设置当前选中范围的填充色) WB.setFillColor(color,R1,C1,R2,C2,Index)
- * - WB.setFillColor('pink',0,0,2,2)   设置范围内单元格的填充色为粉色
- * @apiParam {String} color  有效颜色值
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the fill color of the cells in the range (no parameter defaults to the fill color of the currently selected range)
+ * @apiParam {String} color  
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setFillColor('pink',0,0,2,2)   //Set the fill color of the cells in the range to pink
  */
 Workbook.prototype.setFillColor = function(color,R1,C1,R2,C2,Index){      
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -6220,16 +6311,17 @@ Workbook.prototype.setFillColor = function(color,R1,C1,R2,C2,Index){
 };
 
 /**
- * @api {null} /null getFillColor
+ * @api {null}  WB.getFillColor(R1,C1,R2,C2,Index) getFillColor
  * @apiName getFillColor
  * @apiGroup Function
- * @apiDescription 获取单元格的填充色(没参数默认获取当前选中范围的填充色) WB.getFillColor(R1,C1,R2,C2,Index)
- * - WB.getFillColor(0,0)   获取（0，0）单元格的填充色
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the fill color of the cells in the range (no parameter defaults to the fill color of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getFillColor(0,0)  
  */
 Workbook.prototype.getFillColor = function(R1,C1,R2,C2,Index){       
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -6253,19 +6345,20 @@ Workbook.prototype.getFillColor = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null setRowColor
+ * @api {null} WB.setRowColor(color,oddEven,start,Index) setRowColor
  * @apiName setRowColor
  * @apiGroup Function
- * @apiDescription 设置行的颜色（隔行变色,其实就相当于给单元格加填充)  WB.setRowColor(color,oddEven,start,Index)
- * - WB.setRowColor('rgb(255,255,224)',0)    开启隔行变色
- * @apiParam {String} color=rgb(255,255,224)  有效颜色值
+ * @apiDescription Set row color（Interlace color change, equivalent to setting the fill color of the cell) 
+ * @apiParam {String} color=rgb(255,255,224)  
  * @apiParam {Number} [oddEven=0]  
- * - 0 : 偶数行
- * - 1 ：奇数行
- * @apiParam {Number} [start=0] 从哪里开始;
- * - 0 ：从表格顶部开始
- * - 1 ：从冻结行以下部分开始
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * - 0 : Even rows
+ * - 1 ：Odd rows
+ * @apiParam {Number} [start=0] From which row to start;
+ * - 0 ：Start at the top of the table
+ * - 1 ：Start from the following part of the frozen row
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setRowColor('rgb(255,255,224)',0)
  */
 Workbook.prototype.setRowColor = function(color,oddEven,start,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -6295,11 +6388,11 @@ Workbook.prototype.setRowColor = function(color,oddEven,start,Index){
 }
 
 /**
- * @api {null} /null removeRowColor
+ * @api {null} WB.removeRowColor(Index) removeRowColor
  * @apiName removeRowColor
  * @apiGroup Function
- * @apiDescription 取消隔行变色  WB.removeRowColor(Index)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Cancel interlace discoloration
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.removeRowColor = function(Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -6320,16 +6413,17 @@ Workbook.prototype.removeRowColor = function(Index){
 }
 
 /**
- * @api {null} /null deleteFillColor
+ * @api {null} WB.deleteFillColor(R1,C1,R2,C2,Index) deleteFillColor
  * @apiName deleteFillColor
  * @apiGroup Function
- * @apiDescription 删除范围内单元格填充颜色(没参数默认清除范围内的填充色) WB.deleteFillColor(R1,C1,R2,C2,Index)
- * - WB.deleteFillColor(0,0,2,2)      除范围内单元格的填充色
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Delete the fill color of the cells in the range (no parameter clears the fill color in the range by default)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.deleteFillColor(0,0,2,2)   
  */
 Workbook.prototype.deleteFillColor = function(R1,C1,R2,C2,Index){           
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index)
@@ -6437,9 +6531,17 @@ Workbook.prototype.setCanvasInput = function (width, height, top, left, r, c) {
      * @api {null} /null onshoweditor
      * @apiName onshoweditor
      * @apiGroup Event
-     * @apiDescription 根据用户设置的editSelStart(光标开始位置)和editSelEnd(光标结束位置选定文本),如果有传callback但没有设置这两个参数，默认选中全部文本；没有callback光标默认再开始位置：child是编辑文本的box（div）
-     * - WB.onshoweditor=function(child){var text = child.innerHTML;WB.editSelStart = text.length;WB.editSelEnd = text.length;};设置光标位置再最后
+     * @apiDescription Select text according to the set editSelStart (start position of the cursor) and editSelEnd (end position of the cursor)
+     * - If there is a callback but these two parameters are not set, all text is selected by default
+     * - If there is no callback, the cursor is at the start position by default
+     * - child is a text edit box
      * @apiParam {Function} callback 
+     * @apiExample {javascript} demo:
+     *  WB.onshoweditor=function(child){
+    var text = child.innerHTML;
+    WB.editSelStart = text.length;
+    WB.editSelEnd = text.length;
+ }
      */
     if(typeof(this.onshoweditor)=='function'&&this.workbook.stopEventCount==0){
         this.editSelStart=-1;
@@ -6636,24 +6738,29 @@ Workbook.prototype.jsDateToExcelDate = function(inDate){
     return  (inDate.getTime()- (new Date(1899,11,30)).getTime())/1000/60/60/24;
 }
 /**
- * @api {null} /null setCellFormula
+ * @api {null} WB.setCellFormula(R1,C1,Formula,Index) setCellFormula
  * @apiName setCellFormula
  * @apiGroup Function
- * @apiDescription 设置单元格公式 WB.setCellFormula(R1,C1,Formula,Index)
- * - WB.setCellFormula(0,0,'=A1+B1')   设置单元格公式为=A1+B1
- * @apiParam {Int} r1  行(r1>=0)
- * @apiParam {Int} c1  列(c1>=0)
- * @apiParam {String} Formula(必须以=开头且后面最少有一个字符)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set cell formula
+ * @apiParam {Int} r1  row(r1>=0)
+ * @apiParam {Int} c1  column(c1>=0)
+ * @apiParam {String} Formula(Must start with = and at least one character after)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setCellFormula(0,0,'=A1+B1')   //Set the cell formula to =A1+B1
  */
 
  /**
  * @api {null} /null onformularesult
  * @apiName onformularesult
  * @apiGroup Event
- * @apiDescription 返回公式结果事件 函数返回(公式 r c)   f(formula,R1,C1);
- * - WB.onformularesult = function(f,r,c){}
- * @apiParam {Function} callback 传入的回调函数 
+ * @apiDescription The event that returns the result of the formula
+ * - Function return (formula r c) 
+ * @apiParam {Function} callback 
+ * @apiExample {javascript} demo:
+    WB.onformularesult = function(f,r,c){
+        //do something...
+    }
  */
 Workbook.prototype.setCellFormula = function(R1,C1,Formula,Index){     
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -6683,16 +6790,17 @@ Workbook.prototype.setCellFormula = function(R1,C1,Formula,Index){
 };
 
 /**
- * @api {null} /null getCellFormula
+ * @api {null} WB.getCellFormula(R1,C1,R2,C2,Index) getCellFormula
  * @apiName getCellFormula
  * @apiGroup Function
- * @apiDescription 获取单元格公式(没参数默认获取当前选中范围的公式) WB.getCellFormula(R1,C1,R2,C2,Index)
- * - WB.getCellFormula(1,1)    获取指定单元格（1,1）格式
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the formula of the cell (the default is to get the formula of the currently selected range without parameters)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getCellFormula(1,1) 
  */
 Workbook.prototype.getCellFormula = function(R1,C1,R2,C2,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -6870,9 +6978,9 @@ Workbook.prototype.drawCheckBox = function(r,c,x,y,w,h,bool,Index){
  * @api {null} /null getCellRC
  * @apiName getCellRC
  * @apiGroup Function
- * @apiDescription 获取当前表的r c 范围
+ * @apiDescription Get the range of rows and columns of the current table
  * - WB.getCellRC()
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.getCellRC = function(Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -6884,16 +6992,17 @@ Workbook.prototype.getCellRC = function(Index){
 }
 
 /**
- * @api {null} /null setLock
+ * @api {null} WB.setLock(R1,C1,R2,C2,bool,Index) setLock
  * @apiName setLock
  * @apiGroup Function
- * @apiDescription 设置范围内单元格是否锁定(没参数默认设置当前选中范围的单元格锁定,锁定的单元格不能编辑 没选中框 可选中) WB.setLock(R1,C1,R2,C2,bool,Index)
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Boolean} [bool=true]  布尔值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set whether the cells in the range are locked (no parameter defaults to the locking of the cells in the currently selected range)
+ * - The locked cell cannot be edited, no check box is selected
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Boolean} [bool=true]  
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.setLock = function(R1,C1,R2,C2,bool,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -6910,16 +7019,17 @@ Workbook.prototype.setLock = function(R1,C1,R2,C2,bool,Index){
 };
 
 /**
- * @api {null} /null getLock
+ * @api {null} WB.getLock(R1,C1,R2,C2,Index) getLock
  * @apiName getLock
  * @apiGroup Function
- * @apiDescription 获取单元格的是否锁定(没参数默认获取当前选中范围的锁定状态) WB.getLock(R1,C1,R2,C2,Index)
- * - WB.getLock(0,0)   获取（0，0）单元格的锁定状态
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get whether the cell is locked (no parameter defaults to get the locked state of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getLock(0,0)
  */
 Workbook.prototype.getLock = function(R1,C1,R2,C2,Index){    
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -6944,17 +7054,18 @@ Workbook.prototype.getLock = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null setCanEdit
+ * @api {null} WB.setCanEdit(R1,C1,R2,C2,bool,Index) setCanEdit
  * @apiName setCanEdit
  * @apiGroup Function
- * @apiDescription 设置单元格是否可以编辑(没参数默认设置当前选中范围不能编辑) WB.setCanEdit(R1,C1,R2,C2,bool,Index)
- * - WB.setCanEdit(1,1,1,1,false)    单元格1，1不能编辑
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Boolean} [bool=false] 默认单元格不可以编辑
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set whether the cell can be edited (no parameter default setting currently selected range can not be edited)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Boolean} [bool=false]
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setCanEdit(1,1,1,1,false) 
  */
 Workbook.prototype.setCanEdit = function(R1,C1,R2,C2,bool,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -6971,16 +7082,17 @@ Workbook.prototype.setCanEdit = function(R1,C1,R2,C2,bool,Index){
 }
 
 /**
- * @api {null} /null getCanEdit
+ * @api {null} WB.getCanEdit(R1,C1,R2,C2,Index) getCanEdit
  * @apiName getCanEdit
  * @apiGroup Function
- * @apiDescription 获取单元格的是否可编辑(没参数默认获取当前选中范围的不可编辑状态) WB.getCanEdit(R1,C1,R2,C2,Index)
- * - WB.getCanEdit(0,0)   获取（0，0）单元格的可编辑状态
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get whether the cells in the range can be edited (no parameter defaults to the uneditable state of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getCanEdit(0,0)
  */
 Workbook.prototype.getCanEdit = function(R1,C1,R2,C2,Index){       
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -7005,24 +7117,25 @@ Workbook.prototype.getCanEdit = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null setCellFormat
+ * @api {null} WB.setCellFormat(R1,C1,R2,C2,type,Index) setCellFormat
  * @apiName setCellFormat
  * @apiGroup Function
- * @apiDescription 设置范围内单元格格式 WB.setCellFormat(R1,C1,R2,C2,type,Index)
- * - WB.setCellFormat(0,0,2,c2,"yyyy年m月d日")    设定范围内单元格的格式为日期("yyyy年m月d日"格式)
- * - 日期：yyyy年m月d日 ,yyyy年m月 ,m月d日,yyyy-m-d ,yyyy-m,m-d ,yyyy-m-d:uppercase ,yyyy-m:uppercase ,星期n ,yyyy/m/d ,yyyy/m,m/d;
- * - 科学计数法：E  (0E代表保留一位小数,00E代表两位小数,以此类推,E则不保留小数);
- * - 数值：NR(A+thousands  (N的前面有多少个0就保留多少位小数，N后面有+thousands则使用千位分隔符,无则不使用千位分隔符) R(A同理货币
- * - 货币：MR(A+$   (M的前面有多少个0就保留多少位小数,对于负数有R则设置颜色位红色，有(代表加上括号（仅有A的时候），有A代表转成正数形式显示,R(A三个字符位置不限，但要放在M之后,M后面有+货币符号则在前面添加货币符号显示,无则不使用货币符号 ¥|\$|€|￡|₣|₩ （人民币（日元显示差不多也是¥）、美元、欧元、英镑、法郎、韩元）
- * - 百分比：P+%  (P的前面有多少个0就保留多少位小数)     
- * - 金额大写：capitalMoney(数字转大写金额,小数保留到角分)
- * - 文本：text 文本格式(原样返回,包括公式)      
- * @apiParam {Int} R1  开始行(R1>=0)
- * @apiParam {Int} C1  开始列(C1>=0)
- * @apiParam {Int} R2  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} C2  结束列(C2>=0,C2>=C1)
- * @apiParam {String}  type  有效的单元格格式值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Format cells in a range
+ * - date：yyyy年m月d日 ,yyyy年m月 ,m月d日,yyyy-m-d ,yyyy-m,m-d ,yyyy-m-d:uppercase ,yyyy-m:uppercase ,星期n ,yyyy/m/d ,yyyy/m,m/d
+ * - Scientific notation：E  (0E:Keep a decimal,00E:Keep two decimal places,The number of 0 is the number of reserved decimals)
+ * - Numerical format：NR(A+thousands  (Remain as many decimals as there are 0s in front of N, use thousands separators after +thousands after N, and do not use thousands separators if there are none) R(A reference currency
+ * - currency：MR(A+$   (Remain as many decimals as there are 0s in front of M, and set the color to red for negative numbers with R, yes (there are parentheses (only when A)), and A represents a positive number display, R(A There is no limit to the three character positions, but it must be placed after M. If there is a + currency symbol behind M, the currency symbol is added in front of it. If not, the currency symbol is not used Yuan display is almost ¥), US dollar, Euro, British pound, French franc, Korean won)
+ * - percentage：P+%  (Remain as many decimals as there are 0s in front of P)     
+ * - Amount of capital：capitalMoney(Numbers are converted to upper-case amounts, and decimals are reserved to the point)
+ * - text：Text format (return as is, including formulas)  
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {String}  type  Valid cell format value
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setCellFormat(0,0,2,c2,"yyyy年m月d日")   //The format of the cells in the set range is the date ("yyyy年m月d日")
  */
 Workbook.prototype.setCellFormat = function(R1,C1,R2,C2,type,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -7041,16 +7154,17 @@ Workbook.prototype.setCellFormat = function(R1,C1,R2,C2,type,Index){
 };
 
 /**
- * @api {null} /null getCellFormat
+ * @api {null} WB.getCellFormat(R1,C1,R2,C2,Index) getCellFormat
  * @apiName getCellFormat
  * @apiGroup Function
- * @apiDescription 获取单元格格式(没参数默认获取当前选中范围的单元格格式) WB.getCellFormat(R1,C1,R2,C2,Index)
- * - WB.getCellFormat(1,1)    获取单元格（1,1）格式
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the format of the cell (without parameters, the format of the currently selected cell is obtained by default)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getCellFormat(1,1)
  */
 Workbook.prototype.getCellFormat = function(R1,C1,R2,C2,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -7580,17 +7694,18 @@ Workbook.prototype.getFullData = function(Value){
 }
 
 /**
- * @api {null} /null setCellType
+ * @api {null} WB.setCellType(R1,C1,R2,C2,obj,Index) setCellType
  * @apiName setCellType
  * @apiGroup Function
- * @apiDescription 设置范围内单元格cellType 传入的obj请根据var obj = WB.cellTypeContent(4,["apple","banana"])传入 WB.setCellType(R1,C1,R2,C2,obj,Index)或者直接传一个对象 
- * - WB.setCellType(0,0,0,0,obj)    设置第一个单元格的cellType为select,list为["apple","banana"]
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
+ * @apiDescription Set the cellType of the cells in the range
+ * For obj parameter format, please refer to cellTypeContent method(var obj = WB.cellTypeContent(4,["apple","banana"]))
+ * - WB.setCellType(0,0,0,0,obj)    
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
  * @apiParam {int} obj  
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.setCellType = function(R1,C1,R2,C2,obj,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -7606,16 +7721,17 @@ Workbook.prototype.setCellType = function(R1,C1,R2,C2,obj,Index){
 }
 
 /**
- * @api {null} /null getCellType
+ * @api {null} WB.getCellType(R1,C1,R2,C2,Index) getCellType
  * @apiName getCellType
  * @apiGroup Function
- * @apiDescription 获取单元格的celltype(没参数默认获取当前选中范围的celltype) WB.getCellType(R1,C1,R2,C2,Index)
- * - WB.getCellType(0,0)   获取（0，0）单元格的celltype
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Get the celltype of a range of cells (no parameter defaults to the celltype of the currently selected range)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.getCellType(0,0)
  */
 Workbook.prototype.getCellType = function(R1,C1,R2,C2,Index){     
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
@@ -7638,32 +7754,34 @@ Workbook.prototype.getCellType = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null cellTypeContent
+ * @api {null} WB.cellTypeContent(n,list,i) cellTypeContent
  * @apiName cellTypeContent
  * @apiGroup Function
- * @apiDescription 设置单元格类型 返回的是一个对象的形式 WB.cellTypeContent(n,list,i)
- * - WB.cellTypeContent(4,["a","b","c"])    
+ * @apiDescription Set the cell type to return an object format
  * @apiParam {int} n  
- * - 0：无button
- * - 1：button类型为三个小点；
- * - 2：button类型为下标箭头；
- * - 3：checkBox(为checkBox的情况，该单元格的值不画，且不可编辑)
- * - 4: select下拉框
+ * - 0：No button
+ * - 1：The button type is three dots
+ * - 2：Button type is subscript arrow
+ * - 3：checkBox(The value of this cell is not drawn and cannot be edited)
+ * - 4: select(Drop-down box)
  * @apiParam {Array} [list]
- * @apiParam {Int} [i]  哪一项触发onopenmorelist事件
+ * @apiParam {Int} [i]  Special item (reference onopenpopup)
+ * @apiExample {javascript} demo:
+    WB.cellTypeContent(4,["a","b","c"]) 
  */
 Workbook.prototype.cellTypeContent = function(n,list,i){
     return {"name":n,"list":list,"notSetIndex":i}
 }
 
 /**
- * @api {null} /null setTableSize
+ * @api {null} WB.setTableSize(width,height) setTableSize
  * @apiName setTableSize
  * @apiGroup Function
- * @apiDescription 设置canvas以及容器的宽高  WB.setTableSize(width,height)
- * - WB.setTableSize(500,300)    设置canvas宽高（500，300）
- * @apiParam {Number} width  宽(width>0)
- * @apiParam {Number} height 高(height>0)
+ * @apiDescription Set the width and height of the canvas and container
+ * @apiParam {Number} width  width(width>0)
+ * @apiParam {Number} height height(height>0)
+ * @apiExample {javascript} demo:
+    WB.setTableSize(500,300) 
  */
 Workbook.prototype.setTableSize = function(width,height){
     this.workbook.width = width || this.workbook.width;
@@ -7677,9 +7795,14 @@ Workbook.prototype.setTableSize = function(width,height){
  * @api {null} /null drawPrint
  * @apiName drawPrint
  * @apiGroup Function
- * @apiDescription 打印 接收一个callback 返回一个数组,base64格式的页面图片
+ * @apiDescription print
+ * - Receive a callback and return an array (base64)
  * @apiParam {Function} callback
- * @apiParam {Int} [Index]  表索引
+ * @apiParam {Int} [Index=Current_table_index]  table index 
+ * @apiExample {javascript} demo:
+    WB.drawPrint(function(arr){
+        console.log(arr)
+    })
  */
 Workbook.prototype.drawPrint = function(callback,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet;
@@ -8233,28 +8356,28 @@ Workbook.prototype.getPageNumPosition = function(canvasW,canvasH,isshowfooterpag
  * @api {null} /null setPrint
  * @apiName setPrint
  * @apiGroup Function
- * @apiDescription 打印设置参数obj 不传的项则使用已有设置
- * - marginTop 打印上边距
- * - marginBottom 打印下边距
- * - marginLeft 打印左边距
- * - marginRight 打印右边距
- * - paper 纸张类型
- * - printHeadings 是否打印行号列标
- * - printGridLine 是否打印网格线
- * - orientation 纸张方向
- * - printDirection 打印方向(1:先列后行呈N字形 2：先行后列呈Z字形) 
- * - marginCopies 数据间隔 同张纸张两条数据(表)之间的间隔
- * - printer 打印机
- * - isshowfooterpageinfo 显示页码信息参数"0", "1", "2", "3", "4", "5", "6"对应:"不显示", "页脚居中", "页脚居左", "页脚居右", "页眉居中", "页眉居左", "页眉居右
- * - footpagestyle 页码格式
- * - startR 打印区域开始row
- * - endR 打印区域结束row
- * - startC 打印区域开始col
- * - endC 打印区域结束col
- * - print 1打印当前工作表(默认) 2打印工作簿 3打印当前表当前选中区域
- * - printOnSamePaper 仅当print为2时生效 在纸张可以放下其他表的情况下 多张表是否放在同一张纸上 默认false
- * @apiParam {Object} obj  设置
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set to print, the default value is used for parameters that are not passed
+ * - marginTop 
+ * - marginBottom 
+ * - marginLeft 
+ * - marginRight 
+ * - paper (Paper type)
+ * - printHeadings (Whether to print row and column labels)
+ * - printGridLine (Whether to print grid lines)
+ * - orientation (Paper orientation)
+ * - printDirection (Print direction:)(1:N shape 2：Z shape) 
+ * - marginCopies (The interval between two data (tables) on the same paper)
+ * - printer (printer)
+ * - isshowfooterpageinfo (Display page number information parameters "0", "1", "2", "3", "4", "5", "6" correspond to: "not displayed", "footer centered", "footer left" "Header right", "Header centered", "Header left", "Header right")
+ * - footpagestyle (Page number format)
+ * - startR (Start row of print area)
+ * - endR (end row of print area)
+ * - startC (Start column of print area)
+ * - endC (end column of print area)
+ * - print (1 Print the current worksheet (default) 2 Print the workbook 3 Print the currently selected area of the current table)
+ * - printOnSamePaper (Only effective when print is 2, whether multiple sheets are placed on the same sheet, default false)
+ * @apiParam {Object} obj  
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.setPrint = function(obj,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -8320,16 +8443,17 @@ Workbook.prototype.getPaperSize = function(Index){
 }
 
 /**
- * @api {null} /null splitcolHeader
+ * @api {null} WB.splitcolHeader(Col,Name,Count,Height,index) splitcolHeader
  * @apiName splitcolHeader
  * @apiGroup Function
- * @apiDescription 拆分列头、只支持拆分两行  WB.splitcolHeader(Col,Name,Count,Height,index)
- * - WB.splitcolHeader(4,"名称")    设置第五列拆分列头名称为 "名称",默认拆分两列，高度为列头高度的一半；
- * @apiParam {Int} Col  列(Col>=0)
- * @apiParam {String} Name  名称
- * @apiParam {Int} [Count=2]  拆分的列数
- * @apiParam {Number} [Height=列头的一半高度]  Height<该列头的高度（defaultH）
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Split column header, only support splitting two rows
+ * @apiParam {Int} Col  col(Col>=0)
+ * @apiParam {String} Name  
+ * @apiParam {Int} [Count=2] Number of columns split
+ * @apiParam {Number} [Height=Half the height of the column head]  Height<The height of the column head
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.splitcolHeader(4,"name") //Set the name of the split column header of the fifth column to "name", split the two columns by default, and the height is half the height of the column header
  */
 Workbook.prototype.splitcolHeader = function(Col,Name,Count,Height,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -8349,13 +8473,14 @@ Workbook.prototype.splitcolHeader = function(Col,Name,Count,Height,Index){
 }
 
 /**
- * @api {null} /null removeSplitcolHeader
+ * @api {null} WB.removeSplitcolHeader(Col,index) removeSplitcolHeader
  * @apiName removeSplitcolHeader
  * @apiGroup Function
- * @apiDescription 删除拆分的列头  WB.removeSplitcolHeader(Col,index)
- * - WB.removeSplitcolHeader(4)    删除第五列的拆分列头
- * @apiParam {Int} Col  列(Col>=0)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Delete split column header
+ * @apiParam {Int} Col  col(Col>=0)
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.removeSplitcolHeader(4)   //Delete the split column header of the fifth column
  */
 Workbook.prototype.removeSplitcolHeader = function(Col,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -8370,24 +8495,29 @@ Workbook.prototype.removeSplitcolHeader = function(Col,Index){
 }
 
 /**
- * @api {null} /null setValue
+ * @api {null} WB.setValue(R,C,Value,Index) setValue
  * @apiName setValue
  * @apiGroup Function
- * @apiDescription 设置单元格value值(value text)  WB.setValue(R,C,Value,Index)
- * - WB.setValue(0,0,'统计',1)    设置第二个表（0，0）单元格的值value值为 统计
- * @apiParam {Int} R  行(R>=0)
- * @apiParam {Int} C  列(C>=0)
- * @apiParam {String} Value  值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the cell's value (value text)
+ * @apiParam {Int} R  row(R>=0)
+ * @apiParam {Int} C  column(C>=0)
+ * @apiParam {String} Value  
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setValue(0,0,'test',1)
  */
 
  /**
  * @api {null} /null onvaluechange
  * @apiName onvaluechange
  * @apiGroup Event
- * @apiDescription 该函数返回r,c,新值，旧值，具体函数看需求实现,调用函数返回如果是-1不执行setValue，setCellFormula操作,如果是1则调用onrelevantchange事件！
- * - WB.onvaluechange=function(idx,r,c){};
+ * @apiDescription The function returns r, c, new value, old value
+ * - Call this function to return if it is -1 do not perform setValue and setCellFormula operations If it is 1, then call the onrelevantchange event!
  * @apiParam {Function} callback 
+ * @apiExample {javascript} demo:
+    WB.onvaluechange=function(idx,r,c){
+        //do something...
+    };
  */
 Workbook.prototype.setValue = function(R,C,Value,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -8439,14 +8569,14 @@ Workbook.prototype.setValue = function(R,C,Value,Index){
 }
 
 /**
- * @api {null} /null setText
+ * @api {null} WB.setText(R,C,Text,Index) setText
  * @apiName setText
  * @apiGroup Function
- * @apiDescription 设置单元格值(text)  WB.setText(R,C,Text,Index)
- * @apiParam {Int} R  行(R>=0)
- * @apiParam {Int} C  列(C>=0)
- * @apiParam {String} Text  值
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set the text value of the cell
+ * @apiParam {Int} R  row(R>=0)
+ * @apiParam {Int} C  col(C>=0)
+ * @apiParam {String} Text  
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.setText = function(R,C,Text,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -8462,16 +8592,17 @@ Workbook.prototype.setText = function(R,C,Text,Index){
 }
 
 /**
- * @api {null} /null setCellPadding
+ * @api {null} WB.setCellPadding(topSize,rightSize,bottomSize,leftSize,Index) setCellPadding
  * @apiName setCellPadding
  * @apiGroup Function
- * @apiDescription 设置表单元格的padding  WB.setCellPadding(topSize,rightSize,bottomSize,leftSize,Index)
- * - WB.setCellPadding(0,0,0,5)    设置单元格右边框为5px  
- * @apiParam {Number} topSize  padding-top值的大小
- * @apiParam {Number} rightSize  padding-right值的大小
- * @apiParam {Number} bottomSize  padding-bottom值的大小
- * @apiParam {Number} leftSize  padding-left值的大小
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Set padding of table cells
+ * @apiParam {Number} topSize  padding-top
+ * @apiParam {Number} rightSize  padding-right值
+ * @apiParam {Number} bottomSize  padding-bottom
+ * @apiParam {Number} leftSize  padding-left
+ * @apiParam {Int} [Index=Current_table_index]  table index
+ * @apiExample {javascript} demo:
+    WB.setCellPadding(0,0,0,5)    //Set the right padding of the cell to 5px  
  */
 Workbook.prototype.setCellPadding = function(topSize,rightSize,bottomSize,leftSize,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet;
@@ -8503,9 +8634,9 @@ Workbook.prototype.openPopup = function(r,c,Index){
  * @api {null} /null startPaint
  * @apiName startPaint
  * @apiGroup Function
- * @apiDescription startPaint函数设置stopPaintedCount的值，每调用一次该值减1，直到为0，stopPaintedCount为0时重绘：startPaint(isAll)
+ * @apiDescription The startPaint function sets the value of stopPaintedCount.Each time the value is decremented by 1 until it is 0.redraw when stopPaintedCount is 0.
  * - WB.startPaint()    
- * @apiParam {Boolean} [bool]  布尔值：true stopPaintedCount直接赋值为0  
+ * @apiParam {Boolean} [bool]  If true stopPaintedCount is directly assigned a value of 0 
  */
 Workbook.prototype.startPaint = function(isAll){
     if(isAll){
@@ -8523,7 +8654,7 @@ Workbook.prototype.startPaint = function(isAll){
  * @api {null} /null stopPaint
  * @apiName stopPaint
  * @apiGroup Function
- * @apiDescription stopPaint函数设置stopPaintCount的值，每调用一次该值加1.
+ * @apiDescription The stopPaint function sets the value of stopPaintCount, which is increased by 1 every time it is called.
  * - WB.stopPaint()    
  */
 Workbook.prototype.stopPaint = function(){
@@ -8534,9 +8665,9 @@ Workbook.prototype.stopPaint = function(){
  * @api {null} /null resumeEvent
  * @apiName resumeEvent
  * @apiGroup Function
- * @apiDescription resumeEvent函数设置stopEventCount的值，每调用一次该值减1，直到为0，stopEventCount为0时 on事件才会执行
+ * @apiDescription The resumeEvent function sets the value of stopEventCount. The value is decremented by 1 each time it is called until it is 0. stopEventCount is 0 and the on event is not executed.
  * - WB.resumeEvent()    
- * @apiParam {Boolean} [bool]  布尔值：true stopEventCount直接赋值为0  
+ * @apiParam {Boolean} [bool]  If true stopEventCount is directly assigned a value of 0 
  */
 Workbook.prototype.resumeEvent = function(isAll){
     if(isAll){
@@ -8554,7 +8685,7 @@ Workbook.prototype.resumeEvent = function(isAll){
  * @api {null} /null stopEvent
  * @apiName stopEvent
  * @apiGroup Function
- * @apiDescription stopEvent函数设置stopEventCount的值，每调用一次该值加1.
+ * @apiDescription The stopEvent function sets the value of stopEventCount, which is increased by 1 each time it is called.
  * - WB.stopEvent()    
  */
 Workbook.prototype.stopEvent = function(){
@@ -8576,15 +8707,15 @@ Workbook.prototype.getMergeCount = function(r,c,Index){
 }
 
 /**
- * @api {null} /null clearAllStyle
+ * @api {null} WB.clearAllStyle(R1,C1,R2,C2,Index) clearAllStyle
  * @apiName clearAllStyle
  * @apiGroup Function
- * @apiDescription 恢复范围单元格默认样式样式(没参数默认设置当前选中范围的单元格) WB.clearAllStyle(R1,C1,R2,C2,Index)
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Restore the default style of the cells in the range (no parameters default to the currently selected range of cells)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.clearAllStyle = function(R1,C1,R2,C2,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -8600,13 +8731,13 @@ Workbook.prototype.clearAllStyle = function(R1,C1,R2,C2,Index){
 }
 
 /**
- * @api {null} /null setFormatBrushStyle
+ * @api {null} WB.setFormatBrushStyle(R,C,Index) setFormatBrushStyle
  * @apiName setFormatBrushStyle
  * @apiGroup Function
- * @apiDescription 设置格式刷样式 WB.setFormatBrushStyle(R,C,Index)
- * @apiParam {Int} R1  行(R1>=0)
- * @apiParam {Int} C1  列(C1>=0)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Format brush style
+ * @apiParam {Int} R1  row(R1>=0)
+ * @apiParam {Int} C1  column(C1>=0)
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.setFormatBrushStyle = function(R,C,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -8620,22 +8751,23 @@ Workbook.prototype.setFormatBrushStyle = function(R,C,Index){
  * @api {null} /null clearFormatBrushStyle
  * @apiName clearFormatBrushStyle
  * @apiGroup Function
- * @apiDescription 清除格式刷样式 WB.clearFormatBrushStyle()
+ * @apiDescription Clear format brush style 
+ * - WB.clearFormatBrushStyle()
  */
 Workbook.prototype.clearFormatBrushStyle = function(){
     this.formatBrushStyle = {};
 }
 
 /**
- * @api {null} /null useFormatBrushStyle
+ * @api {null} WB.useFormatBrushStyle(R1,C1,R2,C2,Index) useFormatBrushStyle
  * @apiName useFormatBrushStyle
  * @apiGroup Function
- * @apiDescription 单元格范围应用格式刷样式(没参数默认设置当前选中范围的单元格)  WB.useFormatBrushStyle(R1,C1,R2,C2,Index)
- * @apiParam {Int} [R1]  开始行(R1>=0)
- * @apiParam {Int} [C1]  开始列(C1>=0)
- * @apiParam {Int} [R2]  结束行(R2>=0,R2>=R1)
- * @apiParam {Int} [C2]  结束列(C2>=0,C2>=C1)
- * @apiParam {Int} [Index=当前表索引]  表索引
+ * @apiDescription Apply format brush styles within the range (no parameters default to the currently selected range of cells)
+ * @apiParam {Int} [R1]  Start row(R1>=0)
+ * @apiParam {Int} [C1]  Start column(C1>=0)
+ * @apiParam {Int} [R2]  End row(R2>=0,R2>=R1)
+ * @apiParam {Int} [C2]  End column(C2>=0,C2>=C1)
+ * @apiParam {Int} [Index=Current_table_index]  table index
  */
 Workbook.prototype.useFormatBrushStyle = function(R1,C1,R2,C2,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
@@ -8655,9 +8787,11 @@ Workbook.prototype.useFormatBrushStyle = function(R1,C1,R2,C2,Index){
  * @api {null} /null setDocument
  * @apiName setDocument
  * @apiGroup Function
- * @apiDescription 设置触发点击事件的document  WB.setDocument(D)
- * - WB.setDocument(window.top.document)   设置为顶层
+ * @apiDescription Set the document that triggered the click event  
+ * - WB.setDocument(D)
  * @apiParam {obj} d  
+ * @apiExample {javascript} demo:
+    WB.setDocument(window.top.document)   //Set to top
  */
 Workbook.prototype.setDocument = function(D){
     for(var key in this.documentHandle){
@@ -8671,11 +8805,13 @@ Workbook.prototype.setDocument = function(D){
  * @api {null} /null adaption
  * @apiName adaption
  * @apiGroup Function
- * @apiDescription 调用自适应函数  WB.adaption(bool,devW,devH)  亦可以通过设置adaption属性来开启自适应
- * - WB.adaption(true,1280,720)   开启自适应
- * @apiParam {Boolean} bool 布尔值  
- * @apiParam {Number} devW 开发时候电脑屏幕分辨率的宽  
- * @apiParam {Number} devH 开发时候电脑屏幕分辨率的高  
+ * @apiDescription Adaptive function
+ * - WB.adaption(bool,devW,devH)  You can also turn on adaptation by setting the adaption attribute
+ * @apiParam {Boolean} bool   
+ * @apiParam {Number} devW The horizontal resolution of the computer screen during development
+ * @apiParam {Number} devH The vertical resolution of the computer screen during development
+ * @apiExample {javascript} demo:
+    WB.adaption(true,1280,720)   //Turn on adaptive
  */
 Workbook.prototype.adaption = function(bool,devW,devH){
     this.workbook.devScreenWidth = devW || this.workbook.devScreenWidth;
@@ -8715,25 +8851,26 @@ Workbook.prototype.adaption = function(bool,devW,devH){
  * @api {null} /null addChildCanvas
  * @apiName addChildCanvas
  * @apiGroup Function
- * @apiDescription 新增一个子canvas元素插入页面中(函数主要用于在现有的canvas表中弹出另一个层,该层是另一个workbook)
+ * @apiDescription Add a child canvas element to insert into the page
+ * - The function is mainly used to pop up another layer in the existing canvas table, which is another workbook
  * - WB.addChildCanvas(options)   
- * @apiParam {Object} options 子canvas相关参数 
- * - id(子容器id) 该参数需传 用于指定子canvas的容器 如container2(需new出来 var WB2 = new Workbook("container2"))
- * - parentId(父容器id不传插入到body中)
- * - width(默认250)
- * - height(默认300)
- * - x(坐标x 默认0)
- * - y(坐标y 默认0)
- * - shade(蒙层 默认false) 
+ * @apiParam {Object} options Sub-canvas related parameters
+ * - id(Child container id) This parameter needs to be passed to specify the container of the child canvas
+ * - parentId(Parent container id)
+ * - width(Defaults:250)
+ * - height(Defaults:300)
+ * - x(Defaults:0)
+ * - y(Defaults:0)
+ * - shade(Defaults:false) 
  * @apiExample {javascript} demo:
     WB.addChildCanvas({
-        width:250,  //子canvas宽以及容器宽
-        height:300, //子canvas高以及容器高
-        x:280,  //相对于父容器的x坐标
-        y:90,   //相对于父容器的y坐标
-        parentId:"container",   //父容器 默认document.body
-        id:"container2",    //子canvan容器id
-        shade:true, //是否显示蒙层
+        width:250,  //The width of the child canvas and the width of the container
+        height:300, //The height of the child canvas and the height of the container
+        x:280,  //Relative to the x coordinate of the parent container
+        y:90,   //Relative to the parent container's y coordinate
+        parentId:"container",   //Parent container default document.body
+        id:"container2",    //Container id of child canvan
+        shade:true, //Whether to show the shade
     });
 
     var WB2 = new Workbook("container2")
@@ -8743,28 +8880,28 @@ Workbook.prototype.adaption = function(bool,devW,devH){
     WB2.maxRow(3)
     WB2.setColWidth (125,0,1)
     WB2.showColHeading(true) 
-    WB2.setHeaderName(-1,0,'项目')
-    WB2.setHeaderName(-1,1,'数值')
+    WB2.setHeaderName(-1,0,'project')
+    WB2.setHeaderName(-1,1,'Numerical value')
     WB2.activeSheet.colHeaderData.defaultDataNode.style.fillColor = "#A9A9A9"
     WB2.workbook.tabsOptions.fontColor = '#1E90FF'
     WB2.workbook.showTabs = 2
-    WB2.bottomBtn=['确定','取消']
+    WB2.bottomBtn=['yes','cancel']
     WB2.tabsHeight = 30;
     WB2.workbook.behaviorMode = 3
     WB.setActiveCanvas('container');
-    WB2.setValue(0,1,"隐藏弹层",0)
+    WB2.setValue(0,1,"Hidden bomb",0)
     WB2.setLock(0,1,0,1,true)
-    WB2.setValue(0,0,"数据",0)
+    WB2.setValue(0,0,"data",0)
     WB2.startPaint()
     WB.onclickcellopenlayer = function(ind,r,c){
         if(r==0&&c==1){
-            WB.showChildCanvas("container2")   //显示
+            WB.showChildCanvas("container2")   //show
             WB.setActiveCanvas('container2');
         }
     }
     WB2.onclickcellopenlayer = function(ind,r,c){
         if(r==0&&c==1){
-            WB2.hiddenChildCanvas("container2")   //隐藏
+            WB2.hiddenChildCanvas("container2")   //hide
             WB.setActiveCanvas('container');
         }
     }
@@ -8795,9 +8932,9 @@ Workbook.prototype.addChildCanvas = function(options){
  * @api {null} /null hiddenChildCanvas
  * @apiName hiddenChildCanvas
  * @apiGroup Function
- * @apiDescription 隐藏子canvas全部元素
+ * @apiDescription Hide all elements of child canvas
  * - WB2.hiddenChildCanvas("container2")  
- * @apiParam {String} id 子canvas容器id 
+ * @apiParam {String} id Id of the child canvas container
  */
 Workbook.prototype.hiddenChildCanvas = function(id){
     var divBEle = document.getElementById(id);
@@ -8811,9 +8948,10 @@ Workbook.prototype.hiddenChildCanvas = function(id){
  * @api {null} /null setActiveCanvas
  * @apiName setActiveCanvas
  * @apiGroup Function
- * @apiDescription 同页面多canvas的情况下设置活动的单元格（默认是new出来的最后一个canvas，点击对应的canvas activecanvas会自动切换）
- * - WB.setActiveCanvas("container2")  
- * @apiParam {String} id 容器id 
+ * @apiDescription Set the active canvas when there are multiple canvases on the same page (the default is the last new canvas, click on the corresponding canvas activecanvas will automatically switch)
+ * @apiParam {String} id 
+ * @apiExample {javascript} demo:
+    WB.setActiveCanvas("container2")  
  */
 Workbook.prototype.setActiveCanvas = function(id){
     window.boxId = id
@@ -8823,9 +8961,10 @@ Workbook.prototype.setActiveCanvas = function(id){
  * @api {null} /null showChildCanvas
  * @apiName showChildCanvas
  * @apiGroup Function
- * @apiDescription 显示子canvas全部元素
- * - WB.showChildCanvas("container2")  
- * @apiParam {String} id 子canvas容器id 
+ * @apiDescription Show all elements of child canvas
+ * @apiParam {String} id 
+ * @apiExample {javascript} demo:
+    WB.showChildCanvas("container2")  
  */
 Workbook.prototype.showChildCanvas = function(id){
     var divBEle = document.getElementById(id);
@@ -8840,11 +8979,10 @@ Workbook.prototype.showChildCanvas = function(id){
 
 
 /**
- * @api {null} /null exportFileAsJson
+ * @api {null} WB.exportFileAsJson() exportFileAsJson
  * @apiName exportFileAsJson
  * @apiGroup Function
- * @apiDescription 保存当前workbook为json文件并下载
- * - WB.exportFileAsJson()  
+ * @apiDescription Save the current workbook as a json file and download
  */
 Workbook.prototype.exportFileAsJson = function(){
     try{
@@ -8872,11 +9010,10 @@ Workbook.prototype.exportFileAsJson = function(){
 }
 
 /**
- * @api {null} /null exportFileAsXml
+ * @api {null} WB.exportFileAsXml()  exportFileAsXml
  * @apiName exportFileAsXml
  * @apiGroup Function
- * @apiDescription 保存当前workbook为xml文件并下载(每个表生成一个xml)
- * - WB.exportFileAsXml()  
+ * @apiDescription Save the current workbook as an xml file and download it (each table generates an xml)
  */
 Workbook.prototype.exportFileAsXml = function(){
     var _this = this
@@ -8914,10 +9051,10 @@ Workbook.prototype.exportFileAsZip = function(){
  * @api {null} /null importFile
  * @apiName importFile
  * @apiGroup Function
- * @apiDescription 文件导入(文件仅支持.json、.xml、.xlsx、excel.zip)
+ * @apiDescription File import (the file only supports .json, .xml, .xlsx, excel.zip)
  * - WB.exportFileAsXml()  f
- * @apiParam {Object} f 文件
- * @apiParam {Function} callback 导入之后的回到函数
+ * @apiParam {Object} f file
+ * @apiParam {Function} callback 
  */
 Workbook.prototype.importFile = function(f,callback){
     try{
@@ -10575,8 +10712,8 @@ Workbook.prototype.getScrollBarWidth = function(){
  * @api {null} /null checkBoxBorderColor
  * @apiName checkBoxBorderColor
  * @apiGroup Attribute:prototype
- * @apiDescription 设置获取复选框btn边框颜色
- * - WB.checkBoxBorderColor="颜色值"   
+ * @apiDescription Set or get the border color of the check box button(Defaults:#C5C1AA)
+ * - WB.checkBoxBorderColor="color"   
  */
 Object.defineProperty(Workbook.prototype, "checkBoxBorderColor", {
     value: "#C5C1AA",
@@ -10587,8 +10724,8 @@ Object.defineProperty(Workbook.prototype, "checkBoxBorderColor", {
  * @api {null} /null checkBoxFillColor
  * @apiName checkBoxFillColor
  * @apiGroup Attribute:prototype
- * @apiDescription 设置获取复选框填充颜色
- * - WB.checkBoxFillColor="颜色值"   
+ * @apiDescription Set or get the fill color of the check box button(Defaults:#F0F0F0)
+ * - WB.checkBoxFillColor="color"   
  */
 Object.defineProperty(Workbook.prototype, "checkBoxFillColor", {
     value: "#F0F0F0",
@@ -10600,8 +10737,8 @@ Object.defineProperty(Workbook.prototype, "checkBoxFillColor", {
  * @api {null} /null checkBoxBorderColorH
  * @apiName checkBoxBorderColorH
  * @apiGroup Attribute:prototype
- * @apiDescription 设置获取复选框边框（hover）颜色
- * - WB.checkBoxBorderColorH="颜色值"   
+ * @apiDescription Set or get the border color of the check box button (hover)(Defaults:rgba(30,144,255,.4))
+ * - WB.checkBoxBorderColorH="color"   
  */
 Object.defineProperty(Workbook.prototype, "checkBoxBorderColorH", {
     value: "rgba(30,144,255,.4)",
@@ -10612,8 +10749,8 @@ Object.defineProperty(Workbook.prototype, "checkBoxBorderColorH", {
  * @api {null} /null checkBoxFillColorH
  * @apiName checkBoxFillColorH
  * @apiGroup Attribute:prototype
- * @apiDescription 设置获取复选框填充颜色(hover)
- * - WB.checkBoxFillColorH="颜色值"   
+ * @apiDescription Set or get the fill color of the checkbox button (hover)(Defaults:rgba(240,248,255))
+ * - WB.checkBoxFillColorH="color"   
  */
 Object.defineProperty(Workbook.prototype, "checkBoxFillColorH", {
     value: "rgba(240,248,255)",
@@ -10624,8 +10761,8 @@ Object.defineProperty(Workbook.prototype, "checkBoxFillColorH", {
  * @api {null} /null editSelStart
  * @apiName editSelStart
  * @apiGroup Attribute:prototype
- * @apiDescription 设置触发输入的时候选中文本的开始位置
- * - WB.editSelStart=1   从第二个字开始
+ * @apiDescription Set the start position of the selected text when triggering input(Defaults:0)
+ * - WB.editSelStart=1   Start with the second word
  */
 Object.defineProperty(Workbook.prototype, "editSelStart", {
     value: 0,
@@ -10637,8 +10774,8 @@ Object.defineProperty(Workbook.prototype, "editSelStart", {
  * @api {null} /null editSelEnd
  * @apiName editSelEnd
  * @apiGroup Attribute:prototype
- * @apiDescription 设置触发输入的时候选中文本的结束位置
- * - WB.editSelEnd=3   第三个字结束
+ * @apiDescription Set the end position of the selected text when triggering input(Defaults:0)
+ * - WB.editSelEnd=3   End of the third word
  */
 Object.defineProperty(Workbook.prototype, "editSelEnd", {
     value: 0,
@@ -10677,7 +10814,7 @@ Object.defineProperty(Workbook.prototype, "numRowH", {
  * @api {null} /null defaultCellStyle
  * @apiName defaultCellStyle
  * @apiGroup Attribute:prototype
- * @apiDescription 获取或者设置单元格的默认属性值,设置的值为一个对象 没有改变某个属性则使用默认的值 默认值有如下
+ * @apiDescription Get or set the default property value of the cell. The value set is an object. The default value is used without changing a certain property. The default values are as follows
  * - "fontColor":"#000"
  * - "hAlign":1
  * - "cellType":{"name":0}
@@ -10686,7 +10823,7 @@ Object.defineProperty(Workbook.prototype, "numRowH", {
  * - "formatter":""
  * - "font":this.workbook.defaultFontSize+"px/"+this.workbook.defaultLineHeight+"px "+ this.workbook.defaultFontName
  * - "wordWrap":false
- * - WB.defaultCellStyle={"fontColor":"red"}  设置单元格默认属性的字体颜色为红色;
+ * - WB.defaultCellStyle={"fontColor":"red"}  Set the default font color of the cell to red
  */
 Object.defineProperty(Workbook.prototype, "defaultCellStyle", { 
     get : function () {
@@ -10708,8 +10845,8 @@ Object.defineProperty(Workbook.prototype, "defaultCellStyle", {
  * @api {null} /null scrollSize
  * @apiName scrollSize
  * @apiGroup Attribute:prototype
- * @apiDescription 设置获取滚动条大小
- * - WB.scrollSize=8   滚动大小为8px
+ * @apiDescription Set or get the scroll bar size(Defaults:7)
+ * - WB.scrollSize=8  The scroll bar size is 8px
  */
 Object.defineProperty(Workbook.prototype, "scrollSize", {
     value: 7,
@@ -10720,8 +10857,8 @@ Object.defineProperty(Workbook.prototype, "scrollSize", {
  * @api {null} /null bottomBtn
  * @apiName bottomBtn
  * @apiGroup Attribute:prototype
- * @apiDescription 在showtabs显示方式设置为2的情况下 显示btn按钮组 
- * - WB.bottomBtn=['确定','取消']  
+ * @apiDescription Show btn button group when showtabs display mode is set to 2
+ * - WB.bottomBtn=['yes','cancel']  
  */
 Object.defineProperty(Workbook.prototype, "bottomBtn", {
     value: [],
@@ -10734,8 +10871,8 @@ Object.defineProperty(Workbook.prototype, "bottomBtn", {
  * @api {null} /null tabsHeight
  * @apiName tabsHeight
  * @apiGroup Attribute:prototype
- * @apiDescription 设置tabs栏的高度
- * - WB.tabsHeight=30   tabs栏的高度为30px
+ * @apiDescription Set the height of the tabs bar
+ * - WB.tabsHeight=30  The height of the tabs bar is 30px
  */
 Object.defineProperty(Workbook.prototype, "tabsHeight", {
     get : function () {
@@ -10750,8 +10887,8 @@ Object.defineProperty(Workbook.prototype, "tabsHeight", {
  * @api {null} /null tabArrowWidth
  * @apiName tabArrowWidth
  * @apiGroup Attribute:prototype
- * @apiDescription 设置获取tabs栏切换表箭头宽度
- * - WB.tabArrowWidth=5  tabs栏切换表箭头宽度为5px
+ * @apiDescription Set or get the arrow width of the tabs switch table(Defaults:5)
+ * - WB.tabArrowWidth=5  Tabs bar switch table arrow width is 5px
  */
 Object.defineProperty(Workbook.prototype, "tabArrowWidth", {
     value: 5,
@@ -10763,8 +10900,8 @@ Object.defineProperty(Workbook.prototype, "tabArrowWidth", {
  * @api {null} /null tabArrowHeight
  * @apiName tabArrowHeight
  * @apiGroup Attribute:prototype
- * @apiDescription 设置获取tabs栏切换表箭头高度
- * - WB.tabArrowHeight=8  tabs栏切换表箭头高度为8px
+ * @apiDescription Set or get the arrow height of the tabs switch table(Defaults:8)
+ * - WB.tabArrowHeight=8  Tabs bar switch table arrow height is 8px
  */
 Object.defineProperty(Workbook.prototype, "tabArrowHeight", {
     value: 8,
@@ -10775,8 +10912,8 @@ Object.defineProperty(Workbook.prototype, "tabArrowHeight", {
  * @api {null} /null tabArrowStartX
  * @apiName tabArrowStartX
  * @apiGroup Attribute:prototype
- * @apiDescription 设置获取tabs栏切换表箭头(第一个箭头)距离tabs栏左边（x水平）的位置
- * - WB.tabArrowStartX=15  tabs栏切换表箭头距离tabs栏左边（x水平）的位置为15px
+ * @apiDescription Set or get the position of the tabs column switch table arrow (the first arrow) from the left side of the tabs column(Defaults:15)
+ * - WB.tabArrowStartX=15  The position of the arrow of the tabs bar switching table is 15px from the left side of the tabs bar
  */
 Object.defineProperty(Workbook.prototype, "tabArrowStartX", {
     value: 15,
@@ -10787,8 +10924,8 @@ Object.defineProperty(Workbook.prototype, "tabArrowStartX", {
  * @api {null} /null isEdit
  * @apiName isEdit
  * @apiGroup Attribute:prototype
- * @apiDescription 设置table初始化是否进入编辑状态（默认false）
- * - WB.isEdit=true  table初始化进入编辑
+ * @apiDescription Set whether table initialization enters edit state(Defaults:false)
+ * - WB.isEdit=true  table initialization into edit
  */
 Object.defineProperty(Workbook.prototype, "isEdit", {
     value: false,
@@ -10799,7 +10936,7 @@ Object.defineProperty(Workbook.prototype, "isEdit", {
  * @api {null} /null isFocus
  * @apiName isFocus
  * @apiGroup Attribute:prototype
- * @apiDescription 可根据isFocus或者isEdit判断是否在编辑中（默认false）
+ * @apiDescription Can judge whether it is in editing according to isFocus or isEdit(Defaults:false)
  */
 Object.defineProperty(Workbook.prototype, "isFocus", {
     value: false,
@@ -10839,8 +10976,8 @@ Object.defineProperty(Workbook.prototype, "isStopPainted", {
  * @api {null} /null btnBorderColor
  * @apiName btnBorderColor
  * @apiGroup Attribute:prototype
- * @apiDescription 单元格btn边框(celltype ==1  celltype==2)(默认:#C5C1AA)
- * - WB.btnBorderColor = 值(有效颜色值)  
+ * @apiDescription The border color of the cell button (celltype ==1 celltype==2)(Defaults: #C5C1AA)
+ * - WB.btnBorderColor = value(color)  
  */
 Object.defineProperty(Workbook.prototype, "btnBorderColor", {
     value: "#C5C1AA",
@@ -10851,8 +10988,8 @@ Object.defineProperty(Workbook.prototype, "btnBorderColor", {
  * @api {null} /null enterToRight
  * @apiName enterToRight
  * @apiGroup Attribute:prototype
- * @apiDescription 按下回车键之后单元格是否向右移动(默认:false),改属性为true时,回车右移单元格至最后一列跳到下一行
- * - WB.enterToRight = 值(bool)  
+ * @apiDescription Whether the cell moves to the right after pressing the Enter key (Defaults: false), when the property is changed to true, the carriage return moves the cell to the last column and jumps to the next row
+ * - WB.enterToRight = value(bool)  
  */
 Object.defineProperty(Workbook.prototype, "enterToRight", {
     value: false,
@@ -10863,8 +11000,8 @@ Object.defineProperty(Workbook.prototype, "enterToRight", {
  * @api {null} /null btnFillColor
  * @apiName btnFillColor
  * @apiGroup Attribute:prototype
- * @apiDescription 单元格btn填充颜色(celltype ==1  celltype==2)(默认:#F0F0F0)
- * - WB.btnFillColor = 值(有效颜色值)  
+ * @apiDescription The fill color of the cell button (celltype ==1 celltype==2) (Defaults: #F0F0F0)
+ * - WB.btnFillColor = value(color)  
  */
 Object.defineProperty(Workbook.prototype, "btnFillColor", {
     value: "#F0F0F0",
@@ -10875,8 +11012,8 @@ Object.defineProperty(Workbook.prototype, "btnFillColor", {
  * @api {null} /null btnBorderColorH
  * @apiName btnBorderColorH
  * @apiGroup Attribute:prototype
- * @apiDescription 单元格btn边框（hover）(celltype ==1  celltype==2)(默认:rgba(30,144,255,.4))
- * - WB.btnBorderColorH = 值(有效颜色值)  
+ * @apiDescription The border color of the cell button (hover) (celltype ==1 celltype==2) (Defaults: rgba(30,144,255,.4))
+ * - WB.btnBorderColorH = value(color)  
  */
 Object.defineProperty(Workbook.prototype, "btnBorderColorH", {
     value: "rgba(30,144,255,.4)",
@@ -10887,8 +11024,8 @@ Object.defineProperty(Workbook.prototype, "btnBorderColorH", {
  * @api {null} /null btnFillColorH
  * @apiName btnFillColorH
  * @apiGroup Attribute:prototype
- * @apiDescription 单元格填充颜色(hover)(celltype ==1  celltype==2)(默认:rgba(240,248,255))
- * - WB.btnFillColorH = 值(有效颜色值)  
+ * @apiDescription The fill color of the cell button (hover) (celltype==1 celltype==2) (Defaults: rgba(240,248,255))
+ * - WB.btnFillColorH = value(color)  
  */
 Object.defineProperty(Workbook.prototype, "btnFillColorH", {
     value: "rgba(240,248,255)",
@@ -10899,8 +11036,8 @@ Object.defineProperty(Workbook.prototype, "btnFillColorH", {
  * @api {null} /null newSheetRow
  * @apiName newSheetRow
  * @apiGroup Attribute:prototype
- * @apiDescription 设置点击新建一个表的时候的行数
- * - WB.newSheetRow = 值(Int)  
+ * @apiDescription Set the number of rows when creating a new table(Defaults: 8)
+ * - WB.newSheetRow = value(Int)  
  */
 Object.defineProperty(Workbook.prototype, "newSheetRow", {
     value: 8,
@@ -10911,8 +11048,8 @@ Object.defineProperty(Workbook.prototype, "newSheetRow", {
  * @api {null} /null newSheetCol
  * @apiName newSheetCol
  * @apiGroup Attribute:prototype
- * @apiDescription 设置点击新建一个表的时候的列数
- * - WB.newSheetCol = 值(Int)  
+ * @apiDescription Set the number of columns when creating a new table(Defaults: 8)
+ * - WB.newSheetCol = value(Int)  
  */
 Object.defineProperty(Workbook.prototype, "newSheetCol", {
     value: 8,
@@ -10923,7 +11060,7 @@ Object.defineProperty(Workbook.prototype, "newSheetCol", {
  * @api {null} /null dpi
  * @apiName dpi
  * @apiGroup Attribute:prototype
- * @apiDescription 设置获取dpi(默认96)
+ * @apiDescription Set or get dpi (Defaults 96)
  * - WB.dpi = 值(Int)  
  */
 Object.defineProperty(Workbook.prototype, "dpi", {

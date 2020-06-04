@@ -4,32 +4,35 @@
  * @api {null} /null allowDelete
  * @apiName allowDelete
  * @apiGroup Attribute:workbook
- * @apiDescription 是否允许删除键删除选中的文本(默认:true)
- * - WB.workbook.allowDelete = 值(boolean)   
+ * @apiDescription Whether to allow the delete key to delete the selected text(Defaults:true)
+ * - WB.workbook.allowDelete = value(boolean)   
  */
 
 /**
  * @api {null} /null allowResize
  * @apiName allowResize
  * @apiGroup Attribute:workbook
- * @apiDescription 否允许通过拖动调整列宽行高(默认:true)
- * - WB.workbook.allowResize = 值(boolean)   
+ * @apiDescription Whether to adjust the column width and height by dragging(Defaults:true)
+ * - WB.workbook.allowResize = value(boolean)   
  */
 
 /**
  * @api {null} /null allowTabs
  * @apiName allowTabs
  * @apiGroup Attribute:workbook
- * @apiDescription 是否允许使用tab键切换单元格(默认:true)
- * - WB.workbook.allowTabs = 值(boolean)   
+ * @apiDescription Whether to use tab key to switch cells(Defaults:true)
+ * - WB.workbook.allowTabs = value(boolean)   
  */
 
  /**
  * @api {null} /null showTabs
  * @apiName showTabs
  * @apiGroup Attribute:workbook
- * @apiDescription 是否显示tabs栏(0 不显示 1显示 2按钮组 默认:0)
- * - WB.workbook.showTabs = 值(Int)  
+ * @apiDescription Whether to show the tabs column
+ * - 0:Do not show(Defaults)
+ * - 1:show
+ * - 2:Button group
+ * - WB.workbook.showTabs = value(Int)  
  */
 
 
@@ -37,200 +40,220 @@
  * @api {null} /null width
  * @apiName width
  * @apiGroup Attribute:workbook
- * @apiDescription 工作簿宽度(默认:视口宽度-系统滚动条size)
- * - WB.workbook.width = 值(number)  
+ * @apiDescription Workbook width(Defaults:Viewport width minus system scroll bar size)
+ * - WB.workbook.width = value(number)  
  */
 
 /**size
  * @api {null} /null height
  * @apiName height
  * @apiGroup Attribute:workbook
- * @apiDescription 工作簿宽度(默认:视口高度-系统滚动条size)
- * - WB.workbook.height = 值(number)  
+ * @apiDescription Workbook height(Defaults:Viewport height minus system scroll bar size)
+ * - WB.workbook.height = value(number)  
  */
 
 /**
  * @api {null} /null showHScrollBar
  * @apiName showHScrollBar
  * @apiGroup Attribute:workbook
- * @apiDescription 工作簿水平滚动条的显示方式(默认:1)
- * - WB.workbook.showHScrollBar = 值(0不显示 1工作簿较宽的时候显示)  
+ * @apiDescription How to display the horizontal scroll bar of the workbook(Defaults:1)
+ * - 0:Do not show
+ * - 1:Displayed when the workbook is wide(Defaults)
+ * - WB.workbook.showHScrollBar = value  
  */
 
 /**
  * @api {null} /null showVScrollBar
  * @apiName showVScrollBar
  * @apiGroup Attribute:workbook
- * @apiDescription 工作簿垂直滚动条的显示方式(默认:1)
- * - WB.workbook.showVScrollBar = 值(0不显示 1工作簿较宽的时候显示)  
+ * @apiDescription How to display the vertical scroll bar of the workbook
+ * - 0:Do not show
+ * - 1:Displayed when the workbook is high(Defaults)
+ * - WB.workbook.showVScrollBar = value
  */
 
 /**
  * @api {null} /null behaviorMode
  * @apiName behaviorMode
  * @apiGroup Attribute:workbook
- * @apiDescription 工作簿模式(默认:1)
- * - WB.workbook.behaviorMode = 值( 1:sheet模式   2:grid模式（点击单元格就有输入框、没有选中框） 3:sheet单击可编辑模式、有选中框)  
+ * @apiDescription Workbook mode
+ * - 1:sheet mode (Double click to edit)(Defaults)
+ * - 2:grid mode (Click cell to enter edit box but no check box)
+ * - 3:sheet click mode (Click to enter edit and check box)
+ * - WB.workbook.behaviorMode = value
  */
 
 /**
  * @api {null} /null scrollMode
  * @apiName scrollMode
  * @apiGroup Attribute:workbook
- * @apiDescription 滚动条模式(默认:2)
- * - WB.workbook.scrollMode = 值(1滚动条从顶部或者最左部开始  2滚动条再冻结线下方或者右方)  
+ * @apiDescription Scroll bar mode
+ * - 1:The scroll bar starts from the top or left
+ * - 2:The scroll bar is below or to the right of the freeze line(Defaults)
+ * - WB.workbook.scrollMode = value
  */
 
 /**
  * @api {null} /null showWorkBookBorder
  * @apiName showWorkBookBorder
  * @apiGroup Attribute:workbook
- * @apiDescription 是否显示工作簿的边框(默认:true)
- * - WB.workbook.showWorkBookBorder = 值(boolean)  
+ * @apiDescription Whether to display the border of the workbook(Defaults:true)
+ * - WB.workbook.showWorkBookBorder = value(boolean)  
  */
 
  /**
  * @api {null} /null showRowArrow
  * @apiName showRowArrow
  * @apiGroup Attribute:workbook
- * @apiDescription 是否显示当前行的箭头(默认:false)
- * - WB.workbook.showRowArrow = 值(boolean)  
+ * @apiDescription Whether to display the leftmost arrow when the current row is selected(Defaults:false)
+ * - WB.workbook.showRowArrow = value(boolean)  
  */
 
   /**
  * @api {null} /null rowArrowColor
  * @apiName rowArrowColor
  * @apiGroup Attribute:workbook
- * @apiDescription 当前行箭头的填充色(默认:#000)
- * - WB.workbook.rowArrowColor = 值(有效颜色值)  
+ * @apiDescription The fill color of the arrow of the current line(Defaults:#000)
+ * - WB.workbook.rowArrowColor = value(color)  
  */
 
 /**
  * @api {null} /null workBookBorderColor
  * @apiName workBookBorderColor
  * @apiGroup Attribute:workbook
- * @apiDescription 设置工作簿边框颜色(默认:#ccc)
- * - WB.workbook.workBookBorderColor = 值(有效颜色值)  
+ * @apiDescription Set the border color of the workbook(Defaults:#ccc)
+ * - WB.workbook.workBookBorderColor = value(color)  
  */
 
 /**
  * @api {null} /null tabsOptions.fontColor
  * @apiName tabsOptions.fontColor
  * @apiGroup Attribute:workbook
- * @apiDescription tab栏的字体颜色(默认:#444)
- * - WB.workbook.tabsOptions.fontColor = 值(有效颜色值)  
+ * @apiDescription Tab bar font color(Defaults:#444)
+ * - WB.workbook.tabsOptions.fontColor = value(color)  
  */
 
 /**
  * @api {null} /null tabsOptions.font
  * @apiName tabsOptions.font
  * @apiGroup Attribute:workbook
- * @apiDescription tab栏的字体(默认:14px/20px 宋体)
- * - WB.workbook.tabsOptions.font = 值(字体大小/行高 字体类型)  
+ * @apiDescription Tab bar font(Defaults:14px/20px 宋体)
+ * - WB.workbook.tabsOptions.font = value(Font size/line height font type)  
  */
 
 /**
  * @api {null} /null tabsOptions.fontSelColor
  * @apiName tabsOptions.fontSelColor
  * @apiGroup Attribute:workbook
- * @apiDescription tab栏选中之后的字体颜色(默认:#CD853F)
- * - WB.workbook.tabsOptions.fontSelColor = 值(有效颜色值)  
+ * @apiDescription Font color after table selection(Defaults:#CD853F)
+ * - WB.workbook.tabsOptions.fontSelColor = value(color)  
  */
 
 /**
  * @api {null} /null tabsOptions.selFillColor
  * @apiName tabsOptions.selFillColor
  * @apiGroup Attribute:workbook
- * @apiDescription tab选中当前表的填充颜色(默认:#fff)
- * - WB.workbook.tabsOptions.selFillColor = 值(有效颜色值)  
+ * @apiDescription Tab fill color when the current table is selected(Defaults:#fff)
+ * - WB.workbook.tabsOptions.selFillColor = value(color)  
  */
 
 /**
  * @api {null} /null tabsOptions.borderColor
  * @apiName tabsOptions.borderColor
  * @apiGroup Attribute:workbook
- * @apiDescription tab栏每个表的边框颜色(默认:#DCDCDC)
- * - WB.workbook.tabsOptions.borderColor = 值(有效颜色值)  
+ * @apiDescription The border color of each table in the tab bar(Defaults:#DCDCDC)
+ * - WB.workbook.tabsOptions.borderColor = value(color)  
  */
 
 /**
  * @api {null} /null tabsOptions.fillColor
  * @apiName tabsOptions.fillColor
  * @apiGroup Attribute:workbook
- * @apiDescription tabs栏的背景填充色(默认:#FDF5E6)
- * - WB.workbook.tabsOptions.fillColor = 值(有效颜色值)  
+ * @apiDescription Tabs bar background fill color(Defaults:#FDF5E6)
+ * - WB.workbook.tabsOptions.fillColor = value(color)   
  */
 
  /**
  * @api {null} /null tabsOptions.showAdd
  * @apiName tabsOptions.showAdd
  * @apiGroup Attribute:workbook
- * @apiDescription 是否显示tabs栏添加一个表的的+号(默认:true)
- * - WB.workbook.tabsOptions.showAdd = false
+ * @apiDescription Whether to display the tabs column to add a table + sign(Defaults:true)
+ * - WB.workbook.tabsOptions.showAdd = value(boolean) 
  */
 
 /**
  * @api {null} /null showContextMenu
  * @apiName showContextMenu
  * @apiGroup Attribute:workbook
- * @apiDescription 是否显示右击菜单栏(默认:false)
- * - WB.workbook.showContextMenu = 值(boolean)  
+ * @apiDescription Whether to display the right-click menu bar of the workbook(Defaults:false)
+ * - WB.workbook.showContextMenu = value(boolean)  
  */
 
 /**
  * @api {null} /null devScreenWidth
  * @apiName devScreenWidth
  * @apiGroup Attribute:workbook
- * @apiDescription 开发时候的电脑分辨率的宽 结合adaption属性是否开启自适应  开启自适应请在new实例之后调用WB.adaption(bool,devW,devH)
- * - WB.workbook.devScreenWidth = 值(boolean)  
+ * @apiDescription Horizontal computer resolution at the time of development
+ * - Whether to enable adaptation based on the adaption property, refer to the WB.adaption(bool, devW, devH) method
+ * - WB.workbook.devScreenWidth = value(boolean)  
  */
 
 /**
  * @api {null} /null devScreenHeight
  * @apiName devScreenHeight
  * @apiGroup Attribute:workbook
- * @apiDescription 开发时候的电脑分辨率的高 结合adaption属性是否开启自适应  开启自适应请在new实例之后调用WB.adaption(bool,devW,devH)
- * - WB.workbook.devScreenHeight = 值(boolean)  
+ * @apiDescription Vertical computer resolution at the time of development
+ * - Whether to enable adaptation based on the adaption property, refer to the WB.adaption(bool, devW, devH) method
+ * - WB.workbook.devScreenHeight = value(boolean)  
  */
 
 /**
  * @api {null} /null adaption
  * @apiName adaption
  * @apiGroup Attribute:workbook
- * @apiDescription 是否开启自适应(默认:false)   开启自适应请在new实例之后调用WB.adaption(bool,devW,devH)
- * - WB.workbook.adaption = 值(boolean)  
+ * @apiDescription Whether to enable adaptive(Defaults:false)   
+ * - WB.workbook.adaption = value(boolean)  
  */
 
 /**
  * @api {null} /null print
  * @apiName print
  * @apiGroup Attribute:workbook
- * @apiDescription 打印   1打印当前工作表(默认) 2打印工作簿 3打印当前表当前选中区域 方法WB.setPrint(obj,Index)
- * - WB.workbook.print = 值(Int)  
+ * @apiDescription Print mode   
+ * - 1:Print current worksheet(Defaults)
+ * - 2:Print workbook
+ * - 3:Print the currently selected area of the current table
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - WB.workbook.print = value(Int)  
  */
 
  /**
  * @api {null} /null printOnSamePaper
  * @apiName printOnSamePaper
  * @apiGroup Attribute:workbook
- * @apiDescription printOnSamePaper 仅当print为2时生效 在纸张可以放下其他表的情况下 多张表是否放在同一张纸上 默认false 方法WB.setPrint(obj,Index)
- * - WB.workbook.printOnSamePaper = 值(Boolean)  
+ * @apiDescription Whether multiple tables are printed on the same paper(Defaults:false) 
+ * - Only effective when print is 2
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - WB.workbook.printOnSamePaper = value(Boolean)  
  */
 
  /**
  * @api {null} /null printer
  * @apiName printer
  * @apiGroup Attribute:workbook
- * @apiDescription 打印机   方法WB.setPrint(obj,Index)
- * - WB.workbook.printer = 值(string)  
+ * @apiDescription printer
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - WB.workbook.printer = value(string)  
  */
 
 /**
  * @api {null} /null marginCopies
  * @apiName marginCopies
  * @apiGroup Attribute:workbook
- * @apiDescription 在同一张纸上方打印两个表的数据 两条数据(表)之间的间隔单位mm
- * - WB.workbook.marginCopies = 值(int)  
+ * @apiDescription Print the data of two tables on the same sheet of paper The interval between the two data (tables)
+ * - This attribute only takes effect when print is equal to 2 and printOnSamePaper is equal to true
+ * - The unit is mm
+ * - WB.workbook.marginCopies = value(int)  
  */
 
 //activeSheet
@@ -239,8 +262,9 @@
  * @api {null} /null sheetName
  * @apiName sheetName
  * @apiGroup Attribute:activeSheet
- * @apiDescription 获取当前表的工作表名  设置工作表名称请调用WB.sheetName(Index，Name)方法 其中WB是new出来的实例
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
+ * @apiDescription Get the worksheet name of the current table  
+ * - To set the worksheet name, please use the WB.sheetName(Index, Name) method. WB is a new example
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
  * - WB.activeSheet.sheetName,activeSheet.sheetName  
  */
 
@@ -248,18 +272,19 @@
  * @api {null} /null activeCol
  * @apiName activeCol
  * @apiGroup Attribute:activeSheet
- * @apiDescription 
- * - 获取当前表的当前列  可通过WB.getCellRC(Index)方法获取r1,c1,r2,c2四个参数 其中WB是new出来的实例
- * - 通过WB.sheetIndex(Index)设置当前表  则这样调用WB.activeSheet.activeCol  
- * - 或者var activeSheet = WB.getActiveSheet(Index)获取当前表  则这样调用activeSheet.activeCol
+ * @apiDescription Get the current column of the current table
+ * - (r1, c1, r2, c2) These four values can be obtained by the method WB.getCellRC(Index)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting 
+ * - WB.activeSheet.activeCol,activeSheet.activeCol 
  */
 
 /**
  * @api {null} /null activeRow
  * @apiName activeRow
  * @apiGroup Attribute:activeSheet
- * @apiDescription 获取当前表的当前行  可通过WB.getCellRC(Index)方法获取r1,c1,r2,c2四个参数 其中WB是new出来的实例
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
+ * @apiDescription Get the current row of the current table 
+ * - (r1, c1, r2, c2) These four values can be obtained by the method WB.getCellRC(Index)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting 
  * - WB.activeSheet.activeRow,activeRow.activeRow
  */
 
@@ -267,8 +292,9 @@
  * @api {null} /null rangeCol1
  * @apiName rangeCol1
  * @apiGroup Attribute:activeSheet
- * @apiDescription 获取当前表的选中范围开始列(==activeCol)  可通过WB.getCellRC(Index)方法获取r1,c1,r2,c2四个参数 其中WB是new出来的实例
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
+ * @apiDescription Get the start column of the selected range of the current table(==activeCol) 
+ * - (r1, c1, r2, c2) These four values can be obtained by the method WB.getCellRC(Index)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting 
  * - WB.activeSheet.rangeCol1,activeRow.rangeCol1
  */
 
@@ -276,8 +302,9 @@
  * @api {null} /null rangeRow1
  * @apiName rangeRow1
  * @apiGroup Attribute:activeSheet
- * @apiDescription 获取当前表的选中范围开始行(==activeRow)  可通过WB.getCellRC(Index)方法获取r1,c1,r2,c2四个参数 其中WB是new出来的实例
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
+ * @apiDescription Get the start row of the selected range of the current table(==activeRow)  
+ * - (r1, c1, r2, c2) These four values can be obtained by the method WB.getCellRC(Index)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting 
  * - WB.activeSheet.rangeRow1,activeSheet.rangeRow1
  */
 
@@ -285,8 +312,9 @@
  * @api {null} /null rangeCol2
  * @apiName rangeCol2
  * @apiGroup Attribute:activeSheet
- * @apiDescription 获取当前表的选中范围的结束列  可通过WB.getCellRC(Index)方法获取r1,c1,r2,c2四个参数 其中WB是new出来的实例
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
+ * @apiDescription Get the end column of the selected range of the current table  
+ * - (r1, c1, r2, c2) These four values can be obtained by the method WB.getCellRC(Index)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting 
  * - WB.activeSheet.rangeCol2,activeSheet.rangeCol2
  */
 
@@ -294,8 +322,9 @@
  * @api {null} /null rangeRow2
  * @apiName rangeRow2
  * @apiGroup Attribute:activeSheet
- * @apiDescription 获取当前表的选中范围结束行  可通过WB.getCellRC(Index)方法获取r1,c1,r2,c2四个参数 其中WB是new出来的实例
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
+ * @apiDescription Get the end row of the selected range of the current table  
+ * - (r1, c1, r2, c2) These four values can be obtained by the method WB.getCellRC(Index)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
  * - WB.activeSheet.rangeRow2,activeSheet.rangeCol2  
  */
 
@@ -303,53 +332,58 @@
  * @api {null} /null allowMoveRange
  * @apiName allowMoveRange
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表是否允许拖选单元格(视角上的选择范围)(默认:true) 
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.allowMoveRange = 值(boolean),activeSheet.allowMoveRang = 值(boolean)
+ * @apiDescription Whether the current table allows dragging cells(Defaults:true) 
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.allowMoveRange = value(boolean),activeSheet.allowMoveRang = value(boolean)
  */
 
 /**
  * @api {null} /null selectMode
  * @apiName selectMode
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表单元格选中模式(0range模式，自由选择，1:row行模式，点击单元格选中行，2:col 列模式，点击单元格选中列，3:cell单元格模式 不可拖选)(默认:0) 
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.selectMode = 值(0|1|2|3),activeSheet.selectMode = 值(0|1|2|3)
+ * @apiDescription The selected mode of the current table cell 
+ * - 0:Freely select range(Defaults)
+ * - 1:row mode,click the cell to select the row
+ * - 2:Column mode,click the cell to select the column
+ * - 3:Cell mode can not be dragged
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.selectMode = value(0|1|2|3),activeSheet.selectMode = value(0|1|2|3)
  */
 
  /**
  * @api {null} /null notRowSelectionNum
  * @apiName notRowSelectionNum
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表哪一行没有选中框(默认:-1全部有选中框) 
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.notRowSelectionNum = 值(num),activeSheet.notRowSelectionNum = 值(行NUM) 
+ * @apiDescription Which row of the current table has no check box(Defaults:-1 All have check boxes) 
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.notRowSelectionNum = value(Int),activeSheet.notRowSelectionNum = value(Int) 
  */
 
 /**
  * @api {null} /null notColSelectionNum
  * @apiName notColSelectionNum
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表哪一列没有选中框(默认:-1全部有选中框) 
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.notColSelectionNum = 值(num),activeSheet.notColSelectionNum = 值(num)  
+ * @apiDescription Which column of the current table has no check box(Defaults:-1 All have check boxes) 
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.notColSelectionNum = value(Int),activeSheet.notColSelectionNum = value(Int)  
  */
 
 /**
  * @api {null} /null selHdrTopLeft
  * @apiName selHdrTopLeft
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表是否选中了左上角的全选(默认:false) 
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.selHdrTopLeft = 值(boolean),activeSheet.selHdrTopLeft = 值(boolean)
+ * @apiDescription Whether the current table has selected all in the upper left corner(Defaults:false) 
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.selHdrTopLeft = value(boolean),activeSheet.selHdrTopLeft = value(boolean)
  */
 
 /**
  * @api {null} /null startCol
  * @apiName startCol
  * @apiGroup Attribute:activeSheet
- * @apiDescription 获取当前表可视区域开始列(从冻结列的最后一列的下一列开始算) 若前面有冻结了两列  则开始列为第三列
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
+ * @apiDescription Get the start column of the visible area of the current table
+ * - Count from the next column of the frozen column(If there are two columns frozen in front, it will be listed as the third column)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
  * - WB.activeSheet.startCol,activeSheet.startCol
  */
 
@@ -357,8 +391,9 @@
  * @api {null} /null startRow
  * @apiName startRow
  * @apiGroup Attribute:activeSheet
- * @apiDescription 获取当前表可视区域开始行(从冻结行的最后一行的下一行开始算) 若前面有冻结了两行  则开始列为第三行
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
+ * @apiDescription Get the start row of the visible area of the current table
+ * - Count from the next line of the frozen line(If there are two lines frozen in front, it will be listed as the third line)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
  * - WB.activeSheet.startRow,activeSheet.startRow
  */
 
@@ -366,8 +401,8 @@
  * @api {null} /null endCol
  * @apiName endCol
  * @apiGroup Attribute:activeSheet
- * @apiDescription 获取当前表可视区域结束列
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
+ * @apiDescription Get the end column of the visible area of the current table
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
  * - WB.activeSheet.endCol,activeSheet.endCol
  */
 
@@ -375,8 +410,8 @@
  * @api {null} /null endRow
  * @apiName endRow
  * @apiGroup Attribute:activeSheet
- * @apiDescription 获取当前表可视区域结束行
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
+ * @apiDescription Get the end row of the visible area of the current table
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
  * - WB.activeSheet.endRow,activeSheet.endRow
  */
 
@@ -384,118 +419,137 @@
  * @api {null} /null showFixedLine
  * @apiName showFixedLine
  * @apiGroup Attribute:activeSheet
- * @apiDescription 是否显示当前表冻结线(默认:false) 
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.showFixedLine = 值(boolean) ,activeSheet.showFixedLine = 值(boolean)  
+ * @apiDescription Whether to display the frozen line of the current table(Defaults:false) 
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.showFixedLine = value(boolean) ,activeSheet.showFixedLine = value(boolean)  
  */
 
 /**
  * @api {null} /null showGridLines
  * @apiName showGridLines
  * @apiGroup Attribute:activeSheet
- * @apiDescription 是否显示当前表网格线(默认:true) 
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.showGridLines = 值(boolean),activeSheet.showGridLines = 值(boolean)    
+ * @apiDescription Whether to display the grid lines of the current table(Defaults:true) 
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.showGridLines = value(boolean),activeSheet.showGridLines = valueboolean)    
  */
 
 /**
  * @api {null} /null alwaysShowButton
  * @apiName alwaysShowButton
  * @apiGroup Attribute:activeSheet
- * @apiDescription 是否始终显示当前表单元格的button(默认:true)  false值的情况下只有进入编辑的情况才会显示btn
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - 设置btn参考setCellType
- * - WB.activeSheet.alwaysShowButton = 值(boolean),activeSheet.alwaysShowButton = 值(boolean)    
+ * @apiDescription Whether to always display the button of the current table cell(Defaults:true)  
+ * - In case of false value, btn will be displayed only when editing is entered
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - Set btn reference setCellType
+ * - WB.activeSheet.alwaysShowButton = value(boolean),activeSheet.alwaysShowButton = value(boolean)    
  */
 
 /**
  * @api {null} /null alwaysShowInArea
  * @apiName alwaysShowInArea
  * @apiGroup Attribute:activeSheet
- * @apiDescription 始终显示当前表单元格btn的情况下  是否只有在点击在该单元格再显示(默认:true)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.alwaysShowInArea = 值(boolean),activeSheet.alwaysShowInArea = 值(boolean)   
+ * @apiDescription If the current table cell btn is always displayed, is it displayed only after clicking in the cell(Defaults:true)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.alwaysShowInArea = value(boolean),activeSheet.alwaysShowInArea = value(boolean)   
  */
 
 /**
  * @api {null} /null headeNotLineInFix
  * @apiName headeNotLineInFix
  * @apiGroup Attribute:activeSheet
- * @apiDescription 是否开启当前表头模式（冻结行上方没有网格线）(默认:false)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.headeNotLineInFix = 值(boolean),activeSheet.headeNotLineInFix = 值(boolean)    
+ * @apiDescription Whether to open the head mode of the current table(No grid lines above the frozen row)(Defaults:false)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.headeNotLineInFix = value(boolean),activeSheet.headeNotLineInFix = value(boolean)    
  */
 
 /**
  * @api {null} /null canOpenLayer
  * @apiName canOpenLayer
  * @apiGroup Attribute:activeSheet
- * @apiDescription 是否点当前表击单元格能触发相应事件(默认:true)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.canOpenLayer = 值(boolean),activeSheet.canOpenLayer = 值(boolean)  
+ * @apiDescription Whether to click the current click cell can trigger the corresponding event(Defaults:true)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.canOpenLayer = value(boolean),activeSheet.canOpenLayer = value(boolean)  
  */
 
 /**
  * @api {null} /null gridLinesColor
  * @apiName gridLinesColor
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表的网格线颜色(默认:ccce)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.gridLinesColor = 值(有效颜色值),activeSheet.gridLinesColor = 值(有效颜色值)    
+ * @apiDescription The grid line color of the current table(Defaults:ccc)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.gridLinesColor = value(color),activeSheet.gridLinesColor = value(color)    
  */
 
  /**
  * @api {null} /null printSetting.printHeadings
  * @apiName printSetting.printHeadings
  * @apiGroup Attribute:activeSheet
- * @apiDescription 是否打印当前表行号列标 默认（false） 方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.printHeadings = 值(bool),activeSheet.printSetting.printHeadings = 值(bool)  
+ * @apiDescription Whether to print the row and column labels of the current table(Defaults:false)  
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.printHeadings = value(boolean),activeSheet.printSetting.printHeadings = value(boolean)  
  */
 
  /**
  * @api {null} /null printSetting.printGridLine
  * @apiName printSetting.printGridLine
  * @apiGroup Attribute:activeSheet
- * @apiDescription 是否打印当前表网格线 默认（false）   方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.printGridLine = 值(bool),activeSheet.printSetting.printGridLine = 值(bool)  
+ * @apiDescription Whether to print the grid lines of the current table (Defaults:false)
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.printGridLine = value(boolean),activeSheet.printSetting.printGridLine = value(boolean)  
  */
 
  /**
  * @api {null} /null printSetting.printDirection
  * @apiName printSetting.printDirection
  * @apiGroup Attribute:activeSheet
- * @apiDescription 设置当前表打印方向 默认（1） 先列后行呈N字形  2先行后列呈Z字形   方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.printDirection = 值(int),activeSheet.printSetting.printDirection = 值(int)  
+ * @apiDescription Set the printing direction of the current table
+ * - 1:N-shaped(Defaults)
+ * - 2:Z-shaped
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.printDirection = value(int),activeSheet.printSetting.printDirection = value(int)  
  */
 
 /**
  * @api {null} /null printSetting.orientation
  * @apiName printSetting.orientation
  * @apiGroup Attribute:activeSheet
- * @apiDescription 设置当前表纸张方向 默认（1） 纵向  2横向 方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.orientation = 值(int),activeSheet.printSetting.orientation = 值(int)   
+ * @apiDescription Set the paper orientation when the current table is printed
+ * - 1:Vertical(Defaults)
+ * - 2:Horizontal
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.orientation = value(int),activeSheet.printSetting.orientation = value(int)   
  */
 
 /**
  * @api {null} /null printSetting.isshowfooterpageinfo
  * @apiName printSetting.isshowfooterpageinfo
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表  方法WB.setPrint(obj,Index) 显示页码信息参数"0"(默认), "1", "2", "3", "4", "5", "6"对应:"不显示", "页脚居中", "页脚居左", "页脚居右", "页眉居中", "页眉居左", "页眉居右
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.isshowfooterpageinfo = 值(int),activeSheet.printSetting.isshowfooterpageinfo = 值(int)  
+ * @apiDescription Page number display information
+ * - 0:Do not show(Defaults)
+ * - 1:Footer centered
+ * - 2:Footer left
+ * - 3:Footer right
+ * - 4:Header centered
+ * - 5:Header left
+ * - 6:Header right
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.isshowfooterpageinfo = value(Int),activeSheet.printSetting.isshowfooterpageinfo = value(Int)  
  */
 
 /**
  * @api {null} /null printSetting.footpagestyle
  * @apiName printSetting.footpagestyle
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表打印页码格式  第 &p 页，共 &P 页  (&p)固定(&p &P注意区分大小写 这两个符号会替换成当前第几页 一共几页得数字) 方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.footpagestyle = 值(string),activeSheet.printSetting.footpagestyle = 值(string)  
+ * @apiDescription Print page number format of current table  (&p/&P) (Defaults:第 &p 页，共 &P 页)
+ * - &p &P fixed(These two symbols will be replaced with the corresponding page and the total number of pages)
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.footpagestyle = value(string),activeSheet.printSetting.footpagestyle = value(string)  
  */
 
 
@@ -503,9 +557,11 @@
  * @api {null} /null printSetting.paper
  * @apiName printSetting.paper
  * @apiGroup Attribute:activeSheet
- * @apiDescription 设置当前表打印的纸张类型默认 A4 (A3-7)   方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.paper = 值(String),activeSheet.printSetting.paper = 值(String)   
+ * @apiDescription Set the paper type for the current table printing(A3-A7) 
+ * - A4(Defaults)
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.paper = value(String),activeSheet.printSetting.paper = value(String)   
  */
 
 
@@ -513,72 +569,88 @@
  * @api {null} /null printSetting.printArea.r1
  * @apiName printSetting.printArea.r1
  * @apiGroup Attribute:activeSheet
- * @apiDescription 设置当前表页打印区域开始单元格的r1   默认''空不设置  方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.printArea.r1 = 值(int),activeSheet.printSetting.printArea.r1 = 值(int)  
+ * @apiDescription Set the row of the starting cell of the printing area of the current table page  
+ * - ''Not set(Defaults)
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.printArea.r1 = value(Int),activeSheet.printSetting.printArea.r1 = value(Int)  
  */
 
 /**
  * @api {null} /null printSetting.printArea.c1
  * @apiName printSetting.printArea.c1
  * @apiGroup Attribute:activeSheet
- * @apiDescription 设置当前表页打印区域开始单元格的c1   默认''空不设置  方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.printArea.c1 = 值(int),activeSheet.printSetting.printArea.c1 = 值(int)  
+ * @apiDescription Set the column of the starting cell of the printing area of the current table page 
+ * - ''Not set(Defaults)
+ * -  Method WB.setPrint(obj,Index) can set print settings
+ * -  Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.printArea.c1 = value(Int),activeSheet.printSetting.printArea.c1 = value(Int)
  */
 
 /**
  * @api {null} /null printSetting.printArea.r2
  * @apiName printSetting.printArea.r2
  * @apiGroup Attribute:activeSheet
- * @apiDescription 设置当前表页打印区域结束单元格的r2   默认''空不设置  方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.printArea.r2 = 值(int),activeSheet.printSetting.printArea.r2 = 值(int)  
+ * @apiDescription Set the row of the end cell of the printing area of the current table page
+ * - ''Not set(Defaults)
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.printArea.r2 = value(Int),activeSheet.printSetting.printArea.r2 = value(Int) 
  */
 
 /**
  * @api {null} /null printSetting.printArea.c2
  * @apiName printSetting.printArea.c2
  * @apiGroup Attribute:activeSheet  
- * @apiDescription 设置当前表页打印区域结束单元格的c1   默认''空不设置  方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.printArea.c2 = 值(int),activeSheet.printSetting.printArea.c2 = 值(int) 
+ * @apiDescription Set the column of the end cell of the printing area of the current table page  
+ * - ''Not set(Defaults)
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.printArea.c2 = value(Int),activeSheet.printSetting.printArea.c2 = value(Int) 
  */
 
 /**
  * @api {null} /null printSetting.marginTop
  * @apiName printSetting.marginTop
  * @apiGroup Attribute:activeSheet
- * @apiDescription 设置当前表打印上边距;单位为毫米默认5mm  方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.marginTop = 值(int),activeSheet.printSetting.marginTop = 值(int)  
+ * @apiDescription Set the top margin when printing the current table
+ * - The unit is mm(Defaults 5mm)
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.marginTop = value(Number),activeSheet.printSetting.marginTop = value(Number) 
  */
 
 /**
  * @api {null} /null printSetting.marginBottom
  * @apiName printSetting.marginBottom
  * @apiGroup Attribute:activeSheet
- * @apiDescription 设置当前表打印下边距;单位为毫米默认5mm   方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.marginBottom = 值(int),activeSheet.printSetting.marginBottom = 值(int)   
+ * @apiDescription Set the bottom margin when printing the current table
+ * - The unit is mm(Defaults 5mm)
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.marginBottom = value(Number),activeSheet.printSetting.marginBottom = value(Number)
  */
 
 /**
  * @api {null} /null printSetting.marginLeft
  * @apiName printSetting.marginLeft
  * @apiGroup Attribute:activeSheet
- * @apiDescription 设置当前表打印左边距;单位为毫米默认5mm   方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.marginLeft = 值(int),activeSheet.printSetting.marginLeft = 值(int)  
+ * @apiDescription Set the left margin when printing the current table
+ * - The unit is mm(Defaults 5mm)
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.marginLeft = value(Number),activeSheet.printSetting.marginLeft = value(Number)  
  */
 
 /**
  * @api {null} /null printSetting.marginRight
  * @apiName printSetting.marginRight
  * @apiGroup Attribute:activeSheet
- * @apiDescription 设置当前表打印右边距;单位为毫米默认5mm   方法WB.setPrint(obj,Index)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.printSetting.marginRight = 值(int),activeSheet.printSetting.marginRight = 值(int)  
+ * @apiDescription Set the right margin when printing the current table
+ * - The unit is mm(Defaults 5mm)
+ * - Method WB.setPrint(obj,Index) can set print settings
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.printSetting.marginRight = value(Number),activeSheet.printSetting.marginRight = value(Number)  
  */
 
 
@@ -586,153 +658,161 @@
  * @api {null} /null cellPadding.left
  * @apiName cellPadding.left
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表的单元格内容的左内边距(默认:2)  亦可通过调用方法WB.setCellPadding(topSize,rightSize,bottomSize,leftSize,Index)设置
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.cellPadding.left = 值(number),activeSheet.cellPadding.left = 值(number)  
+ * @apiDescription Set the left margin to get the cell contents of the current table(Defaults:2)
+ * - You can also use the method WB.setCellPadding(topSize, rightSize, bottomSize, leftSize, Index) to set
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.cellPadding.left = value(Number),activeSheet.cellPadding.left = value(Number)  
  */
 
 /**
  * @api {null} /null cellPadding.right
  * @apiName cellPadding.right
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表的单元格内容的右内边距(默认:2)  亦可可通过调用方法WB.setCellPadding(topSize,rightSize,bottomSize,leftSize,Index)设置
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.cellPadding.right = 值(number),activeSheet.cellPadding.right = 值(number)    
+ * @apiDescription Set the right padding to get the cell content of the current table(Defaults:2)  
+ * - You can also use the method WB.setCellPadding(topSize, rightSize, bottomSize, leftSize, Index) to set
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.cellPadding.right = value(Number),activeSheet.cellPadding.right = value(Number)    
  */
 
 /**
  * @api {null} /null cellPadding.top
  * @apiName cellPadding.top
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表的单元格内容的上内边距(默认:2)  亦可可通过调用方法WB.setCellPadding(topSize,rightSize,bottomSize,leftSize,Index)设置
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.cellPadding.top = 值(number),activeSheet.cellPadding.top = 值(number)  
+ * @apiDescription Set the top padding to get the cell content of the current table(Defaults:2)
+ * - You can also use the method WB.setCellPadding(topSize, rightSize, bottomSize, leftSize, Index) to set
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.cellPadding.top = value(Number),activeSheet.cellPadding.top = value(Number)
  */
 
 /**
  * @api {null} /null cellPadding.bottom
  * @apiName cellPadding.bottom
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表的单元格内容的下内边距(默认:2)  亦可可通过调用方法WB.setCellPadding(topSize,rightSize,bottomSize,leftSize,Index)设置
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.cellPadding.bottom = 值(number),activeSheet.cellPadding.bottom = 值(number)  
+ * @apiDescription Set the bottom padding to get the cell content of the current table(Defaults:2)
+ * - You can also use the method WB.setCellPadding(topSize, rightSize, bottomSize, leftSize, Index) to set
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.cellPadding.bottom = value(Number),activeSheet.cellPadding.bottom = value(Number)
  */
 
 /**
  * @api {null} /null isSelectionHideBorder
  * @apiName isSelectionHideBorder
  * @apiGroup Attribute:activeSheet
- * @apiDescription 是否隐藏选中当前表单元格的选中框(默认:false)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.isSelectionHideBorder = 值(boolean),activeSheet.isSelectionHideBorder = 值(boolean)  
+ * @apiDescription Whether to hide the check box of the selected cell of the current table(Defaults:false)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.isSelectionHideBorder = value(boolean),activeSheet.isSelectionHideBorder = value(boolean)  
  */
 
 /**
  * @api {null} /null selectOption.selectBorderColor
  * @apiName selectOption.selectBorderColor
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表选中框颜色(默认:green)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.selectOption.selectBorderColor  = 值(有效颜色值),activeSheet.selectOption.selectBorderColor  = 值(有效颜色值)  
+ * @apiDescription Checkbox color of current table(Defaults:green)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.selectOption.selectBorderColor  = value(color),activeSheet.selectOption.selectBorderColor = value(color)
  */
 
 /**
  * @api {null} /null selectOption.selectFillColor
  * @apiName selectOption.selectFillColor
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表选中框填充颜色(默认:rgba(0,0,245,0.1))
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.selectOption.selectFillColor  = 值(有效颜色值),activeSheet.selectOption.selectFillColor  = 值(有效颜色值)  
+ * @apiDescription The fill color of the check box of the current table(Defaults:rgba(0,0,245,0.1))
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.selectOption.selectFillColor  = value(color),activeSheet.selectOption.selectFillColor = value(color)
  */
 
 /**
  * @api {null} /null rowHeaderData.defaultDataNode.style.fontColor
  * @apiName rowHeaderData.defaultDataNode.style.fontColor
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表行头字体颜色(默认:#fff)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.rowHeaderData.defaultDataNode.style.fontColor = 值(有效颜色值),activeSheet.rowHeaderData.defaultDataNode.style.fontColor = 值(有效颜色值)  
+ * @apiDescription The font color of the header of the current table(Defaults:#fff)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.rowHeaderData.defaultDataNode.style.fontColor = value(color),activeSheet.rowHeaderData.defaultDataNode.style.fontColor = value(color)
  */
 
 /**
  * @api {null} /null rowHeaderData.defaultDataNode.style.fillColor
  * @apiName rowHeaderData.defaultDataNode.style.fillColor
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表行头填充颜色(默认:#008844)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.rowHeaderData.defaultDataNode.style.fillColor = 值(有效颜色值),activeSheet.rowHeaderData.defaultDataNode.style.fillColor = 值(有效颜色值)  
+ * @apiDescription The fill color of the header of the current table(Defaults:#008844)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.rowHeaderData.defaultDataNode.style.fillColor = value(color),activeSheet.rowHeaderData.defaultDataNode.style.fillColor = value(color) 
  */
 
 /**
  * @api {null} /null rowHeaderData.showRowHeading
  * @apiName rowHeaderData.showRowHeading
  * @apiGroup Attribute:activeSheet
- * @apiDescription 是否显示当前表行头(默认:false) 可用WB.showRowHeading(boolean,index)函数设置
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.rowHeaderData.showRowHeading = 值(boolean),activeSheet.rowHeaderData.showRowHeading = 值(boolean)  
+ * @apiDescription Whether to display the header of the current table(Defaults:false) 
+ * - Can be set using WB.showRowHeading(boolean, index) method
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.rowHeaderData.showRowHeading = value(boolean),activeSheet.rowHeaderData.showRowHeading = value(boolean)  
  */
 
 /**
  * @api {null} /null rowHeaderData.defaultW
  * @apiName rowHeaderData.defaultW
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表行头的宽度(默认:30)  可用WB.hdrWidth(width,index)函数设置 
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.rowHeaderData.defaultW = 值(number)  
+ * @apiDescription The width of the current table header(Defaults:30)  
+ * - Can be set using WB.hdrWidth(width, index) method
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.rowHeaderData.defaultW = value(number)  
  */
 
 /**
  * @api {null} /null colHeaderData.defaultDataNode.style.fontColor
  * @apiName colHeaderData.defaultDataNode.style.fontColor
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表列头字体颜色(默认:#fff)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.colHeaderData.defaultDataNode.style.fontColor = 值(有效颜色值)，activeSheet.colHeaderData.defaultDataNode.style.fontColor = 值(有效颜色值)  
+ * @apiDescription The font color of the column header of the current table(Defaults:#fff)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.colHeaderData.defaultDataNode.style.fontColor = value(color)，activeSheet.colHeaderData.defaultDataNode.style.fontColor = value(color)
  */
 
 /**
  * @api {null} /null colHeaderData.defaultDataNode.style.fillColor
  * @apiName colHeaderData.defaultDataNode.style.fillColor
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表列头填充颜色(默认:#008844)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.colHeaderData.defaultDataNode.style.fillColor = 值(有效颜色值)，activeSheet.colHeaderData.defaultDataNode.style.fillColor = 值(有效颜色值) 
+ * @apiDescription The fill color of the current column header(Defaults:#008844)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.colHeaderData.defaultDataNode.style.fillColor = value(color)，activeSheet.colHeaderData.defaultDataNode.style.fillColor = value(color)
  */
 
 /**
  * @api {null} /null colHeaderData.showColHeading
  * @apiName colHeaderData.showColHeading
  * @apiGroup Attribute:activeSheet
- * @apiDescription 是否显示当前表列头(默认:false)  可用WB.showColHeading(boolean,index)函数设置 
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.colHeaderData.showColHeading，activeSheet.colHeaderData.showColHeading 
+ * @apiDescription Whether to display the column header of the current table(Defaults:false) 
+ * - Can be set using WB.showColHeading(boolean, index) method
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.colHeaderData.showColHeading = value(boolean)，activeSheet.colHeaderData.showColHeading = value(boolean)
  */
 
 /**
  * @api {null} /null colHeaderData.defaultH
  * @apiName colHeaderData.defaultH
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表列头的高度(默认:30)  可用WB.hdrHeight(height,index)函数设置 
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.colHeaderData.defaultH，activeSheet.colHeaderData.defaultH 
+ * @apiDescription The height of the column header of the current table(Defaults:30) 
+ * - Can be set using WB.hdrHeight(height, index) method
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.colHeaderData.defaultH = value(Number)，activeSheet.colHeaderData.defaultH = value(Number)
  */
 
 /**
  * @api {null} /null defaults.colWidth
  * @apiName defaults.colWidth
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表默认列宽(默认:60)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.defaults.colWidth = 值(number)，activeSheet.defaults.colWidth = 值(number)  
+ * @apiDescription The default column width of the current table(Defaults:60)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.defaults.colWidth = value(number)，activeSheet.defaults.colWidth = value(number)  
  */
 
 /**
  * @api {null} /null defaults.rowHeight
  * @apiName defaults.rowHeight
  * @apiGroup Attribute:activeSheet
- * @apiDescription 当前表默认行高(默认:30)
- * - 当前表的获取跟设置请看(sheetIndex,getActiveSheet)
- * - WB.activeSheet.defaults.rowHeight = 值(number) ，activeSheet.defaults.rowHeight = 值(number) 
+ * @apiDescription The default row height of the current table(Defaults:30)
+ * - Please refer to (sheetIndex, getActiveSheet) for the current table acquisition and setting
+ * - WB.activeSheet.defaults.rowHeight = value(number) ，activeSheet.defaults.rowHeight = value(number) 
  */
 
 

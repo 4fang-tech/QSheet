@@ -1,6 +1,6 @@
 {
     "name": "Table.js", 
     "version": "1.0.0",
-    "description": "table.js属性与方法接口文档",
+    "description": "table.js属性与方法接口文档 WB是new出来的实例",
     "title": "Table.js"
 }

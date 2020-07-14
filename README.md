@@ -32,11 +32,8 @@
     - FileSaver.js:&nbsp;*third-party files required for file export*
     - jszip.min.js:&nbsp;*Import third-party files needed for compressed files (excel)*
 
-## How to use apidoc
+## Where is the api documentation?
 
-- ```
-  npm install apidoc -g
-  ```
 
 - Open index.html under apidoc
 

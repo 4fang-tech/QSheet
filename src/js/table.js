@@ -3775,7 +3775,7 @@ Workbook.prototype.createData = function(i,j,Index){
         data[i.toString()][j.toString()]  = colObj
     }else if(data[i][j]&&!data[i][j].style){
         var styleObj = JSON.parse(JSON.stringify(this.defaultCellStyle))
-        data[i.toString()][j.toString()].sytle  = styleObj
+        data[i.toString()][j.toString()].style  = styleObj
     };
     for(var k = 0;k<spans.length;k++){                  //删除多余的
         if(spans[k].row<=i&&i<(spans[k].row+spans[k].rowCount)&&spans[k].col<=j&&j<(spans[k].col+spans[k].colCount)){

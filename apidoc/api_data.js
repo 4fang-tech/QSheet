@@ -1812,7 +1812,7 @@ define({ "api": [
   },
   {
     "type": "null",
-    "url": "WB.deleteText(R1,C1,R2,C2,Index)",
+    "url": "WB.clearText(R1,C1,R2,C2,Index)",
     "title": "clearText",
     "name": "clearText",
     "group": "Function",

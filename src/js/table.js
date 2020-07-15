@@ -4394,7 +4394,7 @@ Workbook.prototype.editPaste = function(R,C,Index){
 }
 
  /**
- * @api {null} WB.deleteText(R1,C1,R2,C2,Index) clearText
+ * @api {null} WB.clearText(R1,C1,R2,C2,Index) clearText
  * @apiName clearText
  * @apiGroup Function
  * @apiDescription Clear the text of a range of cells(if there is text and value; text and value is set to empty)

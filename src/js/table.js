@@ -79,7 +79,6 @@ Workbook.prototype.init = function(){
     this.bindEvent();       //事件绑定
 };
 
-
 //工作簿默认的参数
 Workbook.prototype.defaultBook = function(){
     return {
@@ -332,6 +331,7 @@ Workbook.prototype.bindEvent = function(){
         clickX = x;clickY = y;
         this.eButton = e.button;
         this.incanvasPath=true;
+        window.boxId = this.boxId
         //点击添加一个表区域：
         if(x>this.tabSumW+10&&x<this.tabSumW+20&&y>this.height-this.tabsHeight&&y<this.height&&showTabs==1&&showAdd){
             this.addSheet()
@@ -554,15 +554,15 @@ Workbook.prototype.bindEvent = function(){
         mousedown:function(e){
             e = e || window.event;
             var pos = this.getMousePos(this.canvas,e),x = pos.x,y = pos.y;
-            if(x>0&&x<this.width&&y>0&&y<this.height){
-                window.boxId = this.boxId;
-            }
-            if(window.boxId == this.boxId){
+            // if(x>0&&x<this.width&&y>0&&y<this.height){
+            //     window.boxId = this.boxId;
+            // }
+            // if(window.boxId == this.boxId){
                 if(menu)  menu.className = "hidden";
                 if((x<0||x>this.horizontalLine||y<0||y>this.verticalLine)&&this.tempValue.r>=0&&this.tempValue.c>=0){
-                    this.removeTextArea()
                     var child = document.querySelector('#'+this.boxId+' .child'),text = child.innerText,
                     value = this.getValue(this.activeSheet.activeRow,this.activeSheet.activeCol);
+                    this.removeTextArea()
                     if(text!=value&&text!=''){
                         this.startPaint()
                     }
@@ -570,7 +570,7 @@ Workbook.prototype.bindEvent = function(){
                 if(x<0||x>this.width||y<0||y>this.height){
                     this.incanvasPath = false;
                 }
-            }
+            // }
         }.bind(this),
 
         //document mousemove 事件
@@ -1935,7 +1935,7 @@ Workbook.prototype.drawCellContent = function(startR,startC,endR,endC,Index){
                     isRed = true
                 }            
                 if(formatter&&(cell.hasOwnProperty('text')||cell.hasOwnProperty('value'))){
-                    text = this.getFormatValue(text,formatter);   
+                    text = this.getFormatValue(text,formatter);  
                 };
                 this.initValue(text,R,C,allRow+this.numRowH,allCol+this.numColW,style,isRed,index) 
             } 

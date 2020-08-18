@@ -6489,7 +6489,9 @@ Workbook.prototype.setCanvasInput = function (width, height, top, left, r, c) {
         textarea.style.cssText = 'top:'+top+'px;left:'+left+'px;max-height:'+height+'px;max-width:'+width+'px;position:absolute;overflow:hidden;'
         textarea.setAttribute('r', r)
         textarea.setAttribute('c', c)
-        document.querySelector("#"+this.boxId+" .child").style.cssText= isBreakLine+';min-width:'+width+'px;max-width:'+width+'px;height:'+height+'px;font:'+font+';display:table-cell;overflow:hidden;vertical-align:'+ middleAlign+';background:'+bgColor+';text-align:'+textAlign+";color:"+fontColor+";text-decoration:"+Textline+";box-sizing:border-box";
+        document.querySelector("#"+this.boxId+" .child").style.cssText= isBreakLine+';min-width:'+width+'px;max-width:'+width+'px;height:'+height+'px;font:'+font+
+        ';display:table-cell;overflow:hidden;vertical-align:'+ middleAlign+';background:'+bgColor+';text-align:'+textAlign+";color:"+fontColor+";text-decoration:"+
+        Textline+";box-sizing:border-box;user-select:text;-moz-user-select:text;-webkit-user-select:text;-ms-user-select:text";
     }
     if((top>this.height-this.tabsHeight-this.scrollSize)||(left>this.width-this.scrollSize)||height<=0||width<=0){    //超出隐藏textarea框
         textarea.style.display = "none";

@@ -8182,8 +8182,10 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
 Workbook.prototype.getPrintAreaPosition = function(Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),printSetting = activeSheet.printSetting;
     var rows = activeSheet.rows,cols = activeSheet.columns;
-    var printR1 = parseInt(printSetting.printArea.r1) || 0,printC1 = parseInt(printSetting.printArea.c1) || 0,
-    printR2 = parseInt(printSetting.printArea.r2) || rows.length-1,printC2 = parseInt(printSetting.printArea.c2) || cols.length-1;
+    var printR1 = parseInt(printSetting.printArea.r1)>=0?parseInt(printSetting.printArea.r1):activeSheet.rangeRow1;
+    var printC1 = parseInt(printSetting.printArea.c1)>=0?parseInt(printSetting.printArea.c1):activeSheet.rangeCol1;
+    var printR2 = parseInt(printSetting.printArea.r2)>=0?parseInt(printSetting.printArea.r2):activeSheet.rangeRow2;
+    var printC2 = parseInt(printSetting.printArea.c2)>=0?parseInt(printSetting.printArea.c2):activeSheet.rangeCol2;
     var maxRowAndCol = this.getMaxRowAndCol(index)  //获取最大有单元格的行与列 以及该总行高与总列宽
     var maxRow = maxRowAndCol.maxRow,maxCol = maxRowAndCol.maxCol;
     if(printR1>maxRow){

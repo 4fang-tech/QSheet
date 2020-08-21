@@ -7998,6 +7998,7 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
                 var index = i,activeSheet = _this.getActiveSheet(index),printSetting = activeSheet.printSetting;
                 var printDirection = parseInt(printSetting.printDirection);
                 printDirection = (printDirection>=1&&printDirection<=2)?printDirection:1;
+                var sheetPageArr = [];
                 var orientation = parseInt(printSetting.orientation);
                 orientation = (orientation>=1&&orientation<=2)?orientation:1;
                 var paperInfo = _this.getPaperSize(index),printW = paperInfo.paperW,printH = paperInfo.paperH,
@@ -8080,13 +8081,18 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
                             }
                         }
                         var base64 = canvas.toDataURL();
-                        pageArr.push({'page':page,'base64':base64,'sx':sx,'sWidth':sWidth,'sy':Math.floor(sy-(totolH-h)*_this.ratio),'sHeight':sHeight,'row':row,'col':col,'index':i,'canvasW':canvasW,'canvasH':canvasH,'isshowfooterpageinfo':isshowfooterpageinfo,
+                        sheetPageArr.push({'page':page,'base64':base64,'sx':sx,'sWidth':sWidth,'sy':Math.floor(sy-(totolH-h)*_this.ratio),'sHeight':sHeight,'row':row,'col':col,'index':i,'canvasW':canvasW,'canvasH':canvasH,'isshowfooterpageinfo':isshowfooterpageinfo,
                         'footpagestyle':footpagestyle,'marginT':marginTop,'marginB':marginBottom,'marginL':marginLeft,'marginR':marginRight})
                     }
                 }
+                sheetPageArr = _this.deleteEmptyPage(sheetPageArr);
+                pageArr = pageArr.concat(sheetPageArr)
             }
         };
-        pageArr = _this.deleteEmptyPage(pageArr);
+        //重置page
+        for(var k = 0;k<pageArr.length;k++){
+            pageArr[k].page = k+1;
+        }  
         if(pageArr.length>=1){
             var newPageArr = [],newH = 0,newW = 0,marginC = 0;
             for(var t = 0;t<pageArr.length;t++){
@@ -8236,8 +8242,6 @@ Workbook.prototype.deleteEmptyPage = function(pageArr){
             var index = (pageArr[i].index>=0)?pageArr[i].index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
             rows = activeSheet.rows,cols = activeSheet.columns,data = activeSheet.data.dataTable,
             spans = activeSheet.spans,printSetting = activeSheet.printSetting,numColW = 0,numRowH = 0;
-            var printDirection = parseInt(printSetting.printDirection);
-            printDirection = (printDirection>=1&&printDirection<=2)?printDirection:1;
             if(printSetting.printHeadings){
                 numColW = activeSheet.rowHeaderData.defaultW;
                 numRowH = activeSheet.colHeaderData.defaultH;
@@ -8294,6 +8298,9 @@ Workbook.prototype.deleteEmptyPage = function(pageArr){
         }
         var diviR,diviC
         for(var i = pageArr.length-1;i>=0;i--){
+            var activeS = this.getActiveSheet(pageArr[i].index)
+            var printDirection = parseInt(activeS.printSetting.printDirection);
+            printDirection = (printDirection>=1&&printDirection<=2)?printDirection:1;
             if(pageArr[i].ety!==false){
                 pageArr.splice(i,1)
             }else if(pageArr[i].ety===false&&printDirection==1){
@@ -8306,26 +8313,19 @@ Workbook.prototype.deleteEmptyPage = function(pageArr){
         };
     
         for(var j = pageArr.length-1;j>=0;j--){
-            if(pageArr[j].row>diviR&&printDirection==1){
+            var activeSS = this.getActiveSheet(pageArr[j].index)
+            var printDirectionS = parseInt(activeSS.printSetting.printDirection);
+            printDirectionS = (printDirectionS>=1&&printDirectionS<=2)?printDirectionS:1;
+            if(pageArr[j].row>diviR&&printDirectionS==1){
                 if(pageArr[j].ety!==false){
                     pageArr.splice(j,1)
                 }
-            }else if(pageArr[j].col>diviC&&printDirection==2){
+            }else if(pageArr[j].col>diviC&&printDirectionS==2){
                 if(pageArr[j].ety!==false){
                     pageArr.splice(j,1)
                 }
             }
         }
-            
-        //重置page
-        for(var k = 0;k<pageArr.length;k++){
-            pageArr[k].page = k+1;
-            // delete pageArr[k].row;
-            // delete pageArr[k].col;
-            // delete pageArr[k].ety;
-            // delete pageArr[k].index
-        }  
-        
         return pageArr  
     }
 }  

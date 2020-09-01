@@ -12,8 +12,8 @@ function Workbook(id,data){
     this.ctx = this.canvas.getContext('2d');
     this.ratio = this.getPixelRatio()   //获取屏幕缩放比例(缩放影响canvas模糊 canvas要缩放这个比的值以保证显示效果)
     this.scrollbarWidth = this.getScrollBarWidth(); //获取浏览器滚动条宽度
-    this.totolHeight = 0;               //所有行(rows的总和)
-    this.totolWidth = 0;    
+    this.totalHeight = 0;               //所有行(rows的总和)
+    this.totalWidth = 0;    
     this.startTabW = 100;               //tabs栏表开始位置的初始距离(该值根据左边的箭头宽度改变)
     this.sheetItemExtraW = 10;          //tabs栏每一个表项增加的额外宽度
     this.tabArrowPadding = 15           //tabs栏四个箭头的padding
@@ -196,9 +196,9 @@ Workbook.prototype.defaultBook = function(){
                 },
                 "scrollOption":{                            //滚动条参数
                     "coordY":0,                             //滚动垂直的距离
-                    "totolY":0,                             //垂直方向已经存在的距离
+                    "totalY":0,                             //垂直方向已经存在的距离
                     "coordX":0,                             //滚动水平的距离
-                    "totolX":0,                             //水平方向已经存在的距离
+                    "totalX":0,                             //水平方向已经存在的距离
                     "offsetX":0,                            //水平偏移（滚动到最后一列   首列有该偏移量  最后列才能够刚刚显示完整）
                     "offsetY":0,                            //垂直偏移（滚动到最后一行   首行有该偏移量  最后行才能够刚刚显示完整）
                 },
@@ -974,7 +974,7 @@ Workbook.prototype.isClickCell = function(x,y){
 //是否有竖向滚动条
 Workbook.prototype.isHasVBar = function(){
     var isHas = false;
-    if(this.workbook.showVScrollBar==1&&this.totolHeight+this.numRowH>this.height&&this.percentageV<1){
+    if(this.workbook.showVScrollBar==1&&this.totalHeight+this.numRowH>this.height&&this.percentageV<1){
         isHas = true;
     }
     return isHas
@@ -983,7 +983,7 @@ Workbook.prototype.isHasVBar = function(){
 //是否有横向滚动条
 Workbook.prototype.isHasHBar = function(){
     var isHas = false;
-    if(this.workbook.showHScrollBar==1&&this.totolWidth+this.numColW>this.width&&this.percentageH<1){
+    if(this.workbook.showHScrollBar==1&&this.totalWidth+this.numColW>this.width&&this.percentageH<1){
         isHas = true;
     }
     return isHas;
@@ -1066,7 +1066,7 @@ Workbook.prototype.getMousePos = function(canvas,event){     //获取鼠标在ca
 Workbook.prototype.drawTable = function(){   
     if(this.workbook.stopPaintedCount===0){     //当stopPaintedCount===0才发生重绘
         var activeSheet = this.getActiveSheet(),row = activeSheet.rows,col = activeSheet.columns;
-        this.totolWidth = 0;this.totolHeight = 0;
+        this.totalWidth = 0;this.totalHeight = 0;
         this.workbook.width = this.width;this.workbook.height = this.height;
         this.btnArr = [];this.checkBoxBtn = [];
         this.canvas.style.width = this.width + 'px';  //输出到浏览器 可见的/最终的大小
@@ -1075,9 +1075,9 @@ Workbook.prototype.drawTable = function(){
         this.canvas.height = this.height*this.ratio;
         this.ctx.scale(this.ratio, this.ratio);   //放大画布
         this.canvas.style.border = (this.workbook.showWorkBookBorder)?("1px solid "+this.workbook.workBookBorderColor):"1px solid transparent";         //是否显示canvas border
-        var totolAndPercent = this.getTotolAndPercent();
-        this.totolHeight = totolAndPercent.totolHeight;this.totolWidth = totolAndPercent.totolWidth;
-        this.percentageV = totolAndPercent.percentageV;this.percentageH = totolAndPercent.percentageH; 
+        var totalAndPercent = this.getTotalAndPercent();
+        this.totalHeight = totalAndPercent.totalHeight;this.totalWidth = totalAndPercent.totalWidth;
+        this.percentageV = totalAndPercent.percentageV;this.percentageH = totalAndPercent.percentageH; 
         this.getStartAndEnd()    //获取更新可视化区域的起始行列;
         var startRow = activeSheet.startRow,startCol = activeSheet.startCol,endRow = activeSheet.endRow,endCol = activeSheet.endCol,
         fixedRow = activeSheet.fixed.fixedRow,fixedCol = activeSheet.fixed.fixedCol,fixedRows = activeSheet.fixed.fixedRows,
@@ -1098,8 +1098,8 @@ Workbook.prototype.drawTable = function(){
                 activeSheet.rangeCol2 = item.col+item.colCount-1;
             };
         });
-        this.horizontalLine = totolAndPercent.horizontalLine;this.verticalLine = totolAndPercent.verticalLine;
-        this.scrollVLeft = totolAndPercent.scrollVLeft;
+        this.horizontalLine = totalAndPercent.horizontalLine;this.verticalLine = totalAndPercent.verticalLine;
+        this.scrollVLeft = totalAndPercent.scrollVLeft;
         if(mode==2){    //grid模式默认增加上下左右的padding
             if(!activeSheet.cellPadding.left)   activeSheet.cellPadding.left = 5;
             if(!activeSheet.cellPadding.right)   activeSheet.cellPadding.right = 5;
@@ -1311,12 +1311,12 @@ Workbook.prototype.getEndSheet = function(){
 }
 
 //获取总行高列宽滚动条占比
-Workbook.prototype.getTotolAndPercent = function(Index){
+Workbook.prototype.getTotalAndPercent = function(Index){
     this.getStartAndEnd()
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
     var row = activeSheet.rows,col = activeSheet.columns,hideH = activeSheet.fixed.hideH,hideW = activeSheet.fixed.hideW,
     startRow = activeSheet.startRow,endRow = activeSheet.endRow,startCol = activeSheet.startCol,endCol = activeSheet.endCol,
-    fH = 0 , fW = 0,totolHeight = 0,totolWidth = 0,percentageV = 1,percentageH = 1,horizontalLine = activeSheet.fixed.fixedW+this.numColW,
+    fH = 0 , fW = 0,totalHeight = 0,totalWidth = 0,percentageV = 1,percentageH = 1,horizontalLine = activeSheet.fixed.fixedW+this.numColW,
     verticalLine = activeSheet.fixed.fixedH+this.numRowH,scrollVLeft = 0;
     if(this.workbook.scrollMode==2){
         fH = activeSheet.fixed.fixedH;
@@ -1330,7 +1330,7 @@ Workbook.prototype.getTotolAndPercent = function(Index){
         if(item.bHidden){
            item.size = 0;
         }
-        totolHeight+=item.size; 
+        totalHeight+=item.size; 
     });
     //总列宽
     col.forEach(function(item){
@@ -1340,7 +1340,7 @@ Workbook.prototype.getTotolAndPercent = function(Index){
         if(item.bHidden){
             item.size = 0;
         }
-        totolWidth+=item.size
+        totalWidth+=item.size
     });
     for(var i = startCol;i <= endCol;i++){
         if(col[i])   horizontalLine+=col[i].size; 
@@ -1360,13 +1360,13 @@ Workbook.prototype.getTotolAndPercent = function(Index){
         if(this.diffTabsH>this.tabsHeight)   this.diffTabsH = this.tabsHeight;;
     }
     
-    percentageV = (this.height-this.numRowH-fH-this.tabsHeight)/(totolHeight-hideH-fH);
-    percentageH = (this.width-this.numColW-fW)/(totolWidth-hideW-fW);
+    percentageV = (this.height-this.numRowH-fH-this.tabsHeight)/(totalHeight-hideH-fH);
+    percentageH = (this.width-this.numColW-fW)/(totalWidth-hideW-fW);
     if(percentageH>1)    percentageH = 1;
     if(percentageV>1)    percentageV = 1
     percentageH =  percentageH.toFixed(5)-0;
     percentageV =  percentageV.toFixed(5)-0;
-    return {"totolHeight":totolHeight,"totolWidth":totolWidth,"percentageV":percentageV,"percentageH":percentageH,"horizontalLine":horizontalLine,"verticalLine":verticalLine,"scrollVLeft":scrollVLeft}
+    return {"totalHeight":totalHeight,"totalWidth":totalWidth,"percentageV":percentageV,"percentageH":percentageH,"horizontalLine":horizontalLine,"verticalLine":verticalLine,"scrollVLeft":scrollVLeft}
 }
 
 //绘制tabs栏
@@ -1954,8 +1954,8 @@ Workbook.prototype.recalculatePercentage = function(Index){
         fH = fixedH;
         fW = fixedW;
     }
-    this.percentageV = ((this.height-this.numRowH-fH-this.tabsHeight)/(this.totolHeight-hideH-fH));
-    this.percentageH = ((this.width-this.numColW-fW)/(this.totolWidth-hideW-fW));
+    this.percentageV = ((this.height-this.numRowH-fH-this.tabsHeight)/(this.totalHeight-hideH-fH));
+    this.percentageH = ((this.width-this.numColW-fW)/(this.totalWidth-hideW-fW));
     if(this.percentageV>1) this.percentageV = 1;
     if(this.percentageH>1) this.percentageH = 1;
     this.percentageV = this.percentageV.toFixed(5)-0;
@@ -2100,14 +2100,14 @@ Workbook.prototype.getSpansInfo = function(Index){
 
 //获取纵向最大的滚动距离
 Workbook.prototype.getYMaxScroll = function(){
-    var maxY = ((this.totolHeight+this.numRowH-this.height-this.activeSheet.fixed.hideH)*this.percentageV).toFixed(2)-0;
+    var maxY = ((this.totalHeight+this.numRowH-this.height-this.activeSheet.fixed.hideH)*this.percentageV).toFixed(2)-0;
     if(maxY<0) maxY = 0;
     return maxY
 }
 
 //获取横向最大的滚动距离
 Workbook.prototype.getXMaxScroll = function(){
-    var maxX = ((this.totolWidth+this.numColW-this.width-this.activeSheet.fixed.hideW)*this.percentageH).toFixed(2)-0;
+    var maxX = ((this.totalWidth+this.numColW-this.width-this.activeSheet.fixed.hideW)*this.percentageH).toFixed(2)-0;
     if(maxX<0) maxX = 0;
     return maxX;
 }
@@ -2117,7 +2117,7 @@ Workbook.prototype.dragVBar = function(moveVBar,clickY,moveY){
     var activeSheet = this.activeSheet,y = 0,maxY = this.getYMaxScroll(),
     oldStartRow = activeSheet.startRow,oldOffsetY = activeSheet.scrollOption.offsetY;
   
-    y = moveY - clickY + activeSheet.scrollOption.totolY;
+    y = moveY - clickY + activeSheet.scrollOption.totalY;
     if(this.popup){
         this.popup.closeAll()
     }
@@ -2136,7 +2136,7 @@ Workbook.prototype.dragVBar = function(moveVBar,clickY,moveY){
         activeSheet.scrollOption.coordY = 0
     }
     if(!moveVBar){
-        activeSheet.scrollOption.totolY =  activeSheet.scrollOption.coordY ;
+        activeSheet.scrollOption.totalY =  activeSheet.scrollOption.coordY ;
     }
     if((oldStartRow!=startRow)||(offsetY!=oldOffsetY)){
         this.startPaint(true)
@@ -2147,7 +2147,7 @@ Workbook.prototype.dragVBar = function(moveVBar,clickY,moveY){
 Workbook.prototype.dragHBar = function(moveHBar,clickX,moveX){    
     var activeSheet = this.activeSheet,x,maxX = this.getXMaxScroll(),oldStartCol = activeSheet.startCol,
     oldOffsetX = activeSheet.scrollOption.offsetX;
-    x = moveX - clickX + activeSheet.scrollOption.totolX;
+    x = moveX - clickX + activeSheet.scrollOption.totalX;
     if(this.popup){
         this.popup.closeAll()
     }
@@ -2166,7 +2166,7 @@ Workbook.prototype.dragHBar = function(moveHBar,clickX,moveX){
         activeSheet.scrollOption.coordX = 0
     }
     if(!moveHBar){
-        activeSheet.scrollOption.totolX =  activeSheet.scrollOption.coordX 
+        activeSheet.scrollOption.totalX =  activeSheet.scrollOption.coordX 
     } 
     if((oldStartCol!=startCol)||(oldOffsetX!=offsetX)){
         this.startPaint(true)
@@ -2232,7 +2232,7 @@ Workbook.prototype.scrollFun = function(e){
                 activeSheet.scrollOption.coordY = activeSheet.scrollOption.coordY.toFixed(5)-0
                 if( activeSheet.scrollOption.coordY<=0){
                     activeSheet.scrollOption.coordY = 0 ;
-                    activeSheet.scrollOption.totolY = 0
+                    activeSheet.scrollOption.totalY = 0
                 }
             }
             if(e.wheelDelta<0){  //下滚  负数                   
@@ -2276,7 +2276,7 @@ Workbook.prototype.scrollFun = function(e){
                 activeSheet.scrollOption.coordY = activeSheet.scrollOption.coordY.toFixed(5)-0
                 if(activeSheet.scrollOption.coordY<=0){
                     activeSheet.scrollOption.coordY = 0 ;
-                    activeSheet.scrollOption.totolY = 0
+                    activeSheet.scrollOption.totalY = 0
                 }
             }
         };       
@@ -2286,7 +2286,7 @@ Workbook.prototype.scrollFun = function(e){
         if(activeSheet.scrollOption.coordY>=0&&startRow==startR&&offsetY==0){
             activeSheet.scrollOption.coordY = 0
         }
-        activeSheet.scrollOption.totolY = activeSheet.scrollOption.coordY; 
+        activeSheet.scrollOption.totalY = activeSheet.scrollOption.coordY; 
         if((oldStartRow!=startRow)||(offsetY!=oldOffsetY)){
             this.startPaint(true)
         }
@@ -2867,7 +2867,7 @@ Workbook.prototype.swapCell = function(e){
         if(activeSheet.scrollOption.coordY>=maxY){
             activeSheet.scrollOption.coordY = maxY;            
         };
-        activeSheet.scrollOption.totolY = activeSheet.scrollOption.coordY         //totolY   也要记录
+        activeSheet.scrollOption.totalY = activeSheet.scrollOption.coordY         //totalY   也要记录
     }
      //上方向键选中的单元格小于开始行，开始行作相应改变
     if(coordY>0&&activeSheet.rangeRow1<=startRow+1&&this.percentageV<1&&this.percentageV>0&&e.keyCode == 38){
@@ -2889,7 +2889,7 @@ Workbook.prototype.swapCell = function(e){
         if(activeSheet.scrollOption.coordY<=0){
             activeSheet.scrollOption.coordY = 0
         };
-        activeSheet.scrollOption.totolY = activeSheet.scrollOption.coordY;
+        activeSheet.scrollOption.totalY = activeSheet.scrollOption.coordY;
     };
     //右方向键选中的单元格超过最后一列，开始列作相应改变
     if(coordX<maxX&&activeSheet.rangeCol2>=endCol-1&&this.percentageH<1&&this.percentageH>0&&(e.keyCode==39||e.keyCode==9||(this.enterToRight&&e.keyCode==13))){   
@@ -2911,7 +2911,7 @@ Workbook.prototype.swapCell = function(e){
         if( activeSheet.scrollOption.coordX>=maxX){
             activeSheet.scrollOption.coordX = maxX
         };
-        activeSheet.scrollOption.totolX =  activeSheet.scrollOption.coordX ;
+        activeSheet.scrollOption.totalX =  activeSheet.scrollOption.coordX ;
     };
     //左方向键选中的单元格小于开始列，开始列作相应改变
     if(coordX>0&&activeSheet.rangeCol1<=startCol+1&&this.percentageH<1&&this.percentageH>0&&e.keyCode==37){   
@@ -2933,7 +2933,7 @@ Workbook.prototype.swapCell = function(e){
         if( activeSheet.scrollOption.coordX<=0){
             activeSheet.scrollOption.coordX = 0
         };
-        activeSheet.scrollOption.totolX =  activeSheet.scrollOption.coordX ;
+        activeSheet.scrollOption.totalX =  activeSheet.scrollOption.coordX ;
     };
     if(!(r1==activeSheet.rangeRow1&&c1==activeSheet.rangeCol1)||(startCol>fixedCols&&activeSheet.scrollOption.coordX==0)||
     (startRow>fixedRows&&activeSheet.scrollOption.coordY==0)||(endCol<cols.length-1&&activeSheet.scrollOption.coordX==maxX)||
@@ -2954,11 +2954,11 @@ Workbook.prototype.showArrow = function(x,y){
     for(var i = 0;i<startC;i++){
         if(col[i])  startWidth +=col[i].size;
     };
-    var totolY = y + startHeight - fy + oy,totolX = x + startWidth - fx + ox;
+    var totalY = y + startHeight - fy + oy,totalX = x + startWidth - fx + ox;
     for(var k=0;k<row.length;k++){
         if(row[k]){
             sumHeight += row[k].size;
-            if(totolY<=sumHeight&&totolY>this.numRowH){
+            if(totalY<=sumHeight&&totalY>this.numRowH){
                 break;
             }
         }    
@@ -2966,7 +2966,7 @@ Workbook.prototype.showArrow = function(x,y){
     for(var j=0;j<col.length;j++){
         if(col[j]){
             sumWidth += col[j].size;
-            if(totolX<=sumWidth&&totolX>this.numColW){
+            if(totalX<=sumWidth&&totalX>this.numColW){
                 break;
             } 
         }             
@@ -2977,7 +2977,7 @@ Workbook.prototype.showArrow = function(x,y){
         this.isVArrow=false
     };
     if(y<=this.numRowH&&x>0&&y>0&&x<=this.width){
-        if((totolX>sumWidth-6&&totolX<sumWidth||(x>this.numColW-6&&x<this.numColW&&y>0&&y<this.numRowH))&&!isFocus){
+        if((totalX>sumWidth-6&&totalX<sumWidth||(x>this.numColW-6&&x<this.numColW&&y>0&&y<this.numRowH))&&!isFocus){
             this.canvas.style.cursor = "e-resize";
             this.isHArrow=true
         }else{
@@ -2987,7 +2987,7 @@ Workbook.prototype.showArrow = function(x,y){
         this.isVArrow=false
     } 
     if(x<this.numColW&&y>this.numRowH-4&&y<this.height-this.tabsHeight){
-        if((totolY>sumHeight-6&&totolY<sumHeight||(y>this.numRowH-6&&y<this.numRowH&&x>0&&x<this.numColW))&&!isFocus){
+        if((totalY>sumHeight-6&&totalY<sumHeight||(y>this.numRowH-6&&y<this.numRowH&&x>0&&x<this.numColW))&&!isFocus){
             this.canvas.style.cursor = "n-resize"
             this.isVArrow=true;
         }else{
@@ -3031,15 +3031,15 @@ Workbook.prototype.createLine = function(createDiv){
         if(rows[j]) sumHeight += rows[j].size;
     }
     
-    if((this.totolWidth+this.numColW)>this.width){
+    if((this.totalWidth+this.numColW)>this.width){
         horLine = this.width - vBarSize;
     }else{
-        horLine= this.totolWidth + this.numColW - vBarSize
+        horLine= this.totalWidth + this.numColW - vBarSize
     }
-    if((this.totolHeight+this.numRowH)>this.height-this.tabsHeight){
+    if((this.totalHeight+this.numRowH)>this.height-this.tabsHeight){
         verLine = this.height - this.tabsHeight - hBarSize;
     }else{
-        verLine= this.totolHeight + this.numRowH - hBarSize
+        verLine= this.totalHeight + this.numRowH - hBarSize
     }
     var div = document.createElement("div");
     div.style.background = "green";
@@ -3084,7 +3084,7 @@ Workbook.prototype.changeCellWidth = function(changWidth,clickX,canvasMoveX){
         }
         diffX = x2 - x1 ;
         divLine.style.left = sumWidth+diffX+fixedW-offsetX+this.paddingL+"px";   
-        var line = document.getElementsByClassName('line'),totolCut = 0;
+        var line = document.getElementsByClassName('line'),totalCut = 0;
         if(!changWidth){    //拖拽列宽 鼠标释放的时候
             this.canvas.style.cursor = "default";
             for(var i = line.length - 1; i >= 0; i--) { //清除线条（竖向div）
@@ -3093,7 +3093,7 @@ Workbook.prototype.changeCellWidth = function(changWidth,clickX,canvasMoveX){
             if(col!=-1&&cols[col]){
                 if(Math.abs(diffX)>=cols[col].size&&diffX<=0){   //改变列宽
                     activeSheet.columns[col].bHidden = true;    //往左拖  超过diffx小于本身宽度  隐藏该列
-                    totolCut = -cols[col].size
+                    totalCut = -cols[col].size
                     activeSheet.columns[col].tempSize = cols[col].size;
                     activeSheet.columns[col].size = 0;  
                     this.setNoDefaultW(col)
@@ -3107,7 +3107,7 @@ Workbook.prototype.changeCellWidth = function(changWidth,clickX,canvasMoveX){
                         activeSheet.columns[col].size = cols[col].size + diffX;
                          this.setNoDefaultW(col)
                     }
-                    totolCut = diffX;
+                    totalCut = diffX;
                 }
             }else if(col == -1){  
                 if(Math.abs(diffX)>activeSheet.rowHeaderData.defaultW&&diffX<0){    //改变行头宽度
@@ -3117,7 +3117,7 @@ Workbook.prototype.changeCellWidth = function(changWidth,clickX,canvasMoveX){
                 }
                 activeSheet.selHdrTopLeft = false
             };
-            this.totolWidth = this.totolWidth + totolCut;
+            this.totalWidth = this.totalWidth + totalCut;
             this.recalculatePercentage()
             this.startPaint(true);
         } 
@@ -3163,7 +3163,7 @@ Workbook.prototype.changeCellHeight = function(changHeight,clickY,canvasMoveY){
         }
         diffY = y2 - y1  ;
         divLine.style.top = sumHeight+diffY+fixedH-offsetY+this.paddingT+"px"  
-        var line = document.getElementsByClassName('line'),totolCut = 0;
+        var line = document.getElementsByClassName('line'),totalCut = 0;
         if(!changHeight){
             for(var i = line.length - 1; i >= 0; i--) { 
                 line[i].parentNode.removeChild(line[i]); 
@@ -3171,7 +3171,7 @@ Workbook.prototype.changeCellHeight = function(changHeight,clickY,canvasMoveY){
             if(row !=-1&&rows[row]){                                  
                 if(Math.abs(diffY)>=rows[row].size&&diffY<0){
                     activeSheet.rows[row].bHidden = true;
-                    totolCut = -rows[row].size
+                    totalCut = -rows[row].size
                     activeSheet.rows[row].tempSize = rows[row].size;
                     activeSheet.rows[row].size = 0;  
                     this.setNoDefaultH(row)
@@ -3185,7 +3185,7 @@ Workbook.prototype.changeCellHeight = function(changHeight,clickY,canvasMoveY){
                         activeSheet.rows[row].size = rows[row].size + diffY;
                         this.setNoDefaultH(row)
                     }
-                    totolCut = diffY
+                    totalCut = diffY
                 }
             }else if(row == -1){                        
                 if(Math.abs(diffY)> activeSheet.colHeaderData.defaultH&&diffY<0){
@@ -3195,7 +3195,7 @@ Workbook.prototype.changeCellHeight = function(changHeight,clickY,canvasMoveY){
                 }
                 activeSheet.selHdrTopLeft = false
             }
-            this.totolHeight = this.totolHeight + totolCut;
+            this.totalHeight = this.totalHeight + totalCut;
             this.recalculatePercentage()
             this.startPaint(true)
         }
@@ -3527,7 +3527,7 @@ Workbook.prototype.maxCol = function(num,Index){
     var len = activeSheet.columns.length,data =  activeSheet.data.dataTable,_this = this,spans =  activeSheet.spans
     if(num<0) num = 0;
     if(num>=0){
-        this.totolWidth = 0;
+        this.totalWidth = 0;
         if(num>len){    //传入num大于当前列数  则增加列数
             for(var i = 0;i<num-len;i++){
                 activeSheet.columns.push({"size":  activeSheet.defaults.colWidth})
@@ -3583,7 +3583,7 @@ Workbook.prototype.maxCol = function(num,Index){
             if(item.bHidden){
                 item.size = 0;
             }
-            _this.totolWidth+=item.size
+            _this.totalWidth+=item.size
         });
         this.tempValue = {}
         this.recalculatePercentage(index)
@@ -3612,7 +3612,7 @@ Workbook.prototype.maxRow = function(num,Index){
     len = activeSheet.rows.length,data =  activeSheet.data.dataTable,spans =  activeSheet.spans,_this = this;
     if(num<0) num = 0;
     if(num>=0){
-        this.totolHeight = 0
+        this.totalHeight = 0
         if(num>len){
             for(var i = 0;i<num-len;i++){
                 activeSheet.rows.push({"size":  activeSheet.defaults.rowHeight})
@@ -3650,7 +3650,7 @@ Workbook.prototype.maxRow = function(num,Index){
             if(item.bHidden){
                item.size = 0;
             }
-            _this.totolHeight+=item.size;   //行总高
+            _this.totalHeight+=item.size;   //行总高
         });
         this.tempValue = {}
         this.recalculatePercentage(index)
@@ -3795,7 +3795,7 @@ Workbook.prototype.getStartRC = function(x,y){
         startC = fixedCol;
         fx = 0;
         ox = 0;
-    }else if(fixedCols!=0&&x>(fixedW+this.numColW)&&x<this.totolWidth){
+    }else if(fixedCols!=0&&x>(fixedW+this.numColW)&&x<this.totalWidth){
         startC = startCol;
         fx = fixedW;
         ox = offsetX
@@ -3809,7 +3809,7 @@ Workbook.prototype.getStartRC = function(x,y){
         startR = fixedRow;
         fy = 0;
         oy = 0;
-    }else if(fixedRows!=0&&y>(fixedH+this.numRowH)&&y<this.totolHeight){
+    }else if(fixedRows!=0&&y>(fixedH+this.numRowH)&&y<this.totalHeight){
         startR = startRow;
         fy = fixedH;
         oy = offsetY
@@ -3834,7 +3834,7 @@ Workbook.prototype.getActiveCell = function(x,y){
     }
     sumY = y + startHeight - fy + oy ;
     sumX = x + startWidth - fx + ox ;
-    if(y>this.numRowH && x>this.numColW&&y<(this.totolHeight+this.numRowH)&&x<(this.totolWidth+this.numColW)){  //自定义选中单元格
+    if(y>this.numRowH && x>this.numColW&&y<(this.totalHeight+this.numRowH)&&x<(this.totalWidth+this.numColW)){  //自定义选中单元格
         for(var q=0;q<rows.length;q++){
             if(rows[q]&&!rows[q].bHidden){
                 sumHeight += rows[q].size;
@@ -3864,7 +3864,7 @@ Workbook.prototype.getActiveCell = function(x,y){
             }
         });
         activeSheet.selHdrTopLeft = false;         
-    }else if(y<this.numRowH && x>this.numColW&&x<=(this.totolWidth+this.numColW)){  //全选列
+    }else if(y<this.numRowH && x>this.numColW&&x<=(this.totalWidth+this.numColW)){  //全选列
         for(var w=0;w<cols.length;w++){
             if(cols[w]){
                 sumWidth += cols[w].size;
@@ -3876,7 +3876,7 @@ Workbook.prototype.getActiveCell = function(x,y){
         }
         r = -1;
         activeSheet.selHdrTopLeft = false; 
-    }else if(y>this.numRowH && x<this.numColW&&y<=(this.totolHeight+this.numRowH)){  //全选行
+    }else if(y>this.numRowH && x<this.numColW&&y<=(this.totalHeight+this.numRowH)){  //全选行
         for(var e=0;e<rows.length;e++){
             if(rows[e]){
                 sumHeight += rows[e].size;
@@ -4054,7 +4054,7 @@ Workbook.prototype.editInsert = function(InsertType,R,C,N,Index){
          this.row(r,index);
          this.col(0,index)
          child.innerText =''
-         this.totolHeight = this.totolHeight + defaultHeight*n;
+         this.totalHeight = this.totalHeight + defaultHeight*n;
          this.recalculatePercentage(index)
     }else if(InsertType=="F1ShiftCols"&&c!=-1){
         for(var j = 0;j<n;j++){
@@ -4094,7 +4094,7 @@ Workbook.prototype.editInsert = function(InsertType,R,C,N,Index){
         this.row(0,index)
         this.col(c,index)
         child.innerText =''
-        this.totolWidth = this.totolWidth + defaultWidth*n;
+        this.totalWidth = this.totalWidth + defaultWidth*n;
         this.recalculatePercentage(index)
     }
 }
@@ -4128,7 +4128,7 @@ Workbook.prototype.editDelete = function(nShiftType,R,C,N,Index){
     if(nShiftType == "F1ShiftRows"&&R!=-1&&row.length>=n){
         for(var j = n+r-1;j>=r;j--){
             if(row[j]){
-                this.totolHeight = this.totolHeight-row[j].size;  //删除行和重新计算总高度
+                this.totalHeight = this.totalHeight-row[j].size;  //删除行和重新计算总高度
                 activeSheet.rows.splice(j,1)
             }
         }
@@ -4170,7 +4170,7 @@ Workbook.prototype.editDelete = function(nShiftType,R,C,N,Index){
     }else if(nShiftType == "F1ShiftCols"&&C!=-1&&col.length>=n){
         for(var j = n+c-1;j>=c;j--){
             if(col[j]){
-                this.totolWidth = this.totolWidth - col[j].size;
+                this.totalWidth = this.totalWidth - col[j].size;
                 activeSheet.columns.splice(j,1);
             }
         };
@@ -4517,14 +4517,14 @@ Workbook.prototype.setRowHeight = function(height,R1,R2,Index){
     if(R1!=-1){
         for(var i = R1;i<=R2;i++){
             if(activeSheet.rows[i]&&!activeSheet.rows[i].bHidden){
-                this.totolHeight -=  activeSheet.rows[i].size;
+                this.totalHeight -=  activeSheet.rows[i].size;
                 if(height<=0){
                     activeSheet.rows[i].size = 0;
                     activeSheet.rows[i].bHidden = true
                 }else{
                     activeSheet.rows[i].size = height;
                 };
-                this.totolHeight +=  activeSheet.rows[i].size
+                this.totalHeight +=  activeSheet.rows[i].size
                 this.setNoDefaultH(i,index)
             }
        }
@@ -4553,7 +4553,7 @@ Workbook.prototype.setColWidth = function(width,C1,C2,Index){    //输入设置�
     if(C1!=-1){
         for(var i = C1;i<=C2;i++){
             if(activeSheet.columns[i]&&!activeSheet.columns[i].bHidden){
-                this.totolWidth -=  activeSheet.columns[i].size;   //先把原来的减掉
+                this.totalWidth -=  activeSheet.columns[i].size;   //先把原来的减掉
                 if(width<=0){
                     activeSheet.columns[i].size=0;
                     activeSheet.columns[i].bHidden = true;
@@ -4561,7 +4561,7 @@ Workbook.prototype.setColWidth = function(width,C1,C2,Index){    //输入设置�
                     activeSheet.columns[i].size = width 
                 }
             };
-            this.totolWidth +=  activeSheet.columns[i].size
+            this.totalWidth +=  activeSheet.columns[i].size
             this.setNoDefaultW(i,index)
        }
     };
@@ -5794,7 +5794,7 @@ Workbook.prototype.setRowHidden = function(R1,R2,BHidden,Index){
             if(rows[i]&&!rows[i].bHidden){
                 activeSheet.rows[i].bHidden = true;
                 activeSheet.rows[i].tempSize = rows[i].size;
-                this.totolHeight = this.totolHeight - rows[i].size;
+                this.totalHeight = this.totalHeight - rows[i].size;
                 activeSheet.rows[i].size = 0;
             }
         }
@@ -5803,7 +5803,7 @@ Workbook.prototype.setRowHidden = function(R1,R2,BHidden,Index){
             if(rows[j].bHidden&&j<=R2&&j>=R1){
                 delete activeSheet.rows[j].bHidden 
                 activeSheet.rows[j].size = rows[j].tempSize;
-                this.totolHeight = this.totolHeight + rows[j].size
+                this.totalHeight = this.totalHeight + rows[j].size
                 delete activeSheet.rows[j].tempSize
             }
         }
@@ -5831,7 +5831,7 @@ Workbook.prototype.setColHidden = function(C1,C2,BHidden,Index){    //设置列�
             if(cols[i]&&!cols[i].bHidden){
                 activeSheet.columns[i].bHidden = true;
                 activeSheet.columns[i].tempSize = cols[i].size;
-                this.totolWidth = this.totolWidth - cols[i].size;
+                this.totalWidth = this.totalWidth - cols[i].size;
                 activeSheet.columns[i].size = 0;
             }
         }
@@ -5840,7 +5840,7 @@ Workbook.prototype.setColHidden = function(C1,C2,BHidden,Index){    //设置列�
             if(cols[j].bHidden&&j<=C2&&j>=C1){
                 delete activeSheet.columns[j].bHidden;
                 activeSheet.columns[j].size = cols[j].tempSize;
-                this.totolWidth = this.totolWidth + cols[j].size;
+                this.totalWidth = this.totalWidth + cols[j].size;
                 delete activeSheet.columns[j].tempSize;
             }
 
@@ -6176,7 +6176,7 @@ Workbook.prototype.getStartAndEnd = function(Index){
     var fixedWH = this.getFixedWH(index),fixedW = fixedWH.fixedW,fixedH = fixedWH.fixedH,
     maxY =  this.getYMaxScroll(),maxX = this.getXMaxScroll();
     //计算竖向的偏移（用于开始行做一边点偏移，使组后一行显示完毕）
-     if(coordY>=maxY&&(this.totolHeight+this.numRowH)>this.height){                                                                                
+     if(coordY>=maxY&&(this.totalHeight+this.numRowH)>this.height){                                                                                
         this.addHeight =  this.tabsHeight;
     }else{
         this.addHeight = 0;
@@ -6218,7 +6218,7 @@ Workbook.prototype.getStartAndEnd = function(Index){
     var startCol = activeSheet.startCol,startRow = activeSheet.startRow,endCol = activeSheet.endCol,endRow = activeSheet.endRow,
     sumX = 0,sumY = 0;
     //计算竖向的偏移（用于开始行做一边点偏移，使最后一行显示完毕）
-    if(coordY>=maxY&&(this.totolHeight+this.numRowH)>this.height&&coordY>0){
+    if(coordY>=maxY&&(this.totalHeight+this.numRowH)>this.height&&coordY>0){
         for(var i = startRow;i<=endRow;i++){
             if(rows[i])  sumY += rows[i].size;
         };    
@@ -6228,7 +6228,7 @@ Workbook.prototype.getStartAndEnd = function(Index){
     };
 
     //计算水平的偏移
-    if(coordX>=maxX&&(this.totolWidth+this.numColW)>this.width&&coordX>0){
+    if(coordX>=maxX&&(this.totalWidth+this.numColW)>this.width&&coordX>0){
         for(var j = startCol;j<=endCol;j++){
             if(cols[j])  sumX += cols[j].size;
         };
@@ -6251,31 +6251,31 @@ Workbook.prototype.getStartAndEnd = function(Index){
  */
 Workbook.prototype.setScrollPosition = function(x,y,Index){
     var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
-    var totolAndPercent = this.getTotolAndPercent();
-    this.totolHeight = totolAndPercent.totolHeight;
-    this.totolWidth = totolAndPercent.totolWidth;
-    this.percentageV = totolAndPercent.percentageV;
-    this.percentageH = totolAndPercent.percentageH;
+    var totalAndPercent = this.getTotalAndPercent();
+    this.totalHeight = totalAndPercent.totalHeight;
+    this.totalWidth = totalAndPercent.totalWidth;
+    this.percentageV = totalAndPercent.percentageV;
+    this.percentageH = totalAndPercent.percentageH;
     activeSheet.scrollOption.coordY = (y*this.percentageV).toFixed(5)-0;
-    activeSheet.scrollOption.totolY = (y*this.percentageV).toFixed(5)-0;
+    activeSheet.scrollOption.totalY = (y*this.percentageV).toFixed(5)-0;
     activeSheet.scrollOption.coordX = (x*this.percentageH).toFixed(5)-0;
-    activeSheet.scrollOption.totolX = (x*this.percentageH).toFixed(5)-0;
+    activeSheet.scrollOption.totalX = (x*this.percentageH).toFixed(5)-0;
     var maxY = this.getYMaxScroll(),maxX = this.getXMaxScroll()
     if(activeSheet.scrollOption.coordY>=maxY){  
         activeSheet.scrollOption.coordY = maxY;
-        activeSheet.scrollOption.totolY = maxY;
+        activeSheet.scrollOption.totalY = maxY;
     }
     if(activeSheet.scrollOption.coordY<0||this.percentageV >= 1){
         activeSheet.scrollOption.coordY = 0;
-        activeSheet.scrollOption.totolY = 0;
+        activeSheet.scrollOption.totalY = 0;
     }
      if(activeSheet.scrollOption.coordX>=maxX){
         activeSheet.scrollOption.coordX = maxX;
-        activeSheet.scrollOption.totolX = maxX;
+        activeSheet.scrollOption.totalX = maxX;
     }
     if(activeSheet.scrollOption.coordX<0||this.percentageH >= 1){
         activeSheet.scrollOption.coordX = 0;
-        activeSheet.scrollOption.totolX = 0;
+        activeSheet.scrollOption.totalX = 0;
     }
 }
 
@@ -7811,7 +7811,7 @@ Workbook.prototype.drawPrint = function(callback,Index){
     var oShowTabs = this.workbook.showTabs,oShowHScrollBar = this.workbook.showHScrollBar,
     oShowVScrollBar = this.workbook.showVScrollBar,oIndex = this.workbook.activeSheet,
     oWidth = this.workbook.width,oHeight = this.workbook.height;
-    var totolW = [],totolH = 0,sheetList = this.workbook.sheetList,dataArr = [],sheetArr = [];
+    var totalW = [],totalH = 0,sheetList = this.workbook.sheetList,dataArr = [],sheetArr = [];
     this.workbook.showTabs = 0;
     this.workbook.showHScrollBar = 0;
     this.workbook.showVScrollBar = 0;
@@ -7821,31 +7821,31 @@ Workbook.prototype.drawPrint = function(callback,Index){
         oShowRowHeading = activeSheet.rowHeaderData.showRowHeading,oShowColHeading = activeSheet.colHeaderData.showColHeading,
         oIsSelectionHideBorder =  activeSheet.isSelectionHideBorder,oFixedRow = activeSheet.fixed.fixedRow,
         oFixedRows = activeSheet.fixed.fixedRows,oFixedCol = activeSheet.fixed.fixedCol,oFixedCols = activeSheet.fixed.fixedCols,
-        oCoordY = activeSheet.scrollOption.coordY,oTotolY = activeSheet.scrollOption.totolY,
-        oCoordX = activeSheet.scrollOption.coordX,oTotolX = activeSheet.scrollOption.totolX,
+        oCoordY = activeSheet.scrollOption.coordY,oTotalY = activeSheet.scrollOption.totalY,
+        oCoordX = activeSheet.scrollOption.coordX,oTotalX = activeSheet.scrollOption.totalX,
         oOffsetX = activeSheet.scrollOption.offsetX,oOffsetY = activeSheet.scrollOption.offsetY,
         oShowGridLines = activeSheet.showGridLines;
         var colHeader = activeSheet.colHeaderData,rowHeader = activeSheet.rowHeaderData;
         var numRowH = (activeSheet.printSetting.printHeadings)?colHeader.defaultH:0,
         numColW = (activeSheet.printSetting.printHeadings)?rowHeader.defaultW:0;
         var maxRowAndCol = this.getMaxRowAndCol(i)  //获取最大有单元格的行与列 以及该总行高与总列宽
-        totolH+=maxRowAndCol.totolHeight+numRowH;
-        totolW.push(maxRowAndCol.totolWidth+numColW);
+        totalH+=maxRowAndCol.totalHeight+numRowH;
+        totalW.push(maxRowAndCol.totalWidth+numColW);
         var gridLinesColor = activeSheet.gridLinesColor;
-        var totolWidth = maxRowAndCol.totolWidth+numColW;
-        var totolHeight = maxRowAndCol.totolHeight+numRowH;
+        var totalWidth = maxRowAndCol.totalWidth+numColW;
+        var totalHeight = maxRowAndCol.totalHeight+numRowH;
         var maxRow = maxRowAndCol.maxRow,maxCol = maxRowAndCol.maxCol;
         //重置sheet参数
-        this.workbook.width = totolWidth;
-        this.workbook.height = totolHeight;
+        this.workbook.width = totalWidth;
+        this.workbook.height = totalHeight;
         activeSheet.rowHeaderData.showRowHeading = (activeSheet.printSetting.printHeadings)?true:false;
         activeSheet.colHeaderData.showColHeading = (activeSheet.printSetting.printHeadings)?true:false;
         activeSheet.showGridLines = (activeSheet.printSetting.printGridLine)?true:false;
         activeSheet.isSelectionHideBorder = true;
         activeSheet.scrollOption.coordX = 0;
-        activeSheet.scrollOption.totolX = 0;
+        activeSheet.scrollOption.totalX = 0;
         activeSheet.scrollOption.coordY = 0;
-        activeSheet.scrollOption.totolY = 0;
+        activeSheet.scrollOption.totalY = 0;
         activeSheet.scrollOption.offsetX = 0;
         activeSheet.scrollOption.offsetY = 0;
         this.removeFixed(i)
@@ -7873,21 +7873,21 @@ Workbook.prototype.drawPrint = function(callback,Index){
         }
 
         var dataURL = this.canvas.toDataURL();
-        dataArr.push({'index':i,'h':totolHeight,'dataUrl':dataURL})
-        sheetArr.push({'index':i,'h':totolHeight,'w':totolWidth})
+        dataArr.push({'index':i,'h':totalHeight,'dataUrl':dataURL})
+        sheetArr.push({'index':i,'h':totalHeight,'w':totalWidth})
         activeSheet.rowHeaderData.showRowHeading = oShowRowHeading;
         activeSheet.colHeaderData.showColHeading = oShowColHeading;
         activeSheet.showGridLines = oShowGridLines;
         activeSheet.isSelectionHideBorder = oIsSelectionHideBorder;
         this.fixedRowAndCol(oFixedRows,oFixedCols,oFixedRow,oFixedCol,i)
         activeSheet.scrollOption.coordY = oCoordY;
-        activeSheet.scrollOption.totolY = oTotolY;
+        activeSheet.scrollOption.totalY = oTotalY;
         activeSheet.scrollOption.coordX = oCoordX;
-        activeSheet.scrollOption.totolX = oTotolX;
+        activeSheet.scrollOption.totalX = oTotalX;
         activeSheet.scrollOption.offsetX = oOffsetX;
         activeSheet.scrollOption.offsetY = oOffsetY;
     }
-    totolW = Math.max.apply(null,totolW)
+    totalW = Math.max.apply(null,totalW)
     //恢复原来设置的参数
     this.workbook.width = oWidth;
     this.workbook.height = oHeight;
@@ -7899,8 +7899,8 @@ Workbook.prototype.drawPrint = function(callback,Index){
     
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d')
-    canvas.width = totolW*this.ratio;      
-    canvas.height = totolH*this.ratio;
+    canvas.width = totalW*this.ratio;      
+    canvas.height = totalH*this.ratio;
     var imgArr = [],_this = this
     for(var t = 0;t<dataArr.length;t++){
         var img = new Image();
@@ -7964,20 +7964,20 @@ Workbook.prototype.getMaxRowAndCol = function(Index){
 
     maxCol = (maxCol>=lastCol)?maxCol:lastCol;
 
-    var totolHeight = 0,totolWidth = 0;
+    var totalHeight = 0,totalWidth = 0;
     for(var i = 0;i<=maxRow;i++){
         if(rows[i]){
-            totolHeight+=rows[i].size; 
+            totalHeight+=rows[i].size; 
         }
     }
 
     for(var j = 0;j<=maxCol;j++){
         if(cols[j]){
-            totolWidth+=cols[j].size;
+            totalWidth+=cols[j].size;
         }
     }
 
-    return {'maxRow':maxRow,'maxCol':maxCol,'totolHeight':totolHeight,'totolWidth':totolWidth}
+    return {'maxRow':maxRow,'maxCol':maxCol,'totalHeight':totalHeight,'totalWidth':totalWidth}
 }
 
 Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
@@ -7990,10 +7990,10 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
     img.src = allSheetUrl;
     //切片分页 画页码
     img.onload = function(){
-        var totolH = 0;
+        var totalH = 0;
         for(var i = 0;i<sheetArr.length;i++){
             var w = sheetArr[i].w,h = sheetArr[i].h;
-            totolH += h;
+            totalH += h;
             if(((print==1||print==3)&&sheetArr[i].index==Index)||print==2){   
                 var index = i,activeSheet = _this.getActiveSheet(index),printSetting = activeSheet.printSetting;
                 var printDirection = parseInt(printSetting.printDirection);
@@ -8018,7 +8018,7 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
                 width = printAreaPosition.width+numColW,height = printAreaPosition.height+numRowH;
                 var contentW = (print==1||print==2)?w*_this.ratio:width*_this.ratio;
                 var contentH = (print==1||print==2)?h*_this.ratio:height*_this.ratio;
-                var endH = (print==1||print==2)?Math.floor(totolH*_this.ratio):Math.floor((totolH-h+endY)*_this.ratio);
+                var endH = (print==1||print==2)?Math.floor(totalH*_this.ratio):Math.floor((totalH-h+endY)*_this.ratio);
                 var endW = (print==1||print==2)?Math.floor(w*_this.ratio):Math.floor(endX*_this.ratio);
                 var startH = (print==1||print==2)?0:Math.floor(startY*_this.ratio);
                 var startW = (print==1||print==2)?0:Math.floor(startX*_this.ratio);
@@ -8037,7 +8037,7 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
                     }else if(printDirection==2){
                         marginTB = (a>0)?(marginTop+marginBottom):0;
                         cutT = (a>1||(a>0&&print==3))?Math.floor(numRowH*_this.ratio):0;
-                        sy = Math.floor((totolH-h)*_this.ratio)+startH+a*(canvasH-marginTB)-(a-cutNum)*cutT
+                        sy = Math.floor((totalH-h)*_this.ratio)+startH+a*(canvasH-marginTB)-(a-cutNum)*cutT
                     }
                     for(var b = 0;b<innerEnd;b++){ 
                         page += 1;
@@ -8046,7 +8046,7 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
                         if(printDirection==1){
                             marginTB = (b>0)?(marginTop+marginBottom):0;
                             cutT = (b>1||(print==3&&b>0))?Math.floor(numRowH*_this.ratio):0;
-                            sy = Math.floor((totolH-h)*_this.ratio)+startH+b*(canvasH-marginTB)-(b-cutNum)*cutT;
+                            sy = Math.floor((totalH-h)*_this.ratio)+startH+b*(canvasH-marginTB)-(b-cutNum)*cutT;
                             row = b;
                             col = a;
                         }else if(printDirection==2){
@@ -8067,7 +8067,7 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
                         //绘制每一个页的行列标(除了顶部的所有页绘制列标 除了最左的所有页绘制行标)
                         if(printSetting.printHeadings&&!(row==0&&col==0)||print==3){
                             if(row>0&&col==0&&(print==1||print==2)){
-                                ctx.drawImage(img,sx,Math.floor((totolH-h)*_this.ratio),sWidth,Math.floor(numRowH*_this.ratio),marginLeft,marginTop,sWidth,Math.floor(numRowH*_this.ratio))
+                                ctx.drawImage(img,sx,Math.floor((totalH-h)*_this.ratio),sWidth,Math.floor(numRowH*_this.ratio),marginLeft,marginTop,sWidth,Math.floor(numRowH*_this.ratio))
                             };
                             if(col>0&&row==0&&(print==1||print==2)){
                                 ctx.drawImage(img,0,sy,Math.floor(numColW*_this.ratio),sHeight,marginLeft,marginTop,Math.floor(numColW*_this.ratio),sHeight)
@@ -8075,13 +8075,13 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
                             if(row>0&&col>0||print==3){
                                 var cutW = Math.floor(numColW*_this.ratio)
                                 var cutH = Math.floor(numRowH*_this.ratio)
-                                ctx.drawImage(img,sx,Math.floor((totolH-h)*_this.ratio),sWidth,Math.floor(numRowH*_this.ratio),marginLeft+cutW,marginTop,sWidth,Math.floor(numRowH*_this.ratio))
+                                ctx.drawImage(img,sx,Math.floor((totalH-h)*_this.ratio),sWidth,Math.floor(numRowH*_this.ratio),marginLeft+cutW,marginTop,sWidth,Math.floor(numRowH*_this.ratio))
                                 ctx.drawImage(img,0,sy,Math.floor(numColW*_this.ratio),sHeight,marginLeft,marginTop+cutH,Math.floor(numColW*_this.ratio),sHeight)
-                                ctx.drawImage(img,0,Math.floor((totolH-h)*_this.ratio),Math.floor(numColW*_this.ratio),Math.floor(numRowH*_this.ratio),marginLeft,marginTop,Math.floor(numColW*_this.ratio),Math.floor(numRowH*_this.ratio))
+                                ctx.drawImage(img,0,Math.floor((totalH-h)*_this.ratio),Math.floor(numColW*_this.ratio),Math.floor(numRowH*_this.ratio),marginLeft,marginTop,Math.floor(numColW*_this.ratio),Math.floor(numRowH*_this.ratio))
                             }
                         }
                         var base64 = canvas.toDataURL();
-                        sheetPageArr.push({'page':page,'base64':base64,'sx':sx,'sWidth':sWidth,'sy':Math.floor(sy-(totolH-h)*_this.ratio),'sHeight':sHeight,'row':row,'col':col,'index':i,'canvasW':canvasW,'canvasH':canvasH,'isshowfooterpageinfo':isshowfooterpageinfo,
+                        sheetPageArr.push({'page':page,'base64':base64,'sx':sx,'sWidth':sWidth,'sy':Math.floor(sy-(totalH-h)*_this.ratio),'sHeight':sHeight,'row':row,'col':col,'index':i,'canvasW':canvasW,'canvasH':canvasH,'isshowfooterpageinfo':isshowfooterpageinfo,
                         'footpagestyle':footpagestyle,'marginT':marginTop,'marginB':marginBottom,'marginL':marginLeft,'marginR':marginRight})
                     }
                 }
@@ -9428,7 +9428,7 @@ Workbook.prototype.json2Xml = function(callback){
     for(var i = 0;i<this.workbook.sheetList.length;i++){
         var xmlDoc = this.createXmlDoc()
         var activeSheet = this.getActiveSheet(i),data = activeSheet.data.dataTable,
-        cols = activeSheet.columns,rows = activeSheet.rows,totolW = 0;
+        cols = activeSheet.columns,rows = activeSheet.rows,totalW = 0;
         var statement = xmlDoc.createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");  
         xmlDoc.appendChild(statement); 
         var table = xmlDoc.createElement('TABLE');
@@ -9459,11 +9459,11 @@ Workbook.prototype.json2Xml = function(callback){
         table.setAttribute('pagesetup',"{"+paper+orientation+printGridLine+marginCopies+printer+isshowfooterpageinfo+footpagestyle+marginTop+marginBottom+marginLeft+marginRight+"}")
         table.setAttribute('class','tblGenFixed')
         for(var a = 0;a<cols.length;a++){
-            if(cols[a]) totolW+=cols[a].size;
+            if(cols[a]) totalW+=cols[a].size;
         };
-        totolW = (totolW)?'WIDTH:'+totolW+'px;':'';
+        totalW = (totalW)?'WIDTH:'+totalW+'px;':'';
         var tableFontSize = (this.workbook.defaultFontSize)?'FONT-SIZE:'+(this.px2pt(this.workbook.defaultFontSize)+'pt;'):'';
-        table.setAttribute('style',totolW+tableFontSize)
+        table.setAttribute('style',totalW+tableFontSize)
         xmlDoc.appendChild(table);
         var tableEle = xmlDoc.getElementsByTagName('TABLE')[0];
         tableEle.appendChild(tbody);

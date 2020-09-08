@@ -7851,9 +7851,8 @@ Workbook.prototype.drawPrint = function(callback,Index){
         this.removeFixed(i)
         this.sheetIndex(i)
         this.startPaint(true);
-        this.canvas.width = this.width*this.ratio;      
-        this.canvas.height = this.height*this.ratio;
-        this.ctx.scale(this.ratio,this.ratio);
+        this.canvas.width = this.width;      
+        this.canvas.height = this.height;
         if(activeSheet.printSetting.printGridLine){
             this.drawLine(0,0,maxRow,maxCol,i)
             this.drawTopLine(i)
@@ -7899,8 +7898,8 @@ Workbook.prototype.drawPrint = function(callback,Index){
     
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d')
-    canvas.width = totalW*this.ratio;      
-    canvas.height = totalH*this.ratio;
+    canvas.width = totalW;      
+    canvas.height = totalH;
     var imgArr = [],_this = this
     for(var t = 0;t<dataArr.length;t++){
         var img = new Image();
@@ -7912,7 +7911,7 @@ Workbook.prototype.drawPrint = function(callback,Index){
     function doDraw(idx,cb){
         if(imgArr[idx]&&idx<imgArr.length){
             imgArr[idx]['img'].onload = function(){
-                ctx.drawImage(imgArr[idx]['img'],0,Math.floor(y*_this.ratio))
+                ctx.drawImage(imgArr[idx]['img'],0,Math.floor(y))
                 y += dataArr[idx]['h']
                 idx++;
                 doDraw(idx,cb)
@@ -8016,12 +8015,12 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
                 var printAreaPosition = _this.getPrintAreaPosition(index),startX = printAreaPosition.startX+numColW,
                 startY = printAreaPosition.startY+numRowH,endX = printAreaPosition.endX+numColW,endY = printAreaPosition.endY+numRowH,
                 width = printAreaPosition.width+numColW,height = printAreaPosition.height+numRowH;
-                var contentW = (print==1||print==2)?w*_this.ratio:width*_this.ratio;
-                var contentH = (print==1||print==2)?h*_this.ratio:height*_this.ratio;
-                var endH = (print==1||print==2)?Math.floor(totalH*_this.ratio):Math.floor((totalH-h+endY)*_this.ratio);
-                var endW = (print==1||print==2)?Math.floor(w*_this.ratio):Math.floor(endX*_this.ratio);
-                var startH = (print==1||print==2)?0:Math.floor(startY*_this.ratio);
-                var startW = (print==1||print==2)?0:Math.floor(startX*_this.ratio);
+                var contentW = (print==1||print==2)?w:width;
+                var contentH = (print==1||print==2)?h:height;
+                var endH = (print==1||print==2)?Math.floor(totalH):Math.floor((totalH-h+endY));
+                var endW = (print==1||print==2)?Math.floor(w):Math.floor(endX);
+                var startH = (print==1||print==2)?0:Math.floor(startY);
+                var startW = (print==1||print==2)?0:Math.floor(startX);
                 var cutNum = (print==1||print==2)?1:0;
                 var vPageNum = Math.ceil(contentH/canvasH),hPageNum = Math.ceil(contentW/canvasW);
                 vPageNum = Math.ceil((vPageNum*(marginTop+marginBottom+numRowH)+contentH-numRowH)/canvasH);
@@ -8032,12 +8031,12 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
                 for(var a = 0;a<outEnd;a++){
                     if(printDirection==1){
                         marginLR = (a>0)?(marginLeft+marginRight):0;
-                        cutL = (a>1||(a>0&&print==3))?Math.floor(numColW*_this.ratio):0;
+                        cutL = (a>1||(a>0&&print==3))?Math.floor(numColW):0;
                         sx = startW+a*(canvasW-marginLR)-(a-cutNum)*cutL
                     }else if(printDirection==2){
                         marginTB = (a>0)?(marginTop+marginBottom):0;
-                        cutT = (a>1||(a>0&&print==3))?Math.floor(numRowH*_this.ratio):0;
-                        sy = Math.floor((totalH-h)*_this.ratio)+startH+a*(canvasH-marginTB)-(a-cutNum)*cutT
+                        cutT = (a>1||(a>0&&print==3))?Math.floor(numRowH):0;
+                        sy = Math.floor((totalH-h))+startH+a*(canvasH-marginTB)-(a-cutNum)*cutT
                     }
                     for(var b = 0;b<innerEnd;b++){ 
                         page += 1;
@@ -8045,19 +8044,19 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
                         canvas.height = canvasH
                         if(printDirection==1){
                             marginTB = (b>0)?(marginTop+marginBottom):0;
-                            cutT = (b>1||(print==3&&b>0))?Math.floor(numRowH*_this.ratio):0;
-                            sy = Math.floor((totalH-h)*_this.ratio)+startH+b*(canvasH-marginTB)-(b-cutNum)*cutT;
+                            cutT = (b>1||(print==3&&b>0))?Math.floor(numRowH):0;
+                            sy = Math.floor((totalH-h))+startH+b*(canvasH-marginTB)-(b-cutNum)*cutT;
                             row = b;
                             col = a;
                         }else if(printDirection==2){
                             marginLR = (b>0)?(marginLeft+marginRight):0;
-                            cutL = (b>1||(print==3&&b>0))?numColW*_this.ratio:0;
+                            cutL = (b>1||(print==3&&b>0))?numColW:0;
                             sx = startW+b*(canvasW-marginLR)-(b-cutNum)*cutL
                             row = a;
                             col = b; 
                         }
-                        var cutNumRowH = (row>0||print==3)?Math.floor(numRowH*_this.ratio):0;
-                        var cutNumColW = (col>0||print==3)?Math.floor(numColW*_this.ratio):0;
+                        var cutNumRowH = (row>0||print==3)?Math.floor(numRowH):0;
+                        var cutNumColW = (col>0||print==3)?Math.floor(numColW):0;
                         var sWidth = (canvasW-marginRight-marginLeft-cutNumColW);
                         sWidth = (sWidth>=endW-sx)?(endW-sx):sWidth;
                         var sHeight = (canvasH-marginBottom-marginTop-cutNumRowH);
@@ -8067,32 +8066,32 @@ Workbook.prototype.print = function(allSheetUrl,sheetArr,callback,Index){
                         //绘制每一个页的行列标(除了顶部的所有页绘制列标 除了最左的所有页绘制行标)
                         if(printSetting.printHeadings&&!(row==0&&col==0)||print==3){
                             if(row>0&&col==0&&(print==1||print==2)){
-                                ctx.drawImage(img,sx,Math.floor((totalH-h)*_this.ratio),sWidth,Math.floor(numRowH*_this.ratio),marginLeft,marginTop,sWidth,Math.floor(numRowH*_this.ratio))
+                                ctx.drawImage(img,sx,Math.floor((totalH-h)),sWidth,Math.floor(numRowH),marginLeft,marginTop,sWidth,Math.floor(numRowH))
                             };
                             if(col>0&&row==0&&(print==1||print==2)){
-                                ctx.drawImage(img,0,sy,Math.floor(numColW*_this.ratio),sHeight,marginLeft,marginTop,Math.floor(numColW*_this.ratio),sHeight)
+                                ctx.drawImage(img,0,sy,Math.floor(numColW),sHeight,marginLeft,marginTop,Math.floor(numColW),sHeight)
                             };
                             if(row>0&&col>0||print==3){
-                                var cutW = Math.floor(numColW*_this.ratio)
-                                var cutH = Math.floor(numRowH*_this.ratio)
-                                ctx.drawImage(img,sx,Math.floor((totalH-h)*_this.ratio),sWidth,Math.floor(numRowH*_this.ratio),marginLeft+cutW,marginTop,sWidth,Math.floor(numRowH*_this.ratio))
-                                ctx.drawImage(img,0,sy,Math.floor(numColW*_this.ratio),sHeight,marginLeft,marginTop+cutH,Math.floor(numColW*_this.ratio),sHeight)
-                                ctx.drawImage(img,0,Math.floor((totalH-h)*_this.ratio),Math.floor(numColW*_this.ratio),Math.floor(numRowH*_this.ratio),marginLeft,marginTop,Math.floor(numColW*_this.ratio),Math.floor(numRowH*_this.ratio))
+                                var cutW = Math.floor(numColW)
+                                var cutH = Math.floor(numRowH)
+                                ctx.drawImage(img,sx,Math.floor((totalH-h)),sWidth,Math.floor(numRowH),marginLeft+cutW,marginTop,sWidth,Math.floor(numRowH))
+                                ctx.drawImage(img,0,sy,Math.floor(numColW),sHeight,marginLeft,marginTop+cutH,Math.floor(numColW),sHeight)
+                                ctx.drawImage(img,0,Math.floor((totalH-h)),Math.floor(numColW),Math.floor(numRowH),marginLeft,marginTop,Math.floor(numColW),Math.floor(numRowH))
                             }
                         }
                         var base64 = canvas.toDataURL();
-                        sheetPageArr.push({'page':page,'base64':base64,'sx':sx,'sWidth':sWidth,'sy':Math.floor(sy-(totalH-h)*_this.ratio),'sHeight':sHeight,'row':row,'col':col,'index':i,'canvasW':canvasW,'canvasH':canvasH,'isshowfooterpageinfo':isshowfooterpageinfo,
+                        sheetPageArr.push({'page':page,'base64':base64,'sx':sx,'sWidth':sWidth,'sy':Math.floor(sy-(totalH-h)),'sHeight':sHeight,'row':row,'col':col,'index':i,'canvasW':canvasW,'canvasH':canvasH,'isshowfooterpageinfo':isshowfooterpageinfo,
                         'footpagestyle':footpagestyle,'marginT':marginTop,'marginB':marginBottom,'marginL':marginLeft,'marginR':marginRight})
                     }
                 }
                 sheetPageArr = _this.deleteEmptyPage(sheetPageArr);
                 pageArr = pageArr.concat(sheetPageArr)
-            }
+            }   
         };
         //重置page
         for(var k = 0;k<pageArr.length;k++){
             pageArr[k].page = k+1;
-        }  
+        }
         if(pageArr.length>=1){
             var newPageArr = [],newH = 0,newW = 0,marginC = 0;
             for(var t = 0;t<pageArr.length;t++){
@@ -8237,98 +8236,95 @@ Workbook.prototype.getPrintAreaPosition = function(Index){
 
 //删除空页
 Workbook.prototype.deleteEmptyPage = function(pageArr){
-   if(pageArr){
-       for(var i = 0;i<pageArr.length;i++){
-            var index = (pageArr[i].index>=0)?pageArr[i].index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
-            rows = activeSheet.rows,cols = activeSheet.columns,data = activeSheet.data.dataTable,
-            spans = activeSheet.spans,printSetting = activeSheet.printSetting,numColW = 0,numRowH = 0;
-            if(printSetting.printHeadings){
-                numColW = activeSheet.rowHeaderData.defaultW;
-                numRowH = activeSheet.colHeaderData.defaultH;
-            }
-            var sy = pageArr[i].sy,sHeight = pageArr[i].sHeight,sx = pageArr[i].sx,sWidth = pageArr[i].sWidth,
-            ey = sy+sHeight,ex = sx+sWidth;
-            var r1 = 0,c1 = 0,r2 = 0, c2 = 0,sxSumX = numColW,sySumY = numRowH,exSumX = numColW,eySumY = numRowH;
-            for(var k = 0;k<rows.length;k++){
-               if(rows[k])  sySumY+=rows[k].size;
-               if(sy<=sySumY*this.ratio){
-                   r1 = k;
-                   break;
-               }
-            }
-            for(var k = 0;k<rows.length;k++){
-                if(rows[k])  eySumY+=rows[k].size;
-                if(ey<=eySumY*this.ratio){
-                    r2 = k;
+    if(pageArr){
+        for(var i = 0;i<pageArr.length;i++){
+             var index = (pageArr[i].index>=0)?pageArr[i].index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
+             rows = activeSheet.rows,cols = activeSheet.columns,data = activeSheet.data.dataTable,
+             spans = activeSheet.spans,printSetting = activeSheet.printSetting,numColW = 0,numRowH = 0;
+             if(printSetting.printHeadings){
+                 numColW = activeSheet.rowHeaderData.defaultW;
+                 numRowH = activeSheet.colHeaderData.defaultH;
+             }
+             var sy = pageArr[i].sy,sHeight = pageArr[i].sHeight,sx = pageArr[i].sx,sWidth = pageArr[i].sWidth,
+             ey = sy+sHeight,ex = sx+sWidth;
+             var r1 = 0,c1 = 0,r2 = 0, c2 = 0,sxSumX = numColW,sySumY = numRowH,exSumX = numColW,eySumY = numRowH;
+             for(var k = 0;k<rows.length;k++){
+                if(rows[k])  sySumY+=rows[k].size;
+                if(sy<=sySumY){
+                    r1 = k;
                     break;
                 }
-            }
-            for(var j = 0;j<cols.length;j++){
-                if(cols[j])  sxSumX+=cols[j].size;
-                if(sx<=sxSumX*this.ratio){
-                    c1 = j;
-                    break;
-                }
-            }
-            for(var j = 0;j<cols.length;j++){
-                if(cols[j])  exSumX+=cols[j].size;
-                if(ex<=exSumX*this.ratio){
-                    c2 = j;
-                    break;
-                }
-            }
-
-            for(var n = r1;n<=r2;n++){
-                for(var v = c1;v<=c2;v++){
-                    if(data[n]&&data[n][v]){
-                        pageArr[i].ety = false
-                    }
-                }
-            };
-            spans.forEach(function(item){
-                var row1 = item.row,col1 = item.col,row2 = item.row+item.rowCount-1,col2 = item.col+item.colCount-1;
-                if(row2>=r1&&row1<=r2&&col2>=c1&&col1<=c2){
-                    pageArr[i].ety = false
-                }
-            }); 
-            // delete pageArr[i].sy;
-            // delete pageArr[i].sx;
-            // delete pageArr[i].sHeight;
-            // delete pageArr[i].sWidth;
-        }
-        var diviR,diviC
-        for(var i = pageArr.length-1;i>=0;i--){
-            var activeS = this.getActiveSheet(pageArr[i].index)
-            var printDirection = parseInt(activeS.printSetting.printDirection);
-            printDirection = (printDirection>=1&&printDirection<=2)?printDirection:1;
-            if(pageArr[i].ety!==false){
-                pageArr.splice(i,1)
-            }else if(pageArr[i].ety===false&&printDirection==1){
-                diviR = pageArr[i].row;
-                break;
-            }else if(pageArr[i].ety===false&&printDirection==2){
-                diviC = pageArr[i].col;
-                break;
-            }  
-        };
-    
-        for(var j = pageArr.length-1;j>=0;j--){
-            var activeSS = this.getActiveSheet(pageArr[j].index)
-            var printDirectionS = parseInt(activeSS.printSetting.printDirection);
-            printDirectionS = (printDirectionS>=1&&printDirectionS<=2)?printDirectionS:1;
-            if(pageArr[j].row>diviR&&printDirectionS==1){
-                if(pageArr[j].ety!==false){
-                    pageArr.splice(j,1)
-                }
-            }else if(pageArr[j].col>diviC&&printDirectionS==2){
-                if(pageArr[j].ety!==false){
-                    pageArr.splice(j,1)
-                }
-            }
-        }
-        return pageArr  
-    }
-}  
+             }
+             for(var k = 0;k<rows.length;k++){
+                 if(rows[k])  eySumY+=rows[k].size;
+                 if(ey<=eySumY){
+                     r2 = k;
+                     break;
+                 }
+             }
+             for(var j = 0;j<cols.length;j++){
+                 if(cols[j])  sxSumX+=cols[j].size;
+                 if(sx<=sxSumX){
+                     c1 = j;
+                     break;
+                 }
+             }
+             for(var j = 0;j<cols.length;j++){
+                 if(cols[j])  exSumX+=cols[j].size;
+                 if(ex<=exSumX){
+                     c2 = j;
+                     break;
+                 }
+             }
+ 
+             for(var n = r1;n<=r2;n++){
+                 for(var v = c1;v<=c2;v++){
+                     if(data[n]&&data[n][v]){
+                         pageArr[i].ety = false
+                     }
+                 }
+             };
+             spans.forEach(function(item){
+                 var row1 = item.row,col1 = item.col,row2 = item.row+item.rowCount-1,col2 = item.col+item.colCount-1;
+                 if(row2>=r1&&row1<=r2&&col2>=c1&&col1<=c2){
+                     pageArr[i].ety = false
+                 }
+             }); 
+         }
+         var diviR,diviC
+         for(var i = pageArr.length-1;i>=0;i--){
+             var activeS = this.getActiveSheet(pageArr[i].index)
+             var printDirection = parseInt(activeS.printSetting.printDirection);
+             printDirection = (printDirection>=1&&printDirection<=2)?printDirection:1;
+             if(pageArr[i].ety!==false){
+                 pageArr.splice(i,1)
+             }else if(pageArr[i].ety===false&&printDirection==1){
+                 diviR = pageArr[i].row;
+                 break;
+             }else if(pageArr[i].ety===false&&printDirection==2){
+                 diviC = pageArr[i].col;
+                 break;
+             }  
+         };
+     
+         for(var j = pageArr.length-1;j>=0;j--){
+             var activeSS = this.getActiveSheet(pageArr[j].index)
+             var printDirectionS = parseInt(activeSS.printSetting.printDirection);
+             printDirectionS = (printDirectionS>=1&&printDirectionS<=2)?printDirectionS:1;
+             if(pageArr[j].row>diviR&&printDirectionS==1){
+                 if(pageArr[j].ety!==false){
+                     pageArr.splice(j,1)
+                 }
+             }else if(pageArr[j].col>diviC&&printDirectionS==2){
+                 if(pageArr[j].ety!==false){
+                     pageArr.splice(j,1)
+                 }
+             }
+         }
+                     
+         return pageArr  
+     }
+ } 
 
 //获取页码位置信息 
 Workbook.prototype.getPageNumPosition = function(canvasW,canvasH,isshowfooterpageinfo){

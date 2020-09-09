@@ -8389,19 +8389,19 @@ Workbook.prototype.setPrint = function(obj,Index){
         printSetting.marginRight = (obj.marginRight>=0)?obj.marginRight:printSetting.marginRight;
         printSetting.paper = obj.paper||printSetting.paper;
         printSetting.printHeadings = (obj.printHeadings===undefined)?printSetting.printHeadings:(obj.printHeadings)?true:false;
-        printSetting.printOnSamePaper = (obj.printOnSamePaper===undefined)?printSetting.printOnSamePaper:(obj.printOnSamePaper)?true:false;
         printSetting.printGridLine = (obj.printGridLine===undefined)?printSetting.printGridLine:(obj.printGridLine)?true:false;
         printSetting.orientation = obj.orientation||printSetting.orientation;
         printSetting.printDirection = obj.printDirection||printSetting.printDirection;
+        this.workbook.printOnSamePaper = (obj.printOnSamePaper===undefined)?this.workbook.printOnSamePaper:(obj.printOnSamePaper)?true:false;
         this.workbook.marginCopies = (obj.marginCopies>=0)?obj.marginCopies:this.workbook.marginCopies;
-        printSetting.printer = obj.printer||printSetting.printer;
+        this.workbook.printer = obj.printer||this.workbook.printer;
+        this.workbook.print = (obj.print>=1&&obj.print<=3)?obj.print:this.workbook.print;
         printSetting.isshowfooterpageinfo = (obj.isshowfooterpageinfo>=0&&obj.isshowfooterpageinfo<=6)?obj.isshowfooterpageinfo:printSetting.isshowfooterpageinfo;
         printSetting.footpagestyle = obj.footpagestyle||printSetting.footpagestyle;
         printSetting.printArea.r1 = (obj.startR>=0)?obj.startR:printSetting.printArea.r1;
         printSetting.printArea.r2 = (obj.endR>=0)?obj.endR:printSetting.printArea.r2;
         printSetting.printArea.c1 = (obj.startC>=0)?obj.startC:printSetting.printArea.c1;
         printSetting.printArea.c2 = (obj.endC>=0)?obj.endC:printSetting.printArea.c2;
-        this.workbook.print = (obj.print>=1&&obj.print<=3)?obj.print:this.workbook.print;
     }
 }
 

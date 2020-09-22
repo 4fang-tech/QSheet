@@ -4158,8 +4158,9 @@ Workbook.prototype.editDelete = function(nShiftType,R,C,N,Index){
                 delete textValue[key]
             } 
         };
+        var newr = (r-n>=0)?r-n:0;
         var newc = (activeSheet.activeCol>=0)?activeSheet.activeCol:0;
-        var newr = (activeSheet.activeRow>=0)?activeSheet.activeRow:0;
+        // var newr = (activeSheet.activeRow>=0)?activeSheet.activeRow:0;
         this.col(newc,index)
         this.row(newr,index)
         this.tempValue = {}
@@ -4218,8 +4219,9 @@ Workbook.prototype.editDelete = function(nShiftType,R,C,N,Index){
                }
            }     
        };
-        var newC = (activeSheet.activeCol>=0)?activeSheet.activeCol:0;
-        var newR = (activeSheet.activeRow>=0)?activeSheet.activeRow:0;
+       var newC = (c-n>=0)?c-n:0;
+       // var newC = (activeSheet.activeCol>=0)?activeSheet.activeCol:0;
+       var newR = (activeSheet.activeRow>=0)?activeSheet.activeRow:0;
         this.col(newC,index)
         this.row(newR,index)
         this.tempValue = {}

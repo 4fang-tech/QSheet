@@ -36,6 +36,7 @@ function Workbook(id,data){
     this.onafteraddrow = null           //新增一行后的事件
     this.onequalsign = null;            //绑在输入框键入=(等号)事件
     this.documentHandle = null;         //绑定在documnet上的处理事件
+    this.checkInputVal = null;
     this.formatBrushStyle = {};         //初始化格式刷
     this.isHArrow = false               //辅助属性start  
     this.isVArrow = false;
@@ -2535,8 +2536,11 @@ Workbook.prototype.initValue = function(value,r,c,allRow,allCol,style,isRed,ind)
 
         this.ctx.textAlign = textAlign;
         this.ctx.textBaseline = textBaseline;
-        var middleText,breakHeight=0,lineH = 0,newResult=[],itemWidth = 0,x1=0,x2=0;
-        var result = this.breakLine(value,selfCol-paddingLeft-paddingRight,this.ctx);   
+        var middleText,breakHeight=0,lineH = 0,newResult=[],itemWidth = 0,x1=0,x2=0,cutS = 0;
+        if(style.wordWrap){
+            cutS = cutselfCol
+        }
+        var result = this.breakLine(value,selfCol-paddingLeft-paddingRight+cutS,this.ctx);  
         if(style.wordWrap){
             for(var i = 0;i<result.length;i++){
                 lineH+=lineHeight;
@@ -6612,6 +6616,9 @@ Workbook.prototype.removeTextArea = function(e){
     r = activeSheet.rangeRow1,c = activeSheet.rangeCol1,child = document.querySelector("#"+this.boxId+" .child"),
     mode = this.workbook.behaviorMode;
     this.keyDownCount = true
+    if(typeof(this.checkInputVal)=='function'){
+        this.checkInputVal(child,r,c)
+    }
     this.endEdit(e) //失去焦点完成输入
     if(textarea){
         textarea.style.cssText =  'top:' +  0 + 'px;left:' +0+'px;max-height:'+0+'px;max-width:'+0+'px;overflow:hidden;position:absolute'
@@ -9155,16 +9162,16 @@ Workbook.prototype.xml2Json = function(result,f,callback){
             activeSheet.printSetting.paper = paper
         }
         if(marginTop){
-            activeSheet.printSetting.marginTop = parseInt(marginTop);
+            activeSheet.printSetting.marginTop = parseInt(marginTop)||0;
         };
         if(marginBottom){
-            activeSheet.printSetting.marginBottom = parseInt(marginBottom);
+            activeSheet.printSetting.marginBottom = parseInt(marginBottom)||0;
         };
         if(marginLeft){
-            activeSheet.printSetting.marginLeft = parseInt(marginLeft);
+            activeSheet.printSetting.marginLeft = parseInt(marginLeft)||0;
         };
         if(marginRight){
-            activeSheet.printSetting.marginRight = parseInt(marginRight);
+            activeSheet.printSetting.marginRight = parseInt(marginRight)||0;
         };
         activeSheet.printSetting.printGridLine = parseInt(gridLine)?true:false;
         if(orientation){
@@ -10478,12 +10485,16 @@ Workbook.prototype.createXmlDoc = function(){
 
 //获取xml style某个属性值
 Workbook.prototype.getXmlStyleValue = function(ele,attr){
-    // style="FONT-SIZE: 9pt;FONT-FAMILY: 微软雅黑;MSO-NUMBER-FORMAT: #,##0.00_);[Red]\(#,##0.00\);MSO-PROTECTION:UNLOCKED VISIBLE;"
     if(!ele) return
     var style = ele.getAttribute('style');
-    var result
+    var result;
     if(style){
-        result = style.split(attr+':')[1];
+        style = style.replace(/\s/g,'')
+        if(style.indexOf(attr)==0){
+            result = style.split(attr+':')[1];
+        }else{
+            result = style.split(';'+attr+':')[1];
+        };
         if(result){
             result = result.split(':')[0].trim();
             var lastIndex = result.lastIndexOf(';');

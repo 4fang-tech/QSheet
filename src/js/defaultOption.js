@@ -127,8 +127,8 @@ this.defaultOptions = {
             "fixed":{
                 "fixedRow":0,                           //冻结开始的行
                 "fixedCol":0,                           //冻结开始的列
-                "fixedRows":0,                          //冻结了多少行
-                "fixedCols":0,                          //冻结了多少列
+                "fixedRows":0,                          //冻结到哪一行 冻结区域为>=fixedRow<fixedRows 
+                "fixedCols":0,                          
                 "fixedH":0,                             //可视冻结高度
                 "fixedW":0,                             //可视冻结宽度
                 "hideH":0,                              //冻结行到开始行的隐藏高度

@@ -23,6 +23,7 @@ function Workbook(id,data){
     this.endSheet = 0;  
     this._tabsHeight = 20;              //tab栏高度
     this.oncellbuttonclick =null;       //btn按钮事件
+    this.onclickincheckbox = null       //点击checkbox事件
     this.onshoweditor = null;           //设置光标位置事件
     this.ownerdraw = null;              //用户自绘函数
     this.onclickcellopenlayer = null;   //单元格点击触发事件
@@ -504,6 +505,9 @@ Workbook.prototype.bindEvent = function(){
         if(cellTypeName==3&&e.button==0&&r!=-1&&c!=-1){
             var value = this.getValue(r,c),v = (value)?0:1;
             this.setValue(r,c,v)
+            if(typeof(this.onclickincheckbox)=='function'){
+                this.onclickincheckbox(r,c)
+            }
         };  
     }.bind(this));
 
@@ -9173,7 +9177,7 @@ Workbook.prototype.xml2Json = function(result,f,callback){
         if(marginRight){
             activeSheet.printSetting.marginRight = parseInt(marginRight)||0;
         };
-        activeSheet.printSetting.printGridLine = parseInt(gridLine)?true:false;
+        activeSheet.printSetting.printGridLine = parseInt(gridLine)?false:true;
         if(orientation){
             activeSheet.printSetting.orientation = parseInt(orientation)
         };

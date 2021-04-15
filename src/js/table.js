@@ -37,7 +37,7 @@ function Workbook(id,data){
     this.onafteraddrow = null           //新增一行后的事件
     this.onequalsign = null;            //绑在输入框键入=(等号)事件
     this.documentHandle = null;         //绑定在documnet上的处理事件
-    this.checkInputVal = null;
+    this.checkInputVal = null;  
     this.formatBrushStyle = {};         //初始化格式刷
     this.isHArrow = false               //辅助属性start  
     this.isVArrow = false;
@@ -180,8 +180,8 @@ Workbook.prototype.defaultBook = function(){
                 "fixed":{
                     "fixedRow":0,                           //冻结开始的行
                     "fixedCol":0,                           //冻结开始的列
-                    "fixedRows":0,                          //冻结到哪一行 冻结区域为>=fixedRow<fixedRows 
-                    "fixedCols":0,                          
+                    "fixedRows":0,                          //冻结到哪一行  
+                    "fixedCols":0,                         
                     "fixedH":0,                             //可视冻结高度
                     "fixedW":0,                             //可视冻结宽度
                     "hideH":0,                              //冻结行到开始行的隐藏高度
@@ -799,7 +799,7 @@ Workbook.prototype.bindEvent = function(){
     }
     
     //child mouseup
-    this.addEvent(child,'mouseup',function(){
+    this.addEvent(document,'mouseup',function(){
         var txt = window.getSelection?window.getSelection():document.selection.createRange().text()
         this.clipBoardTxt = txt.toString();      
     }.bind(this));
@@ -1646,6 +1646,7 @@ Workbook.prototype.drawRowHeader = function(rMin,rMax,Index){
         this.ctx.fillStyle = rowHeaderColor;
         this.ctx.fillRect(x,rectY,w,h);
         //横线
+        this.ctx.beginPath()
         this.ctx.strokeStyle = gridLinesColor;
         for(var i=rMin;i<=rMax;i++){            
             if(row[i]&&(row[i].bHidden||row[i].size<=0)){
@@ -1915,38 +1916,44 @@ Workbook.prototype.drawCellContent = function(startR,startC,endR,endC,Index){
     fixedCols = activeSheet.fixed.fixedCols,data = activeSheet.data.dataTable,allRow = 0,allCol = 0;
     var moneyReg = /^0*MR?\(?A?(\+(￥|¥|\$|€|￡|₣|₩))?$/; 
     var numReg = /^0*NR?\(?A?(\+thousands)?$/;           //数值格式（包含千位分隔符）
+    var maxRowCount = this.getMergeCount(0,0,index).maxRowCount
     for(var rKey in data){
-        for(var j = startR;j<parseInt(rKey);j++){       
-            if(row[j]){
-                allRow+=row[j].size
+        if(parseInt(rKey)+maxRowCount>=startR&&parseInt(rKey)<=endR){
+            for(var j = startR;j<parseInt(rKey);j++){       
+                if(row[j]){
+                    allRow+=row[j].size
+                };
             };
-        };
-        for(var cKey in data[rKey]){
-            for(var h = startC;h<parseInt(cKey);h++){    
-                if(col[h]){
-                    allCol+=col[h].size;
-                };
-            }
-            var mergeCount = this.getMergeCount(parseInt(rKey),parseInt(cKey),index),rowCount = (fixedRows!=0)?0:mergeCount.rowCount-1,
-            colCount = (fixedCols!=0)?0:mergeCount.colCount-1;
-            if(parseInt(rKey)+rowCount>=startR&&parseInt(rKey)<=endR&&parseInt(rKey)!=-1&&parseInt(cKey)+colCount>=startC&&parseInt(cKey)<=endC){
-                var cell = data[rKey][cKey];
-                if(JSON.stringify(cell.style)==='{}'||!cell.style){
-                    cell.style = JSON.parse(JSON.stringify(this.defaultCellStyle))
+            for(var cKey in data[rKey]){
+                if(parseInt(rKey)>=startR&&parseInt(rKey)<=endR){
+                for(var h = startC;h<parseInt(cKey);h++){    
+                    if(col[h]){
+                        allCol+=col[h].size;
+                    };
                 }
-                var style = cell.style,formatter =  cell.style.formatter,isRed = false,R = parseInt(rKey),C = parseInt(cKey);
-                var text = this.getText(R,C,R,C,index)
-                if((moneyReg.test(formatter)||numReg.test(formatter))&&formatter.indexOf("R")!=-1&&Number(text)<0){
-                    isRed = true
-                }            
-                if(formatter&&(cell.hasOwnProperty('text')||cell.hasOwnProperty('value'))){
-                    text = this.getFormatValue(text,formatter);  
-                };
-                this.initValue(text,R,C,allRow+this.numRowH,allCol+this.numColW,style,isRed,index) 
-            } 
-            allCol = 0;   
-        };
-        allRow = 0;
+                var mergeCount = this.getMergeCount(parseInt(rKey),parseInt(cKey),index),rowCount = (fixedRows!=0)?0:mergeCount.rowCount-1,
+                colCount = (fixedCols!=0)?0:mergeCount.colCount-1;
+                if(parseInt(rKey)+rowCount>=startR&&parseInt(rKey)<=endR&&parseInt(rKey)!=-1&&parseInt(cKey)+colCount>=startC&&parseInt(cKey)<=endC){
+                    var cell = data[rKey][cKey];
+                    if(JSON.stringify(cell.style)==='{}'||!cell.style){
+                        cell.style = JSON.parse(JSON.stringify(this.defaultCellStyle))
+                    }
+                    var style = cell.style,formatter =  cell.style.formatter,isRed = false,R = parseInt(rKey),C = parseInt(cKey);
+                    var text = this.getText(R,C,R,C,index)
+                    if((moneyReg.test(formatter)||numReg.test(formatter))&&formatter.indexOf("R")!=-1&&Number(text)<0){
+                        isRed = true
+                    }            
+                    if(formatter&&(cell.hasOwnProperty('text')||cell.hasOwnProperty('value'))){
+                        text = this.getFormatValue(text,formatter);  
+                    };
+                    this.initValue(text,R,C,allRow+this.numRowH,allCol+this.numColW,style,isRed,index) 
+                } 
+                allCol = 0;   
+            };
+        }
+            allRow = 0;
+        }
+        
     }
 }
 
@@ -2410,15 +2417,15 @@ Workbook.prototype.initValue = function(value,r,c,allRow,allCol,style,isRed,ind)
     }
 
     var isdrawBG=false,isdrawValue=false,isOwerDrawed=false,isdrawBorder = false;
-    if(style&&row[r]&&!row[r].bHidden&&col[c]&&!col[c].bHidden&&isDraw){
+    if(style&&row[r]&&col[c]&&isDraw&&((!row[r].bHidden)||(row[r].bHidden&&selfRow>0))&&((!col[c].bHidden)||(col[c].bHidden&&selfCol>0))){
         isdrawBG=true;
     };
 
-    if(style&&value!=undefined&&value!=''&&row[r]&&!row[r].bHidden&&col[c]&&!col[c].bHidden&&isDraw&&!isCheckBox){
+    if(style&&value!=undefined&&value!=''&&row[r]&&col[c]&&isDraw&&!isCheckBox&&((!row[r].bHidden)||(row[r].bHidden&&selfRow>0))&&((!col[c].bHidden)||(col[c].bHidden&&selfCol>0))){
         isdrawValue=true;
     };
 
-    if(style&&row[r]&&!row[r].bHidden&&col[c]&&!col[c].bHidden&&isDraw){
+    if(style&&row[r]&&col[c]&&isDraw&&((!row[r].bHidden)||(row[r].bHidden&&selfRow>0))&&((!col[c].bHidden)||(col[c].bHidden&&selfCol>0))){
         isdrawBorder = true;
     }
 
@@ -2569,7 +2576,6 @@ Workbook.prototype.initValue = function(value,r,c,allRow,allCol,style,isRed,ind)
             newResult.push(result[0])
         }
         newResult.forEach(function(item,ind){
-
             if(selfCol>=_this.cellBtnAreaWidth){
                 var t = item
             }else{
@@ -2577,7 +2583,6 @@ Workbook.prototype.initValue = function(value,r,c,allRow,allCol,style,isRed,ind)
             }
 
             if(isFillText){
-
                 _this.ctx.beginPath()
                 _this.ctx.fillText(t,x,y+(lineHeight*ind)-breakHeight); 
                 itemWidth = _this.ctx.measureText(item).width;
@@ -4227,9 +4232,9 @@ Workbook.prototype.editDelete = function(nShiftType,R,C,N,Index){
                }
            }     
        };
-       var newC = (c-n>=0)?c-n:0;
-       // var newC = (activeSheet.activeCol>=0)?activeSheet.activeCol:0;
-       var newR = (activeSheet.activeRow>=0)?activeSheet.activeRow:0;
+        var newC = (c-n>=0)?c-n:0;
+        // var newC = (activeSheet.activeCol>=0)?activeSheet.activeCol:0;
+        var newR = (activeSheet.activeRow>=0)?activeSheet.activeRow:0;
         this.col(newC,index)
         this.row(newR,index)
         this.tempValue = {}
@@ -6619,7 +6624,7 @@ Workbook.prototype.removeTextArea = function(e){
     var textarea = document.querySelector("#"+this.boxId+" .textarea"),activeSheet = this.getActiveSheet(),
     r = activeSheet.rangeRow1,c = activeSheet.rangeCol1,child = document.querySelector("#"+this.boxId+" .child"),
     mode = this.workbook.behaviorMode;
-    this.keyDownCount = true
+    this.keyDownCount = true;
     if(typeof(this.checkInputVal)=='function'){
         this.checkInputVal(child,r,c)
     }
@@ -8249,95 +8254,95 @@ Workbook.prototype.getPrintAreaPosition = function(Index){
 
 //删除空页
 Workbook.prototype.deleteEmptyPage = function(pageArr){
-    if(pageArr){
-        for(var i = 0;i<pageArr.length;i++){
-             var index = (pageArr[i].index>=0)?pageArr[i].index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
-             rows = activeSheet.rows,cols = activeSheet.columns,data = activeSheet.data.dataTable,
-             spans = activeSheet.spans,printSetting = activeSheet.printSetting,numColW = 0,numRowH = 0;
-             if(printSetting.printHeadings){
-                 numColW = activeSheet.rowHeaderData.defaultW;
-                 numRowH = activeSheet.colHeaderData.defaultH;
-             }
-             var sy = pageArr[i].sy,sHeight = pageArr[i].sHeight,sx = pageArr[i].sx,sWidth = pageArr[i].sWidth,
-             ey = sy+sHeight,ex = sx+sWidth;
-             var r1 = 0,c1 = 0,r2 = 0, c2 = 0,sxSumX = numColW,sySumY = numRowH,exSumX = numColW,eySumY = numRowH;
-             for(var k = 0;k<rows.length;k++){
-                if(rows[k])  sySumY+=rows[k].size;
-                if(sy<=sySumY){
-                    r1 = k;
+   if(pageArr){
+       for(var i = 0;i<pageArr.length;i++){
+            var index = (pageArr[i].index>=0)?pageArr[i].index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index),
+            rows = activeSheet.rows,cols = activeSheet.columns,data = activeSheet.data.dataTable,
+            spans = activeSheet.spans,printSetting = activeSheet.printSetting,numColW = 0,numRowH = 0;
+            if(printSetting.printHeadings){
+                numColW = activeSheet.rowHeaderData.defaultW;
+                numRowH = activeSheet.colHeaderData.defaultH;
+            }
+            var sy = pageArr[i].sy,sHeight = pageArr[i].sHeight,sx = pageArr[i].sx,sWidth = pageArr[i].sWidth,
+            ey = sy+sHeight,ex = sx+sWidth;
+            var r1 = 0,c1 = 0,r2 = 0, c2 = 0,sxSumX = numColW,sySumY = numRowH,exSumX = numColW,eySumY = numRowH;
+            for(var k = 0;k<rows.length;k++){
+               if(rows[k])  sySumY+=rows[k].size;
+               if(sy<=sySumY){
+                   r1 = k;
+                   break;
+               }
+            }
+            for(var k = 0;k<rows.length;k++){
+                if(rows[k])  eySumY+=rows[k].size;
+                if(ey<=eySumY){
+                    r2 = k;
                     break;
                 }
-             }
-             for(var k = 0;k<rows.length;k++){
-                 if(rows[k])  eySumY+=rows[k].size;
-                 if(ey<=eySumY){
-                     r2 = k;
-                     break;
-                 }
-             }
-             for(var j = 0;j<cols.length;j++){
-                 if(cols[j])  sxSumX+=cols[j].size;
-                 if(sx<=sxSumX){
-                     c1 = j;
-                     break;
-                 }
-             }
-             for(var j = 0;j<cols.length;j++){
-                 if(cols[j])  exSumX+=cols[j].size;
-                 if(ex<=exSumX){
-                     c2 = j;
-                     break;
-                 }
-             }
- 
-             for(var n = r1;n<=r2;n++){
-                 for(var v = c1;v<=c2;v++){
-                     if(data[n]&&data[n][v]){
-                         pageArr[i].ety = false
-                     }
-                 }
-             };
-             spans.forEach(function(item){
-                 var row1 = item.row,col1 = item.col,row2 = item.row+item.rowCount-1,col2 = item.col+item.colCount-1;
-                 if(row2>=r1&&row1<=r2&&col2>=c1&&col1<=c2){
-                     pageArr[i].ety = false
-                 }
-             }); 
-         }
-         var diviR,diviC
-         for(var i = pageArr.length-1;i>=0;i--){
-             var activeS = this.getActiveSheet(pageArr[i].index)
-             var printDirection = parseInt(activeS.printSetting.printDirection);
-             printDirection = (printDirection>=1&&printDirection<=2)?printDirection:1;
-             if(pageArr[i].ety!==false){
-                 pageArr.splice(i,1)
-             }else if(pageArr[i].ety===false&&printDirection==1){
-                 diviR = pageArr[i].row;
-                 break;
-             }else if(pageArr[i].ety===false&&printDirection==2){
-                 diviC = pageArr[i].col;
-                 break;
-             }  
-         };
-     
-         for(var j = pageArr.length-1;j>=0;j--){
-             var activeSS = this.getActiveSheet(pageArr[j].index)
-             var printDirectionS = parseInt(activeSS.printSetting.printDirection);
-             printDirectionS = (printDirectionS>=1&&printDirectionS<=2)?printDirectionS:1;
-             if(pageArr[j].row>diviR&&printDirectionS==1){
-                 if(pageArr[j].ety!==false){
-                     pageArr.splice(j,1)
-                 }
-             }else if(pageArr[j].col>diviC&&printDirectionS==2){
-                 if(pageArr[j].ety!==false){
-                     pageArr.splice(j,1)
-                 }
-             }
-         }
-                     
-         return pageArr  
-     }
- } 
+            }
+            for(var j = 0;j<cols.length;j++){
+                if(cols[j])  sxSumX+=cols[j].size;
+                if(sx<=sxSumX){
+                    c1 = j;
+                    break;
+                }
+            }
+            for(var j = 0;j<cols.length;j++){
+                if(cols[j])  exSumX+=cols[j].size;
+                if(ex<=exSumX){
+                    c2 = j;
+                    break;
+                }
+            }
+
+            for(var n = r1;n<=r2;n++){
+                for(var v = c1;v<=c2;v++){
+                    if(data[n]&&data[n][v]){
+                        pageArr[i].ety = false
+                    }
+                }
+            };
+            spans.forEach(function(item){
+                var row1 = item.row,col1 = item.col,row2 = item.row+item.rowCount-1,col2 = item.col+item.colCount-1;
+                if(row2>=r1&&row1<=r2&&col2>=c1&&col1<=c2){
+                    pageArr[i].ety = false
+                }
+            }); 
+        }
+        var diviR,diviC
+        for(var i = pageArr.length-1;i>=0;i--){
+            var activeS = this.getActiveSheet(pageArr[i].index)
+            var printDirection = parseInt(activeS.printSetting.printDirection);
+            printDirection = (printDirection>=1&&printDirection<=2)?printDirection:1;
+            if(pageArr[i].ety!==false){
+                pageArr.splice(i,1)
+            }else if(pageArr[i].ety===false&&printDirection==1){
+                diviR = pageArr[i].row;
+                break;
+            }else if(pageArr[i].ety===false&&printDirection==2){
+                diviC = pageArr[i].col;
+                break;
+            }  
+        };
+    
+        for(var j = pageArr.length-1;j>=0;j--){
+            var activeSS = this.getActiveSheet(pageArr[j].index)
+            var printDirectionS = parseInt(activeSS.printSetting.printDirection);
+            printDirectionS = (printDirectionS>=1&&printDirectionS<=2)?printDirectionS:1;
+            if(pageArr[j].row>diviR&&printDirectionS==1){
+                if(pageArr[j].ety!==false){
+                    pageArr.splice(j,1)
+                }
+            }else if(pageArr[j].col>diviC&&printDirectionS==2){
+                if(pageArr[j].ety!==false){
+                    pageArr.splice(j,1)
+                }
+            }
+        }
+                    
+        return pageArr  
+    }
+}  
 
 //获取页码位置信息 
 Workbook.prototype.getPageNumPosition = function(canvasW,canvasH,isshowfooterpageinfo){
@@ -8404,7 +8409,6 @@ Workbook.prototype.setPrint = function(obj,Index){
         printSetting.printHeadings = (obj.printHeadings===undefined)?printSetting.printHeadings:(obj.printHeadings)?true:false;
         printSetting.printGridLine = (obj.printGridLine===undefined)?printSetting.printGridLine:(obj.printGridLine)?true:false;
         printSetting.orientation = obj.orientation||printSetting.orientation;
-        printSetting.printDirection = obj.printDirection||printSetting.printDirection;
         this.workbook.printOnSamePaper = (obj.printOnSamePaper===undefined)?this.workbook.printOnSamePaper:(obj.printOnSamePaper)?true:false;
         this.workbook.marginCopies = (obj.marginCopies>=0)?obj.marginCopies:this.workbook.marginCopies;
         this.workbook.printer = obj.printer||this.workbook.printer;
@@ -8533,20 +8537,20 @@ Workbook.prototype.removeSplitcolHeader = function(Col,Index){
     };
  */
 Workbook.prototype.setValue = function(R,C,Value,Index){
-    var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
-    var data = activeSheet.data.dataTable,s = '',text = '',cellTypeName,child = document.querySelector('#'+this.boxId+' .child'),
-    cellType = this.getCellType(R,C,R,C,index),formula = this.getCellFormula(R,C,R,C),formatter = this.getCellFormat(R,C,R,C),
-    rows = activeSheet.rows;
-    if(cellType){
-        cellTypeName = cellType.name
-    };
     if(R>=0&&C>=0){
+        var index = (Index>=0)?Index:this.workbook.activeSheet,activeSheet = this.getActiveSheet(index);
+        var data = activeSheet.data.dataTable,s = '',text = '',cellTypeName,formula,formatter;
         this.createData(R,C,index);
         if(data[R]&&data[R][C]){
             if(typeof(this.onvaluechange)=='function'&&this.workbook.stopEventCount==0){
                 s = this.onvaluechange(R,C,Value,data[R][C].value);
                 if(s=='-1') return
             };
+            formula = data[R][C].formula;
+            if(data[R][C].style){
+                cellTypeName = data[R][C].style.cellType;
+                formatter = data[R][C].style.formatter
+            }
             if(cellTypeName==3){
                 var v = (Value)?1:0;
                 data[R][C].value = v ; 
@@ -8565,14 +8569,9 @@ Workbook.prototype.setValue = function(R,C,Value,Index){
                     text = formula;
                 }
                 if(this.tempValue.r==R&&this.tempValue.c==C){
+                    var child = document.querySelector('#'+this.boxId+' .child');
                     child.innerText = text
                 }
-                if(rows[R]&&!rows[R].noDefaultH){
-                    var wordWrap = this.getWordWrap(R,C,R,C,index);
-                    if(wordWrap){
-                        this.incrementRowheight(R,C,index);
-                    }
-                } 
             }
         }  
     }
@@ -8710,13 +8709,16 @@ Workbook.prototype.getMergeCount = function(r,c,Index){
     var activeSheet = this.getActiveSheet(index);
     var spans = activeSheet.spans;
     var rowCount = 1,colCount = 1;
+    var rowCountArr = [0];
     spans.forEach(function(item){
         if(item.row==r&&item.col==c){
             rowCount = item.rowCount;
             colCount = item.colCount;
         }
+        rowCountArr.push(item.rowCount)
     });
-    return {"rowCount":rowCount,"colCount":colCount}
+    var maxRowCount = Math.max.apply(null,rowCountArr) 
+    return {"rowCount":rowCount,"colCount":colCount,"maxRowCount":maxRowCount}
 }
 
 /**
@@ -10512,17 +10514,16 @@ Workbook.prototype.getXmlStyleValue = function(ele,attr){
 
 Workbook.prototype.getXmlPageSetUpValue = function(pagesetup,attr){
     var result;
-    if(pagesetup){
-        result = pagesetup.split(attr+':')[1];
-        if(result){
-            result = result.split(',')[0].trim();
-            result = result.match(/[^"']/g)
-            if(result){
-                result = result.join('')
-            }
-        }
+    pagesetup = pagesetup.replace(/[{}]/g,'')
+    var strArr = pagesetup.split(",")
+    var obj = {}
+    for(var i = 0;i<strArr.length;i++){
+        var key = strArr[i].split(":")[0].trim().replace(/["']/g,'')
+        var v = strArr[i].split(":")[1].trim().replace(/["']/g,'')
+        obj[key] = v;
     }
-    return result
+    result = obj[attr];
+    return result;
 }
 
 //磅转px

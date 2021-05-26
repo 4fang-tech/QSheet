@@ -337,7 +337,7 @@ Workbook.prototype.bindEvent = function(){
         //点击添加一个表区域：
         if(x>this.tabSumW+10&&x<this.tabSumW+20&&y>this.height-this.tabsHeight&&y<this.height&&showTabs==1&&showAdd){
             this.addSheet()
-            this.startPaint(true)
+            this.drawTable()
         };
 
         //点击sheet列表(切换sheet表)：
@@ -347,7 +347,7 @@ Workbook.prototype.bindEvent = function(){
             var itemW = this.ctx.measureText(sheetList[i]).width+this.sheetItemExtraW;
             if(x>rightDiff&&x<(rightDiff+itemW)&&y>(this.height-this.tabsHeight)&&y<this.height&&showTabs==1){
                 this.sheetIndex(i);
-                this.startPaint(true)
+                this.drawTable()
             }
             rightDiff += itemW;
         };
@@ -528,7 +528,7 @@ Workbook.prototype.bindEvent = function(){
         }  
         if(mode==1&&this.isEdit){
             if((cellTypeName==1||cellTypeName==2)&&!this.activeSheet.alwaysShowButton){
-                this.startPaint()
+                this.drawTable()
             }else{
                 this.openInput(r,c)
             };
@@ -569,7 +569,7 @@ Workbook.prototype.bindEvent = function(){
                     value = this.getValue(this.activeSheet.activeRow,this.activeSheet.activeCol);
                     this.removeTextArea()
                     if(text!=value&&text!=''){
-                        this.startPaint()
+                        this.drawTable()
                     }
                 }
                 if(x<0||x>this.width||y<0||y>this.height){
@@ -592,7 +592,7 @@ Workbook.prototype.bindEvent = function(){
                 isHasHBar = this.isHasHBar();
                 if(isHasVBar||isHasHBar){
                     this.isShowBar = true;
-                    this.startPaint(true);
+                    this.drawTable()
                 }
             //鼠标移除cnavas表隐藏滚动条
             }else if((x>this.width||y>this.height||x<0||y<0)&&!this.drawOne&&!moveHBar&&!moveVBar){
@@ -604,7 +604,7 @@ Workbook.prototype.bindEvent = function(){
                     var t = null;
                     clearTimeout(t);         
                     t = setTimeout(function(){
-                        _this.startPaint(true)
+                        _this.drawTable()
                     },1500);   
                 }
             }
@@ -659,7 +659,7 @@ Workbook.prototype.bindEvent = function(){
                     if(item.hover===true){
                         item.hover = false;
                         if(mode==1&&(selectMode==1||selectMode==2||((r1!=r2||c1!=c2)&&isFill))){
-                            _this.startPaint(true);
+                            _this.drawTable()
                         }else{
                             _this.drawBtn(item.row,item.col,item.x,item.y,item.w,item.h,item.hover);
                         }
@@ -679,7 +679,7 @@ Workbook.prototype.bindEvent = function(){
                     if(item.hover===true){
                         item.hover = false;
                         if(mode==1&&(selectMode==1||selectMode==2||((r1!=r2||c1!=c2)&&isFill))){
-                            _this.startPaint(true);
+                            _this.drawTable()
                         }else{
                             _this.drawCheckBox(item.row,item.col,item.x,item.y,item.w,item.h,item.hover);
                         }
@@ -745,7 +745,7 @@ Workbook.prototype.bindEvent = function(){
                             if(isCanEdit!==false)   this.isEdit = true;  
                             this.keyDownCount = false         
                             if((cellTypeName==1||cellTypeName==2)&&!this.activeSheet.alwaysShowButton){
-                                this.startPaint()
+                                this.drawTable()
                             }else{
                                 this.openInput(r1,c1)
                             }
@@ -756,7 +756,7 @@ Workbook.prototype.bindEvent = function(){
 
                     if(e.keyCode==46&&!this.isEdit&&this.workbook.allowDelete){ //delete键删除文本                  
                         this.deleteText(r1,c1,r2,c2)
-                        this.startPaint(true)
+                        this.drawTable()
                     };
 
                     if(e.keyCode==13||e.keyCode==37||e.keyCode==38||e.keyCode==39||e.keyCode==40||(e.keyCode==9&&this.workbook.allowTabs)){           //上下左右回车（切换单元格）
@@ -779,7 +779,7 @@ Workbook.prototype.bindEvent = function(){
                     };
                     if(e.ctrlKey&&e.keyCode==86){   //快捷键粘贴操作
                         this.editPaste()
-                        this.startPaint(true)
+                        this.drawTable()
                     };
                     if(e.altKey&&e.keyCode==13){    //alt+enter换行
                         this.insertN();
@@ -831,7 +831,7 @@ Workbook.prototype.bindEvent = function(){
         e = e || window.event;
         if(e.button == 0){
             this.editInsert("F1ShiftRows")
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this))   
 
@@ -840,7 +840,7 @@ Workbook.prototype.bindEvent = function(){
         e = e || window.event;
         if(e.button == 0){
             this.editInsert("F1ShiftCols")
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this))   
 
@@ -849,7 +849,7 @@ Workbook.prototype.bindEvent = function(){
         e = e || window.event;
         if(e.button == 0){
             this.editDelete("F1ShiftRows");
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this))   
 
@@ -858,7 +858,7 @@ Workbook.prototype.bindEvent = function(){
         e = e || window.event;
         if(e.button == 0){
             this.editDelete("F1ShiftCols") 
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this));
 
@@ -875,7 +875,7 @@ Workbook.prototype.bindEvent = function(){
         e = e || window.event;
         if(e.button == 0){
             this.editCut()
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this));   
 
@@ -884,7 +884,7 @@ Workbook.prototype.bindEvent = function(){
         e = e || window.event;
         if(e.button == 0){
             this.editPaste()
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this));
     
@@ -894,7 +894,7 @@ Workbook.prototype.bindEvent = function(){
         if(e.button == 0){
             var CellRC = this.getCellRC();
             this.setHAlignment(CellRC.r1,CellRC.c1,CellRC.r2,CellRC.c2,2)
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this)) ;  
 
@@ -904,7 +904,7 @@ Workbook.prototype.bindEvent = function(){
         if( e.button == 0){
             var CellRC = this.getCellRC();
             this.setHAlignment(CellRC.r1,CellRC.c1,CellRC.r2,CellRC.c2,3)
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this)) ; 
 
@@ -914,7 +914,7 @@ Workbook.prototype.bindEvent = function(){
         if(e.button == 0){
             var CellRC = this.getCellRC();
             this.setHAlignment(CellRC.r1,CellRC.c1,CellRC.r2,CellRC.c2,4)
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this)) ; 
 
@@ -924,7 +924,7 @@ Workbook.prototype.bindEvent = function(){
         if(e.button == 0){
             var CellRC = this.getCellRC();
             this.setVAlignment(CellRC.r1,CellRC.c1,CellRC.r2,CellRC.c2,1)
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this)) ; 
 
@@ -934,7 +934,7 @@ Workbook.prototype.bindEvent = function(){
         if(e.button == 0){
             var CellRC = this.getCellRC();
             this.setVAlignment(CellRC.r1,CellRC.c1,CellRC.r2,CellRC.c2,2)
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this)) ; 
 
@@ -944,7 +944,7 @@ Workbook.prototype.bindEvent = function(){
         if(e.button == 0){
             var CellRC = this.getCellRC();
             this.setVAlignment(CellRC.r1,CellRC.c1,CellRC.r2,CellRC.c2,3)
-            this.startPaint(true)
+            this.drawTable()
         }
     }.bind(this)) ; 
 }
@@ -2151,7 +2151,7 @@ Workbook.prototype.dragVBar = function(moveVBar,clickY,moveY){
         activeSheet.scrollOption.totalY =  activeSheet.scrollOption.coordY ;
     }
     if((oldStartRow!=startRow)||(offsetY!=oldOffsetY)){
-        this.startPaint(true)
+        this.drawTable()
     };
 }
 
@@ -2181,7 +2181,7 @@ Workbook.prototype.dragHBar = function(moveHBar,clickX,moveX){
         activeSheet.scrollOption.totalX =  activeSheet.scrollOption.coordX 
     } 
     if((oldStartCol!=startCol)||(oldOffsetX!=offsetX)){
-        this.startPaint(true)
+        this.drawTable()
     }
 }
 
@@ -2300,7 +2300,7 @@ Workbook.prototype.scrollFun = function(e){
         }
         activeSheet.scrollOption.totalY = activeSheet.scrollOption.coordY; 
         if((oldStartRow!=startRow)||(offsetY!=oldOffsetY)){
-            this.startPaint(true)
+            this.drawTable()
         }
     }   
 }
@@ -2840,7 +2840,7 @@ Workbook.prototype.swapCell = function(e){
         }else{
             this.removeTextArea(e);
             if(text.replace(/\s/g,'')!=''){
-                this.startPaint(true)
+                this.drawTable()
             }
         }
     };
@@ -2951,7 +2951,7 @@ Workbook.prototype.swapCell = function(e){
     if(!(r1==activeSheet.rangeRow1&&c1==activeSheet.rangeCol1)||(startCol>fixedCols&&activeSheet.scrollOption.coordX==0)||
     (startRow>fixedRows&&activeSheet.scrollOption.coordY==0)||(endCol<cols.length-1&&activeSheet.scrollOption.coordX==maxX)||
     (endRow<rows.length-1&&activeSheet.scrollOption.coordY==maxY)){
-        this.startPaint(true)
+        this.drawTable()
     }
 }
 
@@ -3132,7 +3132,7 @@ Workbook.prototype.changeCellWidth = function(changWidth,clickX,canvasMoveX){
             };
             this.totalWidth = this.totalWidth + totalCut;
             this.recalculatePercentage()
-            this.startPaint(true);
+            this.drawTable()
         } 
     }
 }
@@ -3210,7 +3210,7 @@ Workbook.prototype.changeCellHeight = function(changHeight,clickY,canvasMoveY){
             }
             this.totalHeight = this.totalHeight + totalCut;
             this.recalculatePercentage()
-            this.startPaint(true)
+            this.drawTable()
         }
     }
 }
@@ -4013,7 +4013,7 @@ Workbook.prototype.getSelection = function(moveX,moveY,moveCell){
     if(!(or==r&&oc==c&&or2==r2&&oc2==c2)||(cellTypeName==3&&r==r2&&c==c2&&!moveCell)||(JSON.stringify(this.tempValue)=='{}'
     &&(mode==2||mode==3)&&r!=-1&&c!=-1&&!isCheckBox&&isCanEdit!==false&&!isLock)){
         this.removeTextArea()
-        this.startPaint(true)  
+        this.drawTable() 
     };
     return {"r1":r,"c1":c,"r2":r2,"c2":c2}
 }
@@ -5461,7 +5461,7 @@ Workbook.prototype.setActiveEditCell = function(R,C){
         this.col(c);
         this.tempValue = {}
         this.isEdit=true;this.incanvasPath=true,this.eButton=0
-        this.startPaint()
+        this.drawTable()
     }
 }
 
@@ -7868,7 +7868,7 @@ Workbook.prototype.drawPrint = function(callback,Index){
         activeSheet.scrollOption.offsetY = 0;
         this.removeFixed(i)
         this.sheetIndex(i)
-        this.startPaint(true);
+        this.drawTable()
         this.canvas.width = this.width;      
         this.canvas.height = this.height;
         if(activeSheet.printSetting.printGridLine){
@@ -7912,7 +7912,7 @@ Workbook.prototype.drawPrint = function(callback,Index){
     this.workbook.showHScrollBar = oShowHScrollBar;
     this.workbook.showVScrollBar = oShowVScrollBar;
     this.sheetIndex(oIndex)
-    this.startPaint(true)
+    this.drawTable()
     
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d')
@@ -8657,6 +8657,9 @@ Workbook.prototype.startPaint = function(isAll){
     if(this.workbook.stopPaintedCount>0){
         this.workbook.stopPaintedCount--
     }
+    if(this.workbook.stopPaintedCount<0){
+        this.workbook.stopPaintedCount = 0
+    }
     if(this.workbook.stopPaintedCount==0){
         this.drawTable()  
     }
@@ -9109,7 +9112,7 @@ Workbook.prototype.importFile = function(f,callback){
             _this.sheetIndex(i)
             _this.getStartSheet()
             _this.getEndSheet()
-            _this.startPaint(true)
+            _this.drawTable()
             if(typeof(cb)=='function'){
                 cb()
             }
